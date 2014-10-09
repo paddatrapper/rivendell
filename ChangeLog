@@ -14477,3 +14477,7 @@
 2014-09-18 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.9.3.
+2014-10-09 Fred Gleason <fredg@paravelsystems.com>
+	* Backported cut description backstop fix from master in
+	'utils/rdimport/rdimport.cpp'.
+
