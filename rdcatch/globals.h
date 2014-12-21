@@ -32,6 +32,7 @@
 #include <rdripc.h>
 #include <rdcart_dialog.h>
 #include <rdsystem.h>
+#include <rdchannels.h>
 
 //
 // Global Resources
@@ -47,5 +48,6 @@ extern RDCartDialog *catch_cart_dialog;
 extern int catch_audition_card;
 extern int catch_audition_port;
 extern RDSystem *catch_system;
+extern RDChannels *catch_channels;
 
 #endif  // GLOBALS_H

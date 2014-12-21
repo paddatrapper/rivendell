@@ -29,15 +29,17 @@
 #include <qpushbutton.h>
 #include <qcombobox.h>
 
-#include <rdairplay_conf.h>
+#include <rdchannels.h>
 
 class EditChannelGpios : public QDialog
 {
  Q_OBJECT
  public:
-  EditChannelGpios(RDAirPlayConf *conf,RDAirPlayConf::Channel chan,
-		   QWidget *parent=0,const char *name=0);
+  EditChannelGpios(RDChannels *chan,RDChannels::Channel type,QWidget *parent=0);
   QSize sizeHint() const;
+
+ public slots:
+  int exec(int num,int sub_num);
 
  protected:
   void resizeEvent(QResizeEvent *e);
@@ -68,8 +70,10 @@ class EditChannelGpios : public QDialog
   QComboBox *edit_gpio_type_box;
   QPushButton *edit_ok_button;
   QPushButton *edit_cancel_button;
-  RDAirPlayConf *edit_airplay_conf;
-  RDAirPlayConf::Channel edit_channel;
+  RDChannels *edit_channels;
+  int edit_number;
+  int edit_subnumber;
+  RDChannels::Channel edit_channels_type;
 };
 
 

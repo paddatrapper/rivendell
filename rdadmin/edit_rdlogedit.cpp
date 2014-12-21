@@ -2,9 +2,7 @@
 //
 // Edit an RDLogedit Configuration
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_rdlogedit.cpp,v 1.18.6.2 2014/01/08 18:14:35 cvs Exp $
+//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,7 +40,7 @@
 
 
 EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
-			     QWidget *parent,const char *name)
+			     RDChannels *chans,QWidget *parent,const char *name)
   : QDialog(parent,name,true)
 {
   //
@@ -54,6 +52,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   setMaximumHeight(sizeHint().height());
 
   lib_lib=new RDLogeditConf(station->name());
+  lib_channels=chans;
 
   //
   // Create Fonts
@@ -320,25 +319,25 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
     lib_input_card->setDisabled(true);
     lib_output_card->setDisabled(true);
   }
-  lib_input_card->setCard(lib_lib->inputCard());
-  lib_input_card->setPort(lib_lib->inputPort());
-  lib_output_card->setCard(lib_lib->outputCard());
-  lib_output_card->setPort(lib_lib->outputPort());
+  lib_input_card->setCard(lib_channels->card(RDChannels::LogEditInput));
+  lib_input_card->setPort(lib_channels->port(RDChannels::LogEditInput));
+  lib_output_card->setCard(lib_channels->card(RDChannels::LogEditOutput));
+  lib_output_card->setPort(lib_channels->port(RDChannels::LogEditOutput));
   lib_maxlength_time->setTime(QTime().addMSecs(lib_lib->maxLength()));
   lib_threshold_spin->setValue(lib_lib->trimThreshold()/100);
   lib_normalization_spin->setValue(lib_lib->ripperLevel()/100);
-  unsigned cart=lib_lib->startCart();
+  unsigned cart=lib_channels->cart(RDChannels::Start,RDChannels::LogEditOutput);
   if(cart>0) {
     lib_startcart_edit->setText(QString().sprintf("%06u",cart));
   }
-  if((cart=lib_lib->endCart())>0) {
+  if((cart=lib_channels->cart(RDChannels::Stop,RDChannels::LogEditOutput))>0) {
     lib_endcart_edit->setText(QString().sprintf("%06u",cart));
   }  
-  cart=lib_lib->recStartCart();
+  cart=lib_channels->cart(RDChannels::Start,RDChannels::LogEditInput);
   if(cart>0) {
     lib_recstartcart_edit->setText(QString().sprintf("%06u",cart));
   }
-  if((cart=lib_lib->recEndCart())>0) {
+  if((cart=lib_channels->cart(RDChannels::Stop,RDChannels::LogEditInput))>0) {
     lib_recendcart_edit->setText(QString().sprintf("%06u",cart));
   }  
   lib_preroll_spin->setValue(lib_lib->tailPreroll());
@@ -428,37 +427,41 @@ void EditRDLogedit::okData()
 {
   unsigned rate=0;
 
-  lib_lib->setInputCard(lib_input_card->card());
-  lib_lib->setInputPort(lib_input_card->port());
-  lib_lib->setOutputCard(lib_output_card->card());
-  lib_lib->setOutputPort(lib_output_card->port());
+  lib_channels->setCard(lib_input_card->card(),RDChannels::LogEditInput);
+  lib_channels->setPort(lib_input_card->port(),RDChannels::LogEditInput);
+  lib_channels->setCard(lib_output_card->card(),RDChannels::LogEditOutput);
+  lib_channels->setPort(lib_output_card->port(),RDChannels::LogEditOutput);
   lib_lib->setMaxLength(QTime().msecsTo(lib_maxlength_time->time()));
   lib_lib->setTrimThreshold(lib_threshold_spin->value()*100);
   lib_lib->setRipperLevel(lib_normalization_spin->value()*100);
   lib_lib->setTailPreroll(lib_preroll_spin->value());
   if(lib_startcart_edit->text().isEmpty()) {
-    lib_lib->setStartCart(0);
+    lib_channels->setCart(0,RDChannels::Start,RDChannels::LogEditOutput);
   }
   else {
-    lib_lib->setStartCart(lib_startcart_edit->text().toUInt());
+    lib_channels->setCart(lib_startcart_edit->text().toUInt(),
+			  RDChannels::Start,RDChannels::LogEditOutput);
   }
   if(lib_endcart_edit->text().isEmpty()) {
-    lib_lib->setEndCart(0);
+    lib_channels->setCart(0,RDChannels::Stop,RDChannels::LogEditOutput);
   }
   else {
-    lib_lib->setEndCart(lib_endcart_edit->text().toUInt());
+    lib_channels->setCart(lib_endcart_edit->text().toUInt(),
+			  RDChannels::Stop,RDChannels::LogEditOutput);
   }
   if(lib_recstartcart_edit->text().isEmpty()) {
-    lib_lib->setRecStartCart(0);
+    lib_channels->setCart(0,RDChannels::Start,RDChannels::LogEditInput);
   }
   else {
-    lib_lib->setRecStartCart(lib_recstartcart_edit->text().toUInt());
+    lib_channels->setCart(lib_recstartcart_edit->text().toUInt(),
+			  RDChannels::Start,RDChannels::LogEditInput);
   }
   if(lib_recendcart_edit->text().isEmpty()) {
-    lib_lib->setRecEndCart(0);
+    lib_channels->setCart(0,RDChannels::Stop,RDChannels::LogEditInput);
   }
   else {
-    lib_lib->setRecEndCart(lib_recendcart_edit->text().toUInt());
+    lib_channels->setCart(lib_recendcart_edit->text().toUInt(),
+			  RDChannels::Stop,RDChannels::LogEditInput);
   }
   lib_lib->setFormat(lib_format_box->currentItem());
   lib_lib->setDefaultChannels(lib_channels_box->currentItem()+1);

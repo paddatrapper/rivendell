@@ -135,8 +135,8 @@ EditEvent::EditEvent(LogPlay *log,QWidget *parent,const char *name)
   // Cue Editor
   //
   edit_cue_edit=
-    new RDCueEdit(rdcae,rdstation_conf->cueCard(),
-                  rdstation_conf->cuePort(),this);
+    new RDCueEdit(rdcae,rdchannels->card(RDChannels::CueOutput),
+                  rdchannels->port(RDChannels::CueOutput),this);
 
   //
   // Cart Notes

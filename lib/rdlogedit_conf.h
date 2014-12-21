@@ -36,14 +36,6 @@ class RDLogeditConf
  public:
   RDLogeditConf(const QString &station);
   QString station() const;
-  int inputCard() const;
-  void setInputCard(int input) const;
-  int inputPort() const;
-  void setInputPort(int input) const;
-  int outputCard() const;
-  void setOutputCard(int output) const;
-  int outputPort() const;
-  void setOutputPort(int input) const;
   unsigned format() const;
   void setFormat(unsigned format) const;
   unsigned layer() const;
@@ -58,14 +50,6 @@ class RDLogeditConf
   void setMaxLength(unsigned length) const;
   unsigned tailPreroll() const;
   void setTailPreroll(unsigned length) const;
-  unsigned startCart() const;
-  void setStartCart(unsigned cartnum) const;
-  unsigned endCart() const;
-  void setEndCart(unsigned cartnum) const;
-  unsigned recStartCart() const;
-  void setRecStartCart(unsigned cartnum) const;
-  unsigned recEndCart() const;
-  void setRecEndCart(unsigned cartnum) const;
   int trimThreshold() const;
   void setTrimThreshold(int level);
   int ripperLevel() const;

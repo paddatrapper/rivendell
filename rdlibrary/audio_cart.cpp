@@ -504,8 +504,9 @@ void AudioCart::editCutData()
   }
   RDEditAudio *edit=
     new RDEditAudio(rdcart_cart,cutname,rdcae,lib_user,rdstation_conf,
-		    lib_config,rdlibrary_conf->outputCard(),
-		    rdlibrary_conf->outputPort(),rdlibrary_conf->tailPreroll(),
+		    lib_config,rdchannels->card(RDChannels::LibraryOutput),
+		    rdchannels->port(RDChannels::LibraryOutput),
+		    rdlibrary_conf->tailPreroll(),
 		    rdlibrary_conf->trimThreshold(),this);
   if(edit->exec()!=-1) {
     emit cartDataChanged();

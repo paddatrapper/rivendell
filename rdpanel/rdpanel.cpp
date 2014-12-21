@@ -50,6 +50,7 @@ RDAirPlayConf *rdairplay_conf;
 RDAudioPort *rdaudioport_conf;
 RDUser *rduser;
 RDRipc *rdripc;
+RDChannels *rdchannels;
 #include <rdcmd_switch.h>
 RDCartDialog *panel_cart_dialog;
 
@@ -156,6 +157,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   rdstation_conf=new RDStation(panel_config->stationName());
   rdsystem_conf=new RDSystem();
   rdairplay_conf=new RDAirPlayConf(panel_config->stationName(),"RDPANEL");
+  rdchannels=new RDChannels(panel_config->stationName());
   panel_skin_pixmap=new QPixmap(rdairplay_conf->skinPath());
   if(panel_skin_pixmap->isNull()||(panel_skin_pixmap->width()<1024)||
      (panel_skin_pixmap->height()<738)) {
@@ -203,7 +205,8 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   panel_cart_dialog=
     new RDCartDialog(&panel_filter,&panel_group,&panel_schedcode,panel_cae,
-		     rdripc,rdstation_conf,rdsystem_conf,panel_config,this);
+		     rdripc,rdstation_conf,rdsystem_conf,rdchannels,
+		     panel_config,this);
 
   //
   // Sound Panel Array
@@ -232,6 +235,23 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
       delete pm;
     }
     panel_panel->setPauseEnabled(rdairplay_conf->panelPauseEnabled());
+    panel_panel->setFocusPolicy(QWidget::NoFocus);
+    panel_panel->setCard(0,rdchannels->card(RDChannels::PanelButtonOutput,0));
+    panel_panel->setPort(0,rdchannels->port(RDChannels::PanelButtonOutput,0));
+    for(int i=1;i<PANEL_MAX_OUTPUTS;i++) {
+      if((rdchannels->card(RDChannels::PanelButtonOutput,i)<0)||
+	 (rdchannels->port(RDChannels::PanelButtonOutput,i)<0)) {
+	panel_panel->setCard(i,panel_panel->card(i-1));
+	panel_panel->setPort(i,panel_panel->port(i-1));
+      }
+      else {
+	panel_panel->
+	  setCard(i,rdchannels->card(RDChannels::PanelButtonOutput,i));
+	panel_panel->
+	  setPort(i,rdchannels->port(RDChannels::PanelButtonOutput,i));
+      }
+    }
+    /*
     panel_panel->setCard(0,rdairplay_conf->card(RDAirPlayConf::SoundPanel1Channel));
     panel_panel->setPort(0,rdairplay_conf->port(RDAirPlayConf::SoundPanel1Channel));
     panel_panel->setFocusPolicy(QWidget::NoFocus);
@@ -267,7 +287,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
       panel_panel->setCard(4,card);
       panel_panel->setPort(4,rdairplay_conf->port(RDAirPlayConf::SoundPanel5Channel));
     }
-
+    */
     //
     // Calculate Valid Ports for Reading Meter Data (No Duplicates)
     //
@@ -304,6 +324,14 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
     //
     // Set RML Strings
     //
+    for(int i=0;i<PANEL_MAX_OUTPUTS;i++) {
+      panel_panel->
+	setRmls(i,rdchannels->
+		rml(RDChannels::PanelButtonOutput,RDChannels::Start,i),
+		rdchannels->
+		rml(RDChannels::PanelButtonOutput,RDChannels::Stop,i));
+    }
+    /*
     panel_panel->
       setRmls(0,rdairplay_conf->startRml(RDAirPlayConf::SoundPanel1Channel),
 	      rdairplay_conf->stopRml(RDAirPlayConf::SoundPanel1Channel));
@@ -319,6 +347,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
     panel_panel->
       setRmls(4,rdairplay_conf->startRml(RDAirPlayConf::SoundPanel5Channel),
 	      rdairplay_conf->stopRml(RDAirPlayConf::SoundPanel5Channel));
+    */
     panel_panel->setSvcName(rdairplay_conf->defaultSvc());
     connect(rdripc,SIGNAL(userChanged()),panel_panel,SLOT(changeUser()));
     connect(panel_master_timer,SIGNAL(timeout()),

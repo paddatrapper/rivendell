@@ -32,6 +32,7 @@ class RDSlotOptions
   enum StopAction {UnloadOnStop=0,RecueOnStop=1,LoopOnStop=2,LastStop=3};
   RDSlotOptions(const QString &stationname,unsigned slotno);
   RDSlotOptions::Mode mode() const;
+  unsigned slotNumber() const;
   void setMode(RDSlotOptions::Mode mode);
   bool hookMode() const;
   void setHookMode(bool state);
@@ -41,9 +42,11 @@ class RDSlotOptions
   void setCartNumber(int cart);
   QString service() const;
   void setService(const QString &str);
+  /*
   int card() const;
   int inputPort() const;
   int outputPort() const;
+  */
   bool load();
   void save() const;
   void clear();

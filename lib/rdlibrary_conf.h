@@ -35,14 +35,6 @@ class RDLibraryConf
   RDLibraryConf(const QString &station,unsigned instance);
   QString station() const;
   unsigned instance() const;
-  int inputCard() const;
-  void setInputCard(int input) const;
-  int inputPort() const;
-  void setInputPort(int input) const;
-  int outputCard() const;
-  void setOutputCard(int output) const;
-  int outputPort() const;
-  void setOutputPort(int input) const;
   int voxThreshold() const;
   void setVoxThreshold(int level) const;
   int trimThreshold() const;

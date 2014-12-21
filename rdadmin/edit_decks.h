@@ -37,12 +37,14 @@
 #include <rdcardselector.h>
 #include <rdstation.h>
 #include <rdcatch_conf.h>
+#include <rdchannels.h>
 
 class EditDecks : public QDialog
 {
   Q_OBJECT
   public:
-  EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent=0);
+  EditDecks(RDStation *station,RDStation *cae_station,RDChannels *chan,
+	    QWidget *parent=0);
    ~EditDecks();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;
@@ -71,6 +73,7 @@ class EditDecks : public QDialog
    RDDeck *edit_play_deck;
    RDDeck *edit_audition_deck;
    RDStation *edit_station;
+   RDChannels *edit_channels;
    int edit_record_channel;
    int edit_play_channel;
    QComboBox *edit_record_deck_box;

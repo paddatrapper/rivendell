@@ -42,6 +42,7 @@
 #include <rdcueeditdialog.h>
 #include <rdlistsvcs.h>
 #include <rdairplay_conf.h>
+#include <rdchannels.h>
 
 //
 // Settings
@@ -86,6 +87,7 @@ class MainWidget : public QWidget
   RDCueEditDialog *panel_cue_dialog;
   RDListSvcs *panel_svcs_dialog;
   RDAirPlayConf *panel_airplay_conf;
+  RDChannels *panel_channels;
 };
 
 

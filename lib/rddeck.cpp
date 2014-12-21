@@ -85,54 +85,6 @@ int RDDeck::channel() const
 }
 
 
-int RDDeck::cardNumber() const
-{
-  return GetIntValue("CARD_NUMBER");
-}
-
-
-void RDDeck::setCardNumber(int card) const
-{
-  SetRow("CARD_NUMBER",card);
-}
-
-
-int RDDeck::streamNumber() const
-{
-  return GetIntValue("STREAM_NUMBER");
-}
-
-
-void RDDeck::setStreamNumber(int stream) const
-{
-  SetRow("STREAM_NUMBER",stream);
-}
-
-
-int RDDeck::portNumber() const
-{
-  return GetIntValue("PORT_NUMBER");
-}
-
-
-void RDDeck::setPortNumber(int port) const
-{
-  SetRow("PORT_NUMBER",port);
-}
-
-
-int RDDeck::monitorPortNumber() const
-{
-  return GetIntValue("MON_PORT_NUMBER");
-}
-
-
-void RDDeck::setMonitorPortNumber(int port) const
-{
-  SetRow("MON_PORT_NUMBER",port);
-}
-
-
 bool RDDeck::defaultMonitorOn() const
 {
   return RDBool(GetStringValue("DEFAULT_MONITOR_ON"));

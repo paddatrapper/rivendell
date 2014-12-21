@@ -2,9 +2,7 @@
 //
 // The Rivendell Netcatcher Daemon
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcatchd.cpp,v 1.142.4.2.2.1 2014/06/03 18:23:38 cvs Exp $
+//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -270,6 +268,11 @@ MainObject::MainObject(QObject *parent,const char *name)
   catch_system=new RDSystem();
 
   //
+  // Channels
+  //
+  catch_channels=new RDChannels(catch_config->stationName());
+
+  //
   // Station Configuration
   //
   catch_rdstation=new RDStation(catch_config->stationName());
@@ -302,14 +305,16 @@ MainObject::MainObject(QObject *parent,const char *name)
   // Sound Initialization
   //
   RDSetMixerPorts(catch_config->stationName(),catch_cae);
-  sql=QString().sprintf("select CHANNEL,CARD_NUMBER,PORT_NUMBER from DECKS \
+  sql=QString().sprintf("select CHANNEL from DECKS \
                          where (STATION_NAME=\"%s\")&&\
                          (CARD_NUMBER!=-1)&&(CHANNEL>0)&&(CHANNEL<9)",
 			(const char *)catch_config->stationName());
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    if((q->value(1).toInt()>=0)&&(q->value(2).toInt()>=0)) {
-      catch_record_deck_status[q->value(0).toUInt()-1]=RDDeck::Idle;
+    unsigned chan=q->value(0).toUInt();
+    if((catch_channels->card(RDChannels::CatchInput,chan-1)>=0)&&
+       (catch_channels->port(RDChannels::CatchInput,chan-1)>=0)) {
+      catch_record_deck_status[chan-1]=RDDeck::Idle;
     }
   }
   delete q;
@@ -318,8 +323,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // Initialize Monitor Passthroughs
   //
-  sql=QString().sprintf("select CARD_NUMBER,PORT_NUMBER,\
-                         MON_PORT_NUMBER,CHANNEL from DECKS\
+  sql=QString().sprintf("select CHANNEL from DECKS\
                          where (STATION_NAME=\"%s\")&&(CHANNEL<=%d)&&\
                          (CARD_NUMBER>=0)&&(MON_PORT_NUMBER>=0)&&\
                          (DEFAULT_MONITOR_ON=\"Y\")",
@@ -327,9 +331,13 @@ MainObject::MainObject(QObject *parent,const char *name)
 			MAX_DECKS);
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    catch_cae->setPassthroughVolume(q->value(0).toInt(),q->value(1).toInt(),
-				    q->value(2).toInt(),0);
-    catch_monitor_state[q->value(3).toUInt()-1]=true;
+    unsigned chan=q->value(0).toUInt();
+    catch_cae->
+      setPassthroughVolume(catch_channels->card(RDChannels::CatchInput,chan-1),
+			   catch_channels->port(RDChannels::CatchInput,chan-1),
+			  catch_channels->port(RDChannels::CatchMonitor,chan-1),
+			   0);
+    catch_monitor_state[chan-1]=true;
   }
   delete q;
 
@@ -608,12 +616,13 @@ void MainObject::engineData(int id)
   //
   // Check for Playout Deck Availability
   //
+  unsigned chan=catch_events[event].channel();
   if(catch_events[event].type()==RDRecording::Playout) {
-    if(catch_playout_deck_status[catch_events[event].channel()-129]!=
+    if(catch_playout_deck_status[chan-129]!=
        RDDeck::Idle) {
       LogLine(RDConfig::LogWarning,QString().
 	      sprintf("playout deck P%d is busy for event %d, skipping",
-		      catch_events[event].channel()-128,
+		      chan-128,
 		      catch_events[event].id()));
       WriteExitCode(event,RDRecording::DeviceBusy);
       BroadcastCommand(QString().sprintf("RE 0 %d %d %s!",RDDeck::Recording,
@@ -632,7 +641,7 @@ void MainObject::engineData(int id)
 	  WriteExitCode(event,RDRecording::NoCut);
 	  BroadcastCommand(QString().
 			   sprintf("RE %d %d %d!",
-				catch_events[event].channel(),
+				chan,
 				catch_record_deck_status[catch_events[event].
 							 channel()-1],
 				catch_events[event].id()));
@@ -642,32 +651,30 @@ void MainObject::engineData(int id)
 			  catch_events[event].id()));
 	  return;
 	}
-	catch_record_card[catch_events[event].channel()-1]=-1;
-	catch_record_stream[catch_events[event].channel()-1]=-1;
-	sql=QString().sprintf("select CARD_NUMBER,PORT_NUMBER,\
-                         SWITCH_STATION,SWITCH_MATRIX,SWITCH_OUTPUT,\
-                         SWITCH_DELAY from DECKS \
-                         where (STATION_NAME=\"%s\")&&(CHANNEL=%d)",
-			      (const char *)catch_config->stationName(),
-			      catch_events[event].channel());
+	catch_record_card[chan-1]=-1;
+	catch_record_stream[chan-1]=-1;
+	sql=QString("select SWITCH_STATION,SWITCH_MATRIX,SWITCH_OUTPUT,")+
+	  "SWITCH_DELAY from DECKS where "+
+	  "(STATION_NAME=\""+RDEscapeString(catch_config->stationName())+"\")"+
+	  QString().sprintf("&&(CHANNEL=%d)",chan);
 	q=new RDSqlQuery(sql);
 	if(q->first()) {
-	  catch_record_card[catch_events[event].channel()-1]=
-	    q->value(0).toInt();
-	  catch_record_stream[catch_events[event].channel()-1]=
-	    q->value(1).toInt();
-	  if(q->value(2).toString()==QString("[none]")) {
-	    catch_swaddress[catch_events[event].channel()-1]=QHostAddress();
+	  catch_record_card[chan-1]=
+	    catch_channels->card(RDChannels::CatchInput,chan-1);
+	  catch_record_stream[chan-1]=
+	    catch_channels->port(RDChannels::CatchInput,chan-1);
+	  if(q->value(0).toString()==QString("[none]")) {
+	    catch_swaddress[chan-1]=QHostAddress();
 	  }
 	  else {
-	    rdstation=new RDStation(q->value(2).toString());
-	    catch_swaddress[catch_events[event].channel()-1]=
+	    rdstation=new RDStation(q->value(0).toString());
+	    catch_swaddress[chan-1]=
 	      rdstation->address();
 	    delete rdstation;
 	  }
-	  catch_swmatrix[catch_events[event].channel()-1]=q->value(3).toInt();
-	  catch_swoutput[catch_events[event].channel()-1]=q->value(4).toInt();
-	  catch_swdelay[catch_events[event].channel()-1]=q->value(5).toInt();
+	  catch_swmatrix[chan-1]=q->value(1).toInt();
+	  catch_swoutput[chan-1]=q->value(2).toInt();
+	  catch_swdelay[chan-1]=q->value(3).toInt();
 	}
 	else {
 	  LogLine(RDConfig::LogNotice,QString().
@@ -688,14 +695,14 @@ void MainObject::engineData(int id)
 		start(catch_events[event].startLength()-
 		      (QTime().msecsTo(current_time)-
 		       QTime().msecsTo(catch_events[event].startTime())),true);
-	      catch_record_deck_status[catch_events[event].channel()-1]=
+	      catch_record_deck_status[chan-1]=
 		RDDeck::Waiting;
-	      catch_record_id[catch_events[event].channel()-1]=
+	      catch_record_id[chan-1]=
 		catch_events[event].id();
 	      catch_events[event].setStatus(RDDeck::Waiting);
 	      WriteExitCode(event,RDRecording::Waiting);
 	      BroadcastCommand(QString().sprintf("RE %d %d %d!",
-			 catch_events[event].channel(),
+			 chan,
 			 catch_record_deck_status[catch_events[event].
 			 channel()-1],
                          catch_events[event].id()));
@@ -712,7 +719,7 @@ void MainObject::engineData(int id)
 	  WriteExitCode(event,RDRecording::NoCut);
 	  BroadcastCommand(QString().
 			   sprintf("RE %d %d %d!",
-				catch_events[event].channel(),
+				chan,
 				catch_playout_deck_status[catch_events[event].
 							  channel()-129],
 				   catch_events[event].id()));
@@ -722,30 +729,15 @@ void MainObject::engineData(int id)
 			  catch_events[event].id()));
 	  return;
 	}
-	catch_playout_card[catch_events[event].channel()-129]=-1;
-	catch_playout_stream[catch_events[event].channel()-129]=-1;
-	sql=QString().sprintf("select CARD_NUMBER,PORT_NUMBER,PORT_NUMBER \
-                         from DECKS where (STATION_NAME=\"%s\")&&(CHANNEL=%d)",
-			      (const char *)catch_config->stationName(),
-			      catch_events[event].channel());
-	q=new RDSqlQuery(sql);
-	if(q->first()) {
-	  catch_playout_id[catch_events[event].channel()-129]=id;
-	  catch_playout_card[catch_events[event].channel()-129]=
-	    q->value(0).toInt();
-	  catch_playout_stream[catch_events[event].channel()-129]=
-	    q->value(1).toInt();
-	  catch_playout_port[catch_events[event].channel()-129]=
-	    q->value(2).toInt();
-	}
-	else {
-	  LogLine(RDConfig::LogDebug,QString().
-		  sprintf("id %d specified non-existent play deck, ignored",
-			  catch_events[event].id()));
-	  delete q;
-	  return;
-	}
-	delete q;
+	catch_playout_card[chan-129]=-1;
+	catch_playout_stream[chan-129]=-1;
+	catch_playout_id[chan-129]=id;
+	catch_playout_card[chan-129]=
+	  catch_channels->card(RDChannels::CatchOutput,chan-129);
+	catch_playout_stream[chan-129]=
+	  catch_channels->port(RDChannels::CatchOutput,chan-129);
+	catch_playout_port[chan-129]=
+	  catch_channels->port(RDChannels::CatchOutput,chan-129);
 	StartPlayout(event);
 	break;
 
@@ -1981,17 +1973,20 @@ void MainObject::LoadDeckList()
   for(int i=0;i<MAX_DECKS;i++) {
     status[i]=RDDeck::Offline;
   }
-  QString sql=QString().sprintf("select CHANNEL,CARD_NUMBER,PORT_NUMBER,\
-                                 MON_PORT_NUMBER from DECKS \
+  QString sql=QString().sprintf("select CHANNEL from DECKS \
                                  where (STATION_NAME=\"%s\")&&\
                                  (CARD_NUMBER!=-1)&&(CHANNEL>0)&&(CHANNEL<9)",
 				(const char *)catch_config->stationName());
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    status[q->value(0).toUInt()-1]=RDDeck::Idle;
-    catch_record_card[q->value(0).toUInt()-1]=q->value(1).toInt();
-    catch_record_stream[q->value(0).toUInt()-1]=q->value(2).toInt();
-    catch_monitor_port[q->value(0).toUInt()-1]=q->value(3).toInt();
+    unsigned chan=q->value(0).toUInt();
+    status[chan-1]=RDDeck::Idle;
+    catch_record_card[chan-1]=
+      catch_channels->card(RDChannels::CatchInput,chan-1);
+    catch_record_stream[chan-1]=
+      catch_channels->port(RDChannels::CatchInput,chan-1);
+    catch_monitor_port[chan-1]=
+      catch_channels->port(RDChannels::CatchMonitor,chan-1);
   }
   delete q;
   for(int i=0;i<MAX_DECKS;i++) {
@@ -2015,15 +2010,10 @@ void MainObject::LoadDeckList()
   for(int i=0;i<MAX_DECKS;i++) {
     status[i]=RDDeck::Offline;
   }
-  sql=QString().sprintf("select CHANNEL from DECKS \
-where (STATION_NAME=\"%s\")&&(CARD_NUMBER!=-1)&&(CHANNEL>128)&&(CHANNEL<137)",
-				(const char *)catch_config->stationName());
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    status[q->value(0).toUInt()-129]=RDDeck::Idle;
-  }
-  delete q;
   for(int i=0;i<MAX_DECKS;i++) {
+    if(catch_channels->card(RDChannels::CatchOutput,i)>=0) {
+      status[i]=RDDeck::Idle;
+    }
     if(catch_playout_deck_status[i]==RDDeck::Recording) {
       if(status[i]==RDDeck::Idle) {
 	catch_playout_deck_status[i]=RDDeck::Recording;

@@ -41,6 +41,7 @@
 #include <rdcombobox.h>
 #include <rduser.h>
 #include <rdbusydialog.h>
+#include <rdchannels.h>
 
 #define RDCART_DIALOG_STEP_SIZE 1000
 
@@ -50,7 +51,7 @@ class RDCartDialog : public QDialog
  public:
   RDCartDialog(QString *filter,QString *group,QString *schedcode,
 	       RDCae *cae,RDRipc *ripc,RDStation *station,RDSystem *system,
-	       RDConfig *config,QWidget *parent=0);
+	       RDChannels *chans,RDConfig *config,QWidget *parent=0);
 
   ~RDCartDialog();
   QSize sizeHint() const;
@@ -120,6 +121,7 @@ class RDCartDialog : public QDialog
   bool *cart_temp_allowed;
   RDStation *cart_station;
   RDSystem *cart_system;
+  RDChannels *cart_channels;
   RDConfig *cart_config;
   QString cart_user_name;
   QString cart_user_password;

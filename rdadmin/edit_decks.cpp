@@ -37,7 +37,8 @@
 #include <edit_decks.h>
 
 
-EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
+EditDecks::EditDecks(RDStation *station,RDStation *cae_station,
+		     RDChannels *chans,QWidget *parent)
   : QDialog(parent,"",true)
 {
   //
@@ -49,6 +50,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   setMaximumHeight(sizeHint().height());
 
   edit_station=station;
+  edit_channels=chans;
 
   setCaption(tr("Configure RDCatch"));
 
@@ -506,17 +508,22 @@ void EditDecks::ReadRecord(int chan)
       delete edit_play_deck;
     }
     edit_play_deck=new RDDeck(edit_station->name(),edit_play_channel,true);
-    edit_play_selector->setCard(edit_play_deck->cardNumber());
-    edit_play_selector->setPort(edit_play_deck->portNumber());
+    edit_play_selector->
+      setCard(edit_channels->card(RDChannels::CatchOutput,chan-129));
+    edit_play_selector->
+      setPort(edit_channels->port(RDChannels::CatchOutput,chan-129));
   }
   if((chan>0)&&(chan<(MAX_DECKS+1))) {       // Record Deck
     if(edit_record_deck!=NULL) {
       delete edit_record_deck;
     }
     edit_record_deck=new RDDeck(edit_station->name(),edit_record_channel,true);
-    edit_record_selector->setCard(edit_record_deck->cardNumber());
-    edit_record_selector->setPort(edit_record_deck->portNumber());
-    edit_monitor_box->setValue(edit_record_deck->monitorPortNumber());
+    edit_record_selector->
+      setCard(edit_channels->card(RDChannels::CatchInput,chan-1));
+    edit_record_selector->
+      setPort(edit_channels->port(RDChannels::CatchInput,chan-1));
+    edit_monitor_box->setValue(edit_channels->port(RDChannels::CatchMonitor,
+						   chan-1));
     if(edit_record_deck->defaultMonitorOn()) {
       edit_default_on_box->setCurrentItem(1);
     }
@@ -619,13 +626,20 @@ void EditDecks::WriteRecord(int chan)
   int temp;
 
   if((chan>128)&&(chan<(MAX_DECKS+129))) { // Play Deck
-    edit_play_deck->setCardNumber(edit_play_selector->card());
-    edit_play_deck->setPortNumber(edit_play_selector->port());
+    edit_channels->setCard(edit_play_selector->card(),
+			   RDChannels::CatchOutput,chan-129);
+    edit_channels->setPort(edit_play_selector->port(),
+			   RDChannels::CatchOutput,chan-129);
   }
   if((chan>0)&&(chan<(MAX_DECKS+1))) {     // Record Deck
-    edit_record_deck->setCardNumber(edit_record_selector->card());
-    edit_record_deck->setPortNumber(edit_record_selector->port());
-    edit_record_deck->setMonitorPortNumber(edit_monitor_box->value());
+    edit_channels->setCard(edit_record_selector->card(),
+			   RDChannels::CatchInput,chan-1);
+    edit_channels->setPort(edit_record_selector->port(),
+			   RDChannels::CatchInput,chan-1);
+    edit_channels->setCard(edit_record_selector->card(),
+			   RDChannels::CatchMonitor,chan-1);
+    edit_channels->setPort(edit_monitor_box->value(),
+			   RDChannels::CatchMonitor,chan-1);
     if(edit_monitor_box->value()<0) {
       edit_record_deck->setDefaultMonitorOn(false);
     }

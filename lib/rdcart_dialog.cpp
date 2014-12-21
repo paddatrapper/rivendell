@@ -53,7 +53,8 @@
 
 RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
 			   RDCae *cae,RDRipc *ripc,RDStation *station,
-			   RDSystem *system,RDConfig *config,QWidget *parent)
+			   RDSystem *system,RDChannels *chans,
+			   RDConfig *config,QWidget *parent)
   : QDialog(parent,"",true)
 {
   //
@@ -64,6 +65,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
 
   cart_station=station;
   cart_system=system;
+  cart_channels=chans;
   cart_config=config;
   cart_cartnum=NULL;
   cart_type=RDCart::All;
@@ -248,13 +250,16 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   // Audition Player
   //
 #ifndef WIN32
-  if((cae==NULL)||(station->cueCard()<0)||(station->cuePort()<0)) {
+  if((cae==NULL)||(chans->card(RDChannels::CueOutput,0)<0)||
+     (chans->port(RDChannels::CueOutput,0)<0)) {
     cart_player=NULL;
   }
   else {
     cart_player=
-      new RDSimplePlayer(cae,ripc,station->cueCard(),station->cuePort(),
-			 station->cueStartCart(),station->cueStopCart(),this);
+      new RDSimplePlayer(cae,ripc,chans->card(RDChannels::CueOutput,0),
+			 chans->port(RDChannels::CueOutput,0),
+			 chans->cart(RDChannels::Start,RDChannels::CueOutput,0),
+			 chans->cart(RDChannels::Stop,RDChannels::CueOutput,0));
     cart_player->playButton()->setDisabled(true);
     cart_player->stopButton()->setDisabled(true);
     cart_player->stopButton()->setOnColor(red);

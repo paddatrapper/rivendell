@@ -30,12 +30,14 @@
 #include <rdstation.h>
 #include <rdsystem.h>
 #include <rdcart_dialog.h>
+#include <rdchannels.h>
 
 //
 // Global Classes
 //
 extern RDRipc *rdripc;
 extern RDConfig *admin_config;
+extern RDChannels *admin_channels;
 extern RDUser *admin_user;
 extern RDStation *admin_station;
 extern RDSystem *admin_system;

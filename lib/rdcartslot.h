@@ -50,6 +50,7 @@
 #include <rdcueeditdialog.h>
 #include <rdlistsvcs.h>
 #include <rdairplay_conf.h>
+#include <rdchannels.h>
 
 class RDCartSlot : public QWidget
 {
@@ -58,7 +59,8 @@ class RDCartSlot : public QWidget
   RDCartSlot(int slotnum,RDRipc *ripc,RDCae *cae,RDStation *station,
 	     RDConfig *config,RDListSvcs *svcs_dialog,RDSlotDialog *slot_dialog,
 	     RDCartDialog *cart_dialog,RDCueEditDialog *cue_dialog,
-	     const QString &caption,RDAirPlayConf *conf,QWidget *parent=0);
+	     const QString &caption,RDAirPlayConf *conf,RDChannels *chans,
+	     QWidget *parent=0);
   ~RDCartSlot();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -116,6 +118,7 @@ class RDCartSlot : public QWidget
   RDRipc *slot_ripc;
   RDCae *slot_cae;
   RDStation *slot_station;
+  RDChannels *slot_channels;
   RDConfig *slot_config;
   RDListSvcs *slot_svcs_dialog;
   RDSlotDialog *slot_slot_dialog;

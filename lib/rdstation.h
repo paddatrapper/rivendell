@@ -100,14 +100,6 @@ class RDStation
   void setJackServerName(const QString &str) const;
   QString jackCommandLine() const;
   void setJackCommandLine(const QString &str) const;
-  int cueCard() const;
-  void setCueCard(int card);
-  int cuePort() const;
-  void setCuePort(int port);
-  unsigned cueStartCart() const;
-  void setCueStartCart(unsigned cartnum) const;
-  unsigned cueStopCart() const;
-  void setCueStopCart(unsigned cartnum) const;
   int cartSlotColumns() const;
   void setCartSlotColumns(int cols);
   int cartSlotRows() const;

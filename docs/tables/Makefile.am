@@ -27,6 +27,7 @@ EXTRA_DIST = audio_perms.txt\
              audio_ports.txt\
              cart.txt\
              cartslots.txt\
+             channels.txt\
              clipboard.txt\
              clock_perms.txt\
              copy_splits.txt\

@@ -70,54 +70,6 @@ unsigned RDLibraryConf::instance() const
 }
 
 
-int RDLibraryConf::inputCard() const
-{
-  return RDGetSqlValue("RDLIBRARY","ID",lib_id,"INPUT_CARD").toInt();
-}
-
-
-int RDLibraryConf::inputPort() const
-{
-  return RDGetSqlValue("RDLIBRARY","ID",lib_id,"INPUT_PORT").toInt();
-}
-
-
-void RDLibraryConf::setInputCard(int input) const
-{
-  SetRow("INPUT_CARD",input);
-}
-
-
-void RDLibraryConf::setInputPort(int input) const
-{
-  SetRow("INPUT_PORT",input);
-}
-
-
-int RDLibraryConf::outputCard() const
-{
-  return RDGetSqlValue("RDLIBRARY","ID",lib_id,"OUTPUT_CARD").toInt();
-}
-
-
-int RDLibraryConf::outputPort() const
-{
-  return RDGetSqlValue("RDLIBRARY","ID",lib_id,"OUTPUT_PORT").toInt();
-}
-
-
-void RDLibraryConf::setOutputCard(int output) const
-{
-  SetRow("OUTPUT_CARD",output);
-}
-
-
-void RDLibraryConf::setOutputPort(int output) const
-{
-  SetRow("OUTPUT_PORT",output);
-}
-
-
 int RDLibraryConf::voxThreshold() const
 {
   return RDGetSqlValue("RDLIBRARY","ID",lib_id,"VOX_THRESHOLD").toInt();

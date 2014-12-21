@@ -34,7 +34,7 @@ RDCartSlot::RDCartSlot(int slotnum,RDRipc *ripc,RDCae *cae,RDStation *station,
 		       RDSlotDialog *slot_dialog,RDCartDialog *cart_dialog,
 		       RDCueEditDialog *cue_dialog,
 		       const QString &caption,RDAirPlayConf *conf,
-		       QWidget *parent)
+		       RDChannels *chans,QWidget *parent)
   : QWidget(parent)
 {
   slot_number=slotnum;
@@ -48,6 +48,7 @@ RDCartSlot::RDCartSlot(int slotnum,RDRipc *ripc,RDCae *cae,RDStation *station,
   slot_cue_dialog=cue_dialog;
   slot_caption=caption;
   slot_airplay_conf=conf;
+  slot_channels=chans;
 
   slot_svc_names=NULL;
   slot_stop_requested=false;
@@ -177,8 +178,10 @@ RDSlotOptions *RDCartSlot::slotOptions() const
 
 void RDCartSlot::updateOptions()
 {
-  slot_deck->setCard(slot_options->card());
-  slot_deck->setPort(slot_options->outputPort());
+  slot_deck->setCard(slot_channels->card(RDChannels::CartSlotOutput,
+					 slot_options->slotNumber()));
+  slot_deck->setPort(slot_channels->port(RDChannels::CartSlotOutput,
+					 slot_options->slotNumber()));
   switch(slot_options->mode()) {
   case RDSlotOptions::CartDeckMode:
     SetInput(false);
@@ -569,7 +572,8 @@ void RDCartSlot::hookEndData(int id)
 
 void RDCartSlot::timescalingSupportedData(int card,bool state)
 {
-  if(card==slot_options->card()) {
+  if(card==slot_channels->card(RDChannels::CartSlotOutput,
+			       slot_options->slotNumber())) {
     slot_timescaling_active=state;
   }
 }
@@ -605,7 +609,8 @@ void RDCartSlot::InitializeOptions()
   case RDSlotOptions::LastMode:
     break;
   }
-  slot_cae->requestTimescale(slot_options->card());
+  slot_cae->requestTimescale(slot_channels->card(RDChannels::CartSlotOutput,
+						 slot_options->slotNumber()));
 }
 
 
@@ -642,8 +647,12 @@ void RDCartSlot::SetInput(bool state)
     level=0;
   }
   slot_cae->
-    setPassthroughVolume(slot_options->card(),slot_options->inputPort(),
-			 slot_options->outputPort(),level);
+    setPassthroughVolume(slot_channels->card(RDChannels::CartSlotInput,
+					     slot_options->slotNumber()),
+			 slot_channels->port(RDChannels::CartSlotInput,
+					     slot_options->slotNumber()),
+			 slot_channels->port(RDChannels::CartSlotOutput,
+					     slot_options->slotNumber()),level);
 }
 
 

@@ -78,10 +78,10 @@ RecordCut::RecordCut(RDCart *cart,QString cut,QWidget *parent,const char *name)
   //
   // Load Audio Assignments
   //
-  rec_card_no[0]=rdlibrary_conf->inputCard();
-  rec_port_no[0]=rdlibrary_conf->inputPort();
-  rec_card_no[1]=rdlibrary_conf->outputCard();
-  rec_port_no[1]=rdlibrary_conf->outputPort();
+  rec_card_no[0]=rdchannels->card(RDChannels::LibraryInput);
+  rec_port_no[0]=rdchannels->port(RDChannels::LibraryInput);
+  rec_card_no[1]=rdchannels->card(RDChannels::LibraryOutput);
+  rec_port_no[1]=rdchannels->port(RDChannels::LibraryOutput);
   rec_play_handle=-1;
 
   //
@@ -103,8 +103,6 @@ RecordCut::RecordCut(RDCart *cart,QString cut,QWidget *parent,const char *name)
   //
   // Audio Parameters
   //
-  rec_card_no[0]=rdlibrary_conf->inputCard();
-  rec_card_no[1]=rdlibrary_conf->outputCard();
   rec_name=rec_cut->cutName();
   switch(rec_cut->codingFormat()) {
       case 0:
@@ -1024,9 +1022,10 @@ void RecordCut::recTimerData()
 
 void RecordCut::aesAlarmData(int card,int port,bool state)
 {
-  if((card==rdlibrary_conf->inputCard())&&
-     (port==rdlibrary_conf->inputPort())) {
-    if(rdaudioport_conf->inputPortType(rdlibrary_conf->inputPort())!=
+  if((card==rdchannels->card(RDChannels::LibraryInput))&&
+     (port==rdchannels->port(RDChannels::LibraryInput))) {
+    if(rdaudioport_conf->
+       inputPortType(rdchannels->port(RDChannels::LibraryInput))!=
        RDAudioPort::Analog) {
       if(state) {
 	rec_aes_alarm_label->hide();

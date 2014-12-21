@@ -186,18 +186,22 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   // Audio Parameters
   //
   RDLogeditConf *conf=new RDLogeditConf(log_config->stationName());
-  edit_input_card=conf->inputCard();
-  edit_input_port=conf->inputPort();
-  edit_output_card=conf->outputCard();
-  edit_output_port=conf->outputPort();
+  edit_input_card=rdchannels->card(RDChannels::LogEditInput);
+  edit_input_port=rdchannels->port(RDChannels::LogEditInput);
+  edit_output_card=rdchannels->card(RDChannels::LogEditOutput);
+  edit_output_port=rdchannels->port(RDChannels::LogEditOutput);
   edit_format=conf->format();
   edit_samprate=rdsystem->sampleRate();
   edit_bitrate=conf->bitrate();
   edit_chans=conf->defaultChannels();
-  play_start_macro=conf->startCart();
-  play_end_macro=conf->endCart();
-  record_start_macro=conf->recStartCart();
-  record_end_macro=conf->recEndCart();
+  play_start_macro=
+    rdchannels->cart(RDChannels::Start,RDChannels::LogEditOutput);
+  play_end_macro=
+    rdchannels->cart(RDChannels::Stop,RDChannels::LogEditOutput);
+  record_start_macro=
+    rdchannels->cart(RDChannels::Start,RDChannels::LogEditInput);
+  record_end_macro=
+    rdchannels->cart(RDChannels::Stop,RDChannels::LogEditInput);
   track_preroll=conf->tailPreroll();
   edit_scroll_threshold=TRACKER_X_WIDTH-track_preroll/TRACKER_MSECS_PER_PIXEL;
   edit_settings=new RDSettings();

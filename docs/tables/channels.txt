@@ -1,0 +1,26 @@
+                  CHANNELS Table Layout for Rivendell
+
+The CHANNELS table holds all audio channel assignment values.
+
+FIELD NAME           TYPE              REMARKS
+--------------------------------------------------------------------------
+ID                   int(10) unsigned  Primary key
+STATION_NAME         char(64)          From STATIONS.NAME
+CHANNEL              int(11) signed    See RDChannels::Channel
+NUMBER               int(11) signed
+SUB_NUMBER           int(11) signed
+CARD                 int(11) signed
+PORT                 int(11) signed
+START_RML            char(255)
+STOP_RML             char(255)
+GPIO_TYPE            int(10) unsigned
+START_GPI_MATRIX     int(11) signed
+START_GPI_LINE       int(11) signed
+START_GPO_MATRIX     int(11) signed
+START_GPO_LINE       int(11) signed
+STOP_GPI_MATRIX      int(11) signed
+STOP_GPI_LINE        int(11) signed
+STOP_GPO_MATRIX      int(11) signed
+STOP_GPO_LINE        int(11) signed
+START_CART           int(10) unsigned
+STOP_CART            int(10) unsigned

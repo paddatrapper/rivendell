@@ -37,6 +37,11 @@
 #include <rdairplay_conf.h>
 #include <rdcardselector.h>
 #include <rdstation.h>
+#include <rdchannels.h>
+#include <rdsound_panel.h>
+
+#include "edit_logchannels.h"
+#include "edit_panelchannels.h"
 
 /*
  * Application Settings
@@ -48,8 +53,8 @@ class EditRDAirPlay : public QDialog
 {
  Q_OBJECT
  public:
-  EditRDAirPlay(RDStation *station,RDStation *cae_station,
-		QWidget *parent=0,const char *name=0);
+  EditRDAirPlay(RDStation *station,RDStation *cae_station,RDChannels *chans,
+		QWidget *parent=0);
   ~EditRDAirPlay();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -74,12 +79,17 @@ class EditRDAirPlay : public QDialog
   
  private:
   RDAirPlayConf *air_conf;
+  RDChannels *air_channels;
+  EditLogChannels *air_edit_logchannels;
+  EditPanelChannels *air_edit_panelchannels;
+  /*
   RDCardSelector *air_card_sel[RDAirPlayConf::LastChannel];
   QLabel *air_start_rml_label[RDAirPlayConf::LastChannel];
   QLineEdit *air_start_rml_edit[RDAirPlayConf::LastChannel];
   QLabel *air_stop_rml_label[RDAirPlayConf::LastChannel];
   QLineEdit *air_stop_rml_edit[RDAirPlayConf::LastChannel];
   QPushButton *air_channel_button[RDAirPlayConf::LastChannel];
+  */
   //  QLabel *air_startup_label;
   //  QComboBox *air_startup_box;
   QLabel *air_segue_label;

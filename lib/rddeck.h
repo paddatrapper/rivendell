@@ -36,14 +36,6 @@ class RDDeck
    bool isActive() const;
    QString station() const;
    int channel() const;
-   int cardNumber() const;;
-   void setCardNumber(int card) const;
-   int streamNumber() const;
-   void setStreamNumber(int stream) const;
-   int portNumber() const;
-   void setPortNumber(int port) const;
-   int monitorPortNumber() const;
-   void setMonitorPortNumber(int port) const;
    bool defaultMonitorOn() const;
    void setDefaultMonitorOn(bool state) const;
    RDSettings::Format defaultFormat() const;

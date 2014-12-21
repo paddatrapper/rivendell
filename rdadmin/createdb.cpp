@@ -49,6 +49,7 @@
 #include <createdb.h>
 #include <globals.h>
 #include <rdconf.h>
+#include <rdchannels.h>
 
 //
 // NOTE TO MAINTAINERS:
@@ -628,10 +629,6 @@ bool CreateDb(QString name,QString pwd)
       START_JACK enum('N','Y') default 'N',\
       JACK_SERVER_NAME char(64),\
       JACK_COMMAND_LINE char(255),\
-      CUE_CARD int default 0,\
-      CUE_PORT int default 0,\
-      CUE_START_CART int unsigned,\
-      CUE_STOP_CART int unsigned,\
       CARTSLOT_COLUMNS int default 1,\
       CARTSLOT_ROWS int default 8,\
       ENABLE_DRAGDROP enum('N','Y') default 'Y',\
@@ -1282,6 +1279,7 @@ bool CreateDb(QString name,QString pwd)
       TRANS_LENGTH int default 50,\
       OP_MODE int default 2,\
       START_MODE int default 0,\
+      LOG_QUANTITY int unsigned default 3,\
       LOG_MODE_STYLE int default 0,\
       PIE_COUNT_LENGTH int default 15000,\
       PIE_COUNT_ENDPOINT int default 0,\
@@ -2373,6 +2371,35 @@ bool CreateDb(QString name,QString pwd)
      return false;
   }
 
+  //
+  // Create CHANNELS table
+  //
+  sql=QString("create table if not exists CHANNELS(")+
+    "ID int unsigned auto_increment not null primary key,"+
+    "STATION_NAME char(64) not null,"+
+    "CHANNEL int not null,"+
+    "NUMBER int not null,"+
+    "SUB_NUMBER int not null,"+
+    "CARD int default -1,"+
+    "PORT int default -1,"+
+    "START_RML char(255),"+
+    "STOP_RML char(255),"+
+    "GPIO_TYPE int unsigned default 0,"+
+    "START_GPI_MATRIX int default -1,"+
+    "START_GPI_LINE int default -1,"+
+    "START_GPO_MATRIX int default -1,"+
+    "START_GPO_LINE int default -1,"+
+    "STOP_GPI_MATRIX int default -1,"+
+    "STOP_GPI_LINE int default -1,"+
+    "STOP_GPO_MATRIX int default -1,"+
+    "STOP_GPO_LINE int default -1,"+
+    "START_CART int unsigned default 0,"+
+    "STOP_CART int unsigned default 0,"+
+    "unique index STATION_NAME_IDX(STATION_NAME,CHANNEL,NUMBER,SUB_NUMBER))";
+  if(!RunQuery(sql)) {
+     return false;
+  }
+
   return true;
 }
 
@@ -2725,6 +2752,52 @@ void UpdateLogTable(const QString &table)
   //
   ConvertTimeField(table,"START_TIME");
   ConvertTimeField(table,"LINK_START_TIME");
+}
+
+
+//
+// The following method is called by the 242=>243 schema update.
+//
+void MigrateButtonChannels(const QString &table,RDChannels::Channel chan)
+{
+  QString sql;
+  QSqlQuery *q;
+  QSqlQuery *q1;
+
+  int panel_instance_table[5]={2,6,7,8,9};
+  for(unsigned i=0;i<5;i++) {
+    sql=QString("select STATION_NAME,CARD,PORT,START_RML,STOP_RML,")+
+      "GPIO_TYPE,START_GPI_MATRIX,START_GPI_LINE,"+
+      "START_GPO_MATRIX,START_GPO_LINE,"+
+      "STOP_GPI_MATRIX,STOP_GPI_LINE,"+
+      "STOP_GPO_MATRIX,STOP_GPO_LINE "+
+      "from "+table+
+      QString().sprintf(" where INSTANCE=%u",panel_instance_table[i]);
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into CHANNELS set ")+
+	"STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	QString().sprintf("CHANNEL=%d,",chan)+
+	QString().sprintf("NUMBER=%d,",i)+
+	"SUB_NUMBER=0,"+
+	QString().sprintf("CARD=%d,",q->value(1).toInt())+
+	QString().sprintf("PORT=%d,",q->value(2).toInt())+
+	"START_RML=\""+RDEscapeString(q->value(3).toString())+"\","+
+	"STOP_RML=\""+RDEscapeString(q->value(4).toString())+"\","+
+	QString().sprintf("GPIO_TYPE=%d,",q->value(5).toInt())+
+	QString().sprintf("START_GPI_MATRIX=%d,",q->value(6).toInt())+
+	QString().sprintf("START_GPI_LINE=%d,",q->value(7).toInt())+
+	QString().sprintf("START_GPO_MATRIX=%d,",q->value(8).toInt())+
+	QString().sprintf("START_GPO_LINE=%d,",q->value(9).toInt())+
+	QString().sprintf("STOP_GPI_MATRIX=%d,",q->value(10).toInt())+
+	QString().sprintf("STOP_GPI_LINE=%d,",q->value(11).toInt())+
+	QString().sprintf("STOP_GPO_MATRIX=%d,",q->value(12).toInt())+
+	QString().sprintf("STOP_GPO_LINE=%d",q->value(13).toInt());
+      q1=new QSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+  }
 }
 
 
@@ -8085,6 +8158,366 @@ int UpdateDb(int ver)
     delete q;
   }
 
+  if(ver<243) {
+    sql=QString("alter table RDAIRPLAY add column LOG_QUANTITY ")+
+      "int unsigned default 3 after START_MODE";
+    q=new QSqlQuery(sql);
+    delete q;
+  }
+
+  if(ver<244) {
+    sql=QString("create table if not exists CHANNELS(")+
+      "ID int unsigned auto_increment not null primary key,"+
+      "STATION_NAME char(64) not null,"+
+      "CHANNEL int not null,"+
+      "NUMBER int not null,"+
+      "SUB_NUMBER int not null,"+
+      "CARD int default -1,"+
+      "PORT int default -1,"+
+      "START_RML char(255),"+
+      "STOP_RML char(255),"+
+      "GPIO_TYPE int unsigned default 0,"+
+      "START_GPI_MATRIX int default -1,"+
+      "START_GPI_LINE int default -1,"+
+      "START_GPO_MATRIX int default -1,"+
+      "START_GPO_LINE int default -1,"+
+      "STOP_GPI_MATRIX int default -1,"+
+      "STOP_GPI_LINE int default -1,"+
+      "STOP_GPO_MATRIX int default -1,"+
+      "STOP_GPO_LINE int default -1,"+
+      "START_CART int unsigned default 0,"+
+      "STOP_CART int unsigned default 0,"+
+      "unique index STATION_NAME_IDX(STATION_NAME,CHANNEL,NUMBER,SUB_NUMBER))";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    //
+    // Migrate Cue Settings
+    //
+    sql=QString("select NAME,CUE_CARD,CUE_PORT,CUE_START_CART,CUE_STOP_CART ")+
+      "from STATIONS";
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into CHANNELS set ")+
+	"STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	QString().sprintf("CHANNEL=%d,",RDChannels::CueOutput)+
+	"NUMBER=0,SUB_NUMBER=0,"+
+	QString().sprintf("CARD=%d,",q->value(1).toInt())+
+	QString().sprintf("PORT=%d,",q->value(2).toInt())+
+	QString().sprintf("START_CART=%u,",q->value(3).toUInt())+
+	QString().sprintf("STOP_CART=%u",q->value(4).toUInt());
+      q1=new QSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+    /*
+    sql=QString("alter table STATIONS drop column CUE_CARD");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table STATIONS drop column CUE_PORT");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table STATIONS drop column CUE_START_CART");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table STATIONS drop column CUE_STOP_CART");
+    q=new QSqlQuery(sql);
+    delete q;
+    */
+    //
+    // Migrate RDLibrary Settings
+    //
+    sql=QString("select STATION,INPUT_CARD,INPUT_PORT,")+
+      "OUTPUT_CARD,OUTPUT_PORT from RDLIBRARY";
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into CHANNELS set ")+
+	"STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	QString().sprintf("CHANNEL=%d,",RDChannels::LibraryInput)+
+	"NUMBER=0,SUB_NUMBER=0,"+
+	QString().sprintf("CARD=%d,",q->value(1).toInt())+
+	QString().sprintf("PORT=%d",q->value(2).toInt());
+      q1=new QSqlQuery(sql);
+      delete q1;      
+
+      sql=QString("insert into CHANNELS set ")+
+	"STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	QString().sprintf("CHANNEL=%d,",RDChannels::LibraryOutput)+
+	"NUMBER=0,SUB_NUMBER=0,"+
+	QString().sprintf("CARD=%d,",q->value(3).toInt())+
+	QString().sprintf("PORT=%d",q->value(4).toInt());
+      q1=new QSqlQuery(sql);
+      delete q1;      
+    }
+    delete q;
+    /*
+    sql=QString("alter table RDLIBRARY drop column INPUT_CARD");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table RDLIBRARY drop column INPUT_STREAM");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table RDLIBRARY drop column INPUT_PORT");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table RDLIBRARY drop column OUTPUT_CARD");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table RDLIBRARY drop column OUTPUT_CARD");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table RDLIBRARY drop column OUTPUT_STREAM");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table RDLIBRARY drop column OUTPUT_PORT");
+    q=new QSqlQuery(sql);
+    delete q;
+    */
+
+    //
+    // Migrate RDLogEdit Settings
+    //
+    sql=QString("select STATION,INPUT_CARD,INPUT_PORT,REC_START_CART,")+
+      "REC_END_CART from RDLOGEDIT";
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into CHANNELS set ")+
+	"STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	QString().sprintf("CHANNEL=%d,",RDChannels::LogEditInput)+
+	"NUMBER=0,SUB_NUMBER=0,"+
+	QString().sprintf("CARD=%d,",q->value(1).toInt())+
+	QString().sprintf("PORT=%d,",q->value(2).toInt())+
+	QString().sprintf("START_CART=%u,",q->value(3).toUInt())+
+	QString().sprintf("STOP_CART=%u",q->value(4).toUInt());
+      q1=new QSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+    sql=QString("select STATION,OUTPUT_CARD,OUTPUT_PORT,START_CART,")+
+      "END_CART from RDLOGEDIT";
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into CHANNELS set ")+
+	"STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	QString().sprintf("CHANNEL=%d,",RDChannels::LogEditOutput)+
+	"NUMBER=0,SUB_NUMBER=0,"+
+	QString().sprintf("CARD=%d,",q->value(1).toInt())+
+	QString().sprintf("PORT=%d,",q->value(2).toInt())+
+	QString().sprintf("START_CART=%u,",q->value(3).toUInt())+
+	QString().sprintf("STOP_CART=%u",q->value(4).toUInt());
+      q1=new QSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+    /*
+    sql=QString("alter table RDLOGEDIT drop column INPUT_CARD");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table RDLOGEDIT drop column INPUT_PORT");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table RDLOGEDIT drop column REC_START_CART");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table RDLOGEDIT drop column REC_END_CART");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table RDLOGEDIT drop column OUTPUT_CARD");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table RDLOGEDIT drop column OUTPUT_PORT");
+    q=new QSqlQuery(sql);
+
+    sql=QString("alter table RDLOGEDIT drop column START_CART");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table RDLOGEDIT drop column END_CART");
+    q=new QSqlQuery(sql);
+    delete q;
+    */
+
+    //
+    // Migrate RDCartSlot Settings
+    //
+    sql=QString("select STATION_NAME,SLOT_NUMBER,CARD,INPUT_PORT,OUTPUT_PORT ")+
+      "from CARTSLOTS";
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into CHANNELS set ")+
+	"STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	QString().sprintf("CHANNEL=%d,",RDChannels::CartSlotInput)+
+	QString().sprintf("NUMBER=%d,",q->value(1).toInt())+
+	"SUB_NUMBER=0,"+
+	QString().sprintf("CARD=%d,",q->value(2).toInt())+
+	QString().sprintf("PORT=%d",q->value(3).toInt());
+      q1=new QSqlQuery(sql);
+      delete q1;
+      
+      sql=QString("insert into CHANNELS set ")+
+	"STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	QString().sprintf("CHANNEL=%d,",RDChannels::CartSlotOutput)+
+	QString().sprintf("NUMBER=%d,",q->value(1).toInt())+
+	"SUB_NUMBER=0,"+
+	QString().sprintf("CARD=%d,",q->value(2).toInt())+
+	QString().sprintf("PORT=%d",q->value(4).toInt());
+      q1=new QSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+    /*
+    sql=QString("alter table CARTSLOTS drop column CARD");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table CARTSLOTS drop column INPUT_PORT");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table CARTSLOTS drop column OUTPUT_PORT");
+    q=new QSqlQuery(sql);
+    delete q;
+    */
+
+    //
+    // Migrate RDCatch Settings
+    //
+    sql=QString("select STATION_NAME,CHANNEL,CARD_NUMBER,PORT_NUMBER,")+
+      "MON_PORT_NUMBER from DECKS";
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      if((q->value(1).toUInt()>0)&&(q->value(1).toUInt()<129)) {  // Record
+	sql=QString("insert into CHANNELS set ")+
+	  "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  QString().sprintf("CHANNEL=%d,",RDChannels::CatchInput)+
+	  QString().sprintf("NUMBER=%d,",q->value(1).toUInt()-1)+
+	  "SUB_NUMBER=0,"+
+	  QString().sprintf("CARD=%d,",q->value(2).toInt())+
+	  QString().sprintf("PORT=%d",q->value(3).toInt());
+	q1=new QSqlQuery(sql);
+	delete q1;
+	sql=QString("insert into CHANNELS set ")+
+	  "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  QString().sprintf("CHANNEL=%d,",RDChannels::CatchMonitor)+
+	  QString().sprintf("NUMBER=%d,",q->value(1).toUInt()-1)+
+	  "SUB_NUMBER=0,"+
+	  QString().sprintf("CARD=%d,",q->value(2).toInt())+
+	  QString().sprintf("PORT=%d",q->value(4).toInt());
+	q1=new QSqlQuery(sql);
+	delete q1;
+      }
+      if(q->value(1).toUInt()>=129) {   // Play Deck
+	sql=QString("insert into CHANNELS set ")+
+	  "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  QString().sprintf("CHANNEL=%d,",RDChannels::CatchOutput)+
+	  QString().sprintf("NUMBER=%d,",q->value(1).toUInt()-129)+
+	  "SUB_NUMBER=0,"+
+	  QString().sprintf("CARD=%d,",q->value(2).toInt())+
+	  QString().sprintf("PORT=%d",q->value(3).toInt());
+	q1=new QSqlQuery(sql);
+	delete q1;
+      }
+    }
+    delete q;
+    /*
+    sql=QString("alter table DECKS drop column CARD_NUMBER");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table DECKS drop column STREAM_NUMBER");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table DECKS drop column PORT_NUMBER");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table DECKS drop column MON_PORT_NUMBER");
+    q=new QSqlQuery(sql);
+    delete q;
+    */
+
+    //
+    // Migrate RDPanel Settings
+    //
+    MigrateButtonChannels("RDPANEL_CHANNELS",RDChannels::PanelButtonOutput);
+    /*
+    sql=QString("drop table RDPANEL_CHANNELS");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    for(int i=0;i<10;i++) {
+      sql=QString("alter table RDPANEL drop column CARD")+
+	QString().sprintf("%d",i);
+      q=new QSqlQuery(sql);
+      delete q;
+
+      sql=QString("alter table RDPANEL drop column PORT")+
+	QString().sprintf("%d",i);
+      q=new QSqlQuery(sql);
+      delete q;
+
+      sql=QString("alter table RDPANEL drop column START_RML")+
+	QString().sprintf("%d",i);
+      q=new QSqlQuery(sql);
+      delete q;
+
+      sql=QString("alter table RDPANEL drop column STOP_RML")+
+	QString().sprintf("%d",i);
+      q=new QSqlQuery(sql);
+      delete q;
+    }
+    */
+
+    //
+    // Migrate RDAirPlay Settings
+    //
+    // MigrateButtonChannels("RDAIRPLAY_CHANNELS",RDChannels::AirplayButtonOutput);
+    // Log Migration Here...
+    /*
+    sql=QString("drop table RDAIRPLAY_CHANNELS");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    for(int i=0;i<10;i++) {
+      sql=QString("alter table RDAIRPLAY drop column CARD")+
+	QString().sprintf("%d",i);
+      q=new QSqlQuery(sql);
+      delete q;
+
+      sql=QString("alter table RDAIRPLAY drop column PORT")+
+	QString().sprintf("%d",i);
+      q=new QSqlQuery(sql);
+      delete q;
+
+      sql=QString("alter table RDAIRPLAY drop column START_RML")+
+	QString().sprintf("%d",i);
+      q=new QSqlQuery(sql);
+      delete q;
+
+      sql=QString("alter table RDAIRPLAY drop column STOP_RML")+
+	QString().sprintf("%d",i);
+      q=new QSqlQuery(sql);
+      delete q;
+    }
+    */
+
+
+  }
 
 
   // **** End of version updates ****

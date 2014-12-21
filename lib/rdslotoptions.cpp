@@ -56,6 +56,12 @@ RDSlotOptions::RDSlotOptions(const QString &stationname,unsigned slotno)
 }
 
 
+unsigned RDSlotOptions::slotNumber() const
+{
+  return set_slotno;
+}
+
+
 RDSlotOptions::Mode RDSlotOptions::mode() const
 {
   return set_mode;
@@ -115,7 +121,7 @@ void RDSlotOptions::setService(const QString &str)
   set_service=str;
 }
 
-
+/*
 int RDSlotOptions::card() const
 {
   return set_card;
@@ -132,7 +138,7 @@ int RDSlotOptions::outputPort() const
 {
   return set_output_port;
 }
-
+*/
 
 bool RDSlotOptions::load()
 {

@@ -338,55 +338,6 @@ void RDStation::setJackCommandLine(const QString &str) const
 }
 
 
-int RDStation::cueCard() const
-{
-  return RDGetSqlValue("STATIONS","NAME",station_name,"CUE_CARD").toInt();
-}
-
-
-void RDStation::setCueCard(int card)
-{
-  SetRow("CUE_CARD",card);
-}
-
-
-int RDStation::cuePort() const
-{
-  return RDGetSqlValue("STATIONS","NAME",station_name,"CUE_PORT").toInt();
-}
-
-
-void RDStation::setCuePort(int port)
-{
-  SetRow("CUE_PORT",port);
-}
-
-
-unsigned RDStation::cueStartCart() const
-{
-  return RDGetSqlValue("STATIONS","NAME",station_name,"CUE_START_CART").
-    toUInt();
-}
-
-
-void RDStation::setCueStartCart(unsigned cartnum) const
-{
-  SetRow("CUE_START_CART",cartnum);
-}
-
-
-unsigned RDStation::cueStopCart() const
-{
-  return RDGetSqlValue("STATIONS","NAME",station_name,"CUE_STOP_CART").toUInt();
-}
-
-
-void RDStation::setCueStopCart(unsigned cartnum) const
-{
-  SetRow("CUE_STOP_CART",cartnum);
-}
-
-
 int RDStation::cartSlotColumns() const
 {
   return RDGetSqlValue("STATIONS","NAME",station_name,"CARTSLOT_COLUMNS").

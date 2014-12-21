@@ -31,7 +31,7 @@
 #include <edit_cartslots.h>
 
 EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
-			     QWidget *parent,const char *name)
+			     RDChannels *chans,QWidget *parent)
   : QDialog(parent)
 {
   QString sql;
@@ -39,6 +39,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
 
   edit_station=station;
   edit_cae_station=cae_station;
+  edit_channels=chans;
   edit_previous_slot=0;
 
   //
@@ -395,21 +396,23 @@ void EditCartSlots::ReadSlot(unsigned slotnum)
   RDSlotOptions *opts=new RDSlotOptions(edit_station->name(),slotnum);
   delete opts;
 
-  sql=QString("select CARD,INPUT_PORT,OUTPUT_PORT,DEFAULT_MODE,")+
-    "DEFAULT_HOOK_MODE,"+
+  edit_card_spin->
+    setValue(edit_channels->card(RDChannels::CartSlotInput,slotnum));
+  edit_input_spin->
+    setValue(edit_channels->port(RDChannels::CartSlotInput,slotnum));
+  edit_output_spin->
+    setValue(edit_channels->port(RDChannels::CartSlotOutput,slotnum));
+  sql=QString("select DEFAULT_MODE,DEFAULT_HOOK_MODE,")+
     "DEFAULT_STOP_ACTION,DEFAULT_CART_NUMBER,SERVICE_NAME from CARTSLOTS "+
     "where (STATION_NAME=\""+RDEscapeString(edit_station->name())+"\")&&"+
     QString().sprintf("(SLOT_NUMBER=%u)",slotnum);
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    edit_card_spin->setValue(q->value(0).toInt());
-    edit_input_spin->setValue(q->value(1).toInt());
-    edit_output_spin->setValue(q->value(2).toInt());
     cardChangedData(edit_card_spin->value());
-    edit_mode_box->setCurrentItem(q->value(3).toInt()+1);
-    edit_play_mode_box->setCurrentItem(q->value(4).toInt()+1);
-    edit_stop_action_box->setCurrentItem(q->value(5).toInt()+1);
-    switch(q->value(6).toInt()) {
+    edit_mode_box->setCurrentItem(q->value(0).toInt()+1);
+    edit_play_mode_box->setCurrentItem(q->value(1).toInt()+1);
+    edit_stop_action_box->setCurrentItem(q->value(2).toInt()+1);
+    switch(q->value(3).toInt()) {
     case -1:
       edit_cartaction_box->setCurrentItem(0);
       break;
@@ -420,12 +423,12 @@ void EditCartSlots::ReadSlot(unsigned slotnum)
 
     default:
       edit_cartaction_box->setCurrentItem(2);
-      edit_cart_edit->setText(QString().sprintf("%06d",q->value(6).toInt()));
+      edit_cart_edit->setText(QString().sprintf("%06d",q->value(3).toInt()));
     }
     cartActionData(edit_cartaction_box->currentItem());
     modeData(edit_mode_box->currentItem());
     for(int i=0;i<edit_service_box->count();i++) {
-      if(q->value(7).toString()==edit_service_box->text(i)) {
+      if(q->value(4).toString()==edit_service_box->text(i)) {
 	edit_service_box->setCurrentItem(i);
       }
     }
@@ -439,11 +442,15 @@ void EditCartSlots::WriteSlot(unsigned slotnum)
   QString sql;
   RDSqlQuery *q;
 
+  edit_channels->
+    setCard(edit_card_spin->value(),RDChannels::CartSlotInput,slotnum);
+  edit_channels->
+    setPort(edit_input_spin->value(),RDChannels::CartSlotInput,slotnum);
+  edit_channels->
+    setCard(edit_card_spin->value(),RDChannels::CartSlotOutput,slotnum);
+  edit_channels->
+    setPort(edit_output_spin->value(),RDChannels::CartSlotOutput,slotnum);
   sql=QString("update CARTSLOTS set ")+
-    QString().sprintf("CARD=%d,INPUT_PORT=%d,OUTPUT_PORT=%d,",
-		      edit_card_spin->value(),
-		      edit_input_spin->value(),
-		      edit_output_spin->value())+
     QString().sprintf("DEFAULT_MODE=%d,",
 		      edit_mode_box->currentItem()-1)+
     QString().sprintf("DEFAULT_HOOK_MODE=%d,",

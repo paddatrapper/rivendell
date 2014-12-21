@@ -2243,27 +2243,27 @@ GPIOs</source>
     </message>
     <message>
         <source>Main Log Output 1</source>
-        <translation>Salida PlayList Ppal 1</translation>
+        <translation type="obsolete">Salida PlayList Ppal 1</translation>
     </message>
     <message>
         <source>Start RML:</source>
-        <translation>Inicio RML:</translation>
+        <translation type="obsolete">Inicio RML:</translation>
     </message>
     <message>
         <source>Stop RML:</source>
-        <translation>Fin RML:</translation>
+        <translation type="obsolete">Fin RML:</translation>
     </message>
     <message>
         <source>Main Log Output 2</source>
-        <translation>Salida PlayList Ppal 2</translation>
+        <translation type="obsolete">Salida PlayList Ppal 2</translation>
     </message>
     <message>
         <source>Aux Log 1 Output</source>
-        <translation>Salida PlayList Aux 1</translation>
+        <translation type="obsolete">Salida PlayList Aux 1</translation>
     </message>
     <message>
         <source>Aux Log 2 Output</source>
-        <translation>Salida PlayList Aux 2</translation>
+        <translation type="obsolete">Salida PlayList Aux 2</translation>
     </message>
     <message>
         <source>Audition/Cue Output</source>
@@ -2271,23 +2271,23 @@ GPIOs</source>
     </message>
     <message>
         <source>SoundPanel First Play Output</source>
-        <translation>1era salida del Panel de Sonido</translation>
+        <translation type="obsolete">1era salida del Panel de Sonido</translation>
     </message>
     <message>
         <source>SoundPanel Second Play Output</source>
-        <translation>2da salida del Panel de Sonido</translation>
+        <translation type="obsolete">2da salida del Panel de Sonido</translation>
     </message>
     <message>
         <source>SoundPanel Third Play Output</source>
-        <translation>3era salida del Panel de Sonido</translation>
+        <translation type="obsolete">3era salida del Panel de Sonido</translation>
     </message>
     <message>
         <source>SoundPanel Fourth Play Output</source>
-        <translation>4ta salida del Panel de Sonido</translation>
+        <translation type="obsolete">4ta salida del Panel de Sonido</translation>
     </message>
     <message>
         <source>SoundPanel Fifth and Later Play Output</source>
-        <translation>5ta salida del Panel de Sonido</translation>
+        <translation type="obsolete">5ta salida del Panel de Sonido</translation>
     </message>
     <message>
         <source>Configure Now &amp;&amp; Next
@@ -2532,11 +2532,6 @@ servicios de Rivendell en el equipo configurado para ejecutar el servicio CAE. <
     </message>
     <message>
         <source>Show Hour Selector</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit
-GPIOs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3022,7 +3017,7 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
     </message>
     <message>
         <source>SoundPanel Cue Output</source>
-        <translation>Salida &quot;Cue&quot; del Panel de Sonido</translation>
+        <translation type="obsolete">Salida &quot;Cue&quot; del Panel de Sonido</translation>
     </message>
     <message>
         <source>Display Settings</source>

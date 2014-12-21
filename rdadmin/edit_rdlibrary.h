@@ -2,9 +2,7 @@
 //
 // Edit an RDLibrry Configuration
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_rdlibrary.h,v 1.19.6.1 2014/01/09 01:03:55 cvs Exp $
+//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,13 +31,13 @@
 #include <rdstation.h>
 #include <rdlibrary_conf.h>
 #include <rdcardselector.h>
-
+#include <rdchannels.h>
 
 class EditRDLibrary : public QDialog
 {
   Q_OBJECT
  public:
-  EditRDLibrary(RDStation *station,RDStation *cae_station,
+  EditRDLibrary(RDStation *station,RDStation *cae_station,RDChannels *chans,
 		QWidget *parent=0,const char *name=0);
   ~EditRDLibrary();
   QSize sizeHint() const;
@@ -53,6 +51,7 @@ class EditRDLibrary : public QDialog
  private:
   void ShowBitRates(int layer,int rate);
   RDLibraryConf *lib_lib;
+  RDChannels *lib_channels;
   RDCardSelector *lib_input_card;
   RDCardSelector *lib_output_card;
   QComboBox *lib_format_box;

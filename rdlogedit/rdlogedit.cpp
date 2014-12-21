@@ -86,7 +86,7 @@ RDCartDialog *log_cart_dialog;
 bool import_running=false;
 #ifndef WIN32
 RDCae *rdcae;
-
+RDChannels *rdchannels;
 
 void SigHandler(int signo)
 {
@@ -178,6 +178,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   // Allocate Global Resources
   //
   rdstation_conf=new RDStation(log_config->stationName());
+  rdchannels=new RDChannels(log_config->stationName());
 
   //
   // CAE Connection
@@ -235,11 +236,11 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
 #ifdef WIN32
   log_cart_dialog=new RDCartDialog(&log_filter,&log_group,&log_schedcode,
 				   NULL,NULL,rdstation_conf,rdsystem,
-				   log_config,this);
+				   rdchannels,log_config,this);
 #else
   log_cart_dialog=new RDCartDialog(&log_filter,&log_group,&log_schedcode,
 				   rdcae,rdripc,rdstation_conf,rdsystem,
-				   log_config,this);
+				   rdchannels,log_config,this);
 #endif
 
   //

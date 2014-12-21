@@ -14648,3 +14648,85 @@
 2014-11-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdlogedit/edit_log.cpp' that allowed GUID data
 	in the clipboard to be transferred between logs.
+2014-12-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'CHANNELS' table to the database.
+	* Incremented the database version to 243.
+	* Added 'RDAirPlayConf::logQuantity()' and
+	'RDAirPlayConf::setLogQuantity()' methods in 'lib/rdairplay_conf.cpp'
+	and 'lib/rdairplay_conf.h'.
+	* Added an 'RDAIRPLAY.LOG_QUANTITY' field to the database.
+	* Removed 'STATIONS.CUE_CARD', 'STATIONS.CUE_PORT',
+	'STATIONS.CUE_START_CART' and 'STATIONS.CUE_STOP_CART' fields from
+	the database.
+	* Removed 'RDLIBRARY.INPUT_CARD', 'RDLIBRARY.INPUT_STREAM',
+	'RDLIBRARY.INPUT_PORT', 'RDLIBRARY.OUTPUT_CARD,
+	'RDLIBRARY.OUTPUT_STREAM, 'RDLIBRARY.OUTPUT_PORT from the database.
+	* Removed 'RDLOGEDIT.INPUT_CARD', 'RDLOGEDIT.INPUT_PORT',
+	'RDLOGEDIT.REC_START_CART', 'RDLOGEDIT.REC_END_CART',
+	'RDLOGEDIT.OUTPUT_CARD', 'RDLOGEDIT.OUTPUT_PORT',
+	'RDLOGEDIT.START_CART' and 'RDLOGEDIT.END_CART' fields from
+	the database.
+	* Removed 'CARTSLOTS.CARD', 'CARTSLOTS.INPUT_PORT' and
+	'CARTSLOTS.OUTPUT_PORT' fields from the database.
+	* Removed 'DECKS.CARD_NUMBER', 'DECKS.STREAM_NUMBER',
+	'DECKS.PORT_NUMBER' and 'DECKS.MON_PORT_NUMBER' fields from the
+	database.
+	* Removed 'RDAIRPLAY.CARD0','RDAIRPLAY.CARD1','RDAIRPLAY.CARD2',
+	'RDAIRPLAY.CARD3','RDAIRPLAY.CARD4','RDAIRPLAY.CARD5',
+	'RDAIRPLAY.CARD6','RDAIRPLAY.CARD7','RDAIRPLAY.CARD8',
+	'RDAIRPLAY.CARD9','RDAIRPLAY.PORT0','RDAIRPLAY.PORT1',
+	'RDAIRPLAY.PORT2','RDAIRPLAY.PORT3','RDAIRPLAY.PORT4',
+	'RDAIRPLAY.PORT5','RDAIRPLAY.PORT6','RDAIRPLAY.PORT7',
+	'RDAIRPLAY.PORT8','RDAIRPLAY.PORT9','RDAIRPLAY.START_RML0',
+	'RDAIRPLAY.START_RML0','RDAIRPLAY.START_RML1',
+	'RDAIRPLAY.START_RML2','RDAIRPLAY.START_RML3',
+	'RDAIRPLAY.START_RML4','RDAIRPLAY.START_RML5',
+	'RDAIRPLAY.START_RML6','RDAIRPLAY.START_RML7',
+	'RDAIRPLAY.START_RML8','RDAIRPLAY.START_RML9',
+	'RDAIRPLAY.STOP_RML0','RDAIRPLAY.STOP_RML1',
+	'RDAIRPLAY.STOP_RML2','RDAIRPLAY.STOP_RML3','RDAIRPLAY.STOP_RML4',
+	'RDAIRPLAY.STOP_RML5','RDAIRPLAY.STOP_RML6','RDAIRPLAY.STOP_RML7',
+	'RDAIRPLAY.STOP_RML8','RDAIRPLAY.STOP_RML9' from the database.
+	* Removed the 'RDAIRPLAY_CHANNELS' table from the database.
+	* Removed 'RDPANEL.CARD2','RDPANEL.CARD3','RDPANEL.CARD6',
+	'RDPANEL.CARD7','RDPANEL.CARD8','RDPANEL.CARD9','RDPANEL.PORT2',
+	'RDPANEL.PORT3','RDPANEL.PORT6','RDPANEL.PORT7','RDPANEL.PORT8',
+	'RDPANEL.PORT9','RDPANEL.START_RML0','RDPANEL.START_RML2',
+	'RDPANEL.START_RML3','RDPANEL.START_RML6','RDPANEL.START_RML7',
+	'RDPANEL.START_RML8','RDPANEL.START_RML9','RDPANEL.STOP_RML2',
+	'RDPANEL.STOP_RML3','RDPANEL.STOP_RML6','RDPANEL.STOP_RML7',
+	'RDPANEL.STOP_RML8','RDPANEL.STOP_RML9' from the database.
+	* Removed the 'RDPANEL_CHANNELS' table from the database.
+	* Incremented the database version to 244.
+	* Added an 'RDChannels' class in 'lib/rdchannels.cpp' and
+	'lib/rdchannels.h'.
+	* Modified the 'Edit Host' dialog to use RDChannels in
+	'rdadmin/edit_station.cpp' and 'rdadmin/edit_station.h'.
+	* Removed 'RDStation::cueCard()', 'RDStation::setCueCard()',
+	'RDStation::cuePort()', 'RDStation::setCuePort()',
+	'RDStation::cueStartCart()', 'RDStation::setCueStartCart()',
+	'RDStation::cueStopCart()' and 'RDStation::setCueStopCart()'
+	methods from 'lib/rdstation.cpp' and 'lib/rdstation.h'.
+	* Modified the 'Select Cart' dialog in use RDChannels in
+	'lib/rdcart_dialog.cpp' and 'lib/rdcart_dialog.h'.
+	* Removed 'RDLibraryConf::inputCard()', RDLibraryConf::setInputCard()',
+	'RDLibraryConf::inputPort()', 'RDLibraryConf::setInputPort()',
+	'RDLibraryConf::outputCard()', 'RDLibraryConf::setOutputCard()',
+	'RDLibraryConf::outputPort()' and 'RDLibraryConf::setOutputPort()'
+	methods from 'lib/rdlibrary_conf.cpp' and 'lib/rdlibrary_conf.h'.
+	* Removed 'RDLogEditConf::startCard()', 'RDLogEditConf::setStartCard()',
+	'RDLogEditConf::startPort()', 'RDLogEditConf::setStartPort()',
+	'RDLogEditConf::startCart()', 'RDLogEditConf::setStartCart()',
+	'RDLogEditConf::endCart()', 'RDLogEditConf::setEndCart()',
+	'RDLogEditConf::recStartCart()', 'RDLogEditConf::setRecStartCart()',
+	'RDLogEditConf::recEndCart()' and 'RDLogEditConf::setRecEndCart()'
+	from 'lib/rdlogedit_conf.cpp' and 'lib/rdlogedit_conf.h'.
+	* Removed 'RDDeck::cardNumber()', 'RDDeck::setCardNumber()',
+	'RDDeck::streamNumber()', 'RDDeck::setStreamNumber()',
+	'RDDeck::portNumber()', 'RDDeck::setPortNumber()',
+	'RDDeck::monitorPortNumber()' and 'RDDeck::setMonitorPortNumber()'
+	methods from 'lib/rddeck.cpp' and 'lib/rddeck.h'.
+	* Added an 'EditPanelChannels' widget in
+	'rdadmin/edit_panelchannels.cpp' and 'rdadmin/edit_panelchannels.h'.
+	* Added an 'EditLogChannels' widget in
+	'rdadmin/edit_logchannels.cpp' and 'rdadmin/edit_logchannels.h'.

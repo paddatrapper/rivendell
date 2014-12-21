@@ -84,6 +84,7 @@ RDCartDialog *catch_cart_dialog;
 int catch_audition_card=-1;
 int catch_audition_port=-1;
 RDSystem *catch_system=NULL;
+RDChannels *catch_channels;
 
 //
 // Icons
@@ -211,8 +212,9 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   // Allocate Global Resources
   //
   rdstation_conf=new RDStation(catch_config->stationName());
-  catch_audition_card=rdstation_conf->cueCard();
-  catch_audition_port=rdstation_conf->cuePort();
+  catch_channels=new RDChannels(catch_config->stationName());
+  catch_audition_card=catch_channels->card(RDChannels::CueOutput);
+  catch_audition_port=catch_channels->port(RDChannels::CueOutput);
   catch_time_offset=rdstation_conf->timeOffset();
   catch_system=new RDSystem();
 
@@ -392,8 +394,8 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   catch_cart_dialog=new RDCartDialog(&catch_filter,&catch_group,
 				     &catch_schedcode,catch_cae,catch_ripc,
-				     rdstation_conf,catch_system,catch_config,
-				     this);
+				     rdstation_conf,catch_system,catch_channels,
+				     catch_config,this);
 
   //
   // Cart List

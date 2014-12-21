@@ -87,10 +87,12 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   // Config Data
   //
   edit_default_trans=rdlogedit_conf->defaultTransType();
-  edit_output_card=rdlogedit_conf->outputCard();
-  edit_output_port=rdlogedit_conf->outputPort();
-  edit_start_macro=rdlogedit_conf->startCart();
-  edit_end_macro=rdlogedit_conf->endCart();
+  edit_output_card=rdchannels->card(RDChannels::LogEditOutput);
+  edit_output_port=rdchannels->port(RDChannels::LogEditOutput);
+  edit_start_macro=
+    rdchannels->cart(RDChannels::Start,RDChannels::LogEditOutput);
+  edit_end_macro=
+    rdchannels->cart(RDChannels::Stop,RDChannels::LogEditOutput);
 
   //
   // Fix the Window Size

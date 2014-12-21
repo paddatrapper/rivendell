@@ -1,10 +1,8 @@
-// edit_rdpanel.h
+// edit_panelchannels.h
 //
-// Edit an RDPanel Configuration
+// Edit SoundPanel channel assignments
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_rdpanel.h,v 1.6.8.2 2013/12/23 18:35:15 cvs Exp $
+//   (C) Copyright 2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,10 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef EDIT_RDPANEL_H
-#define EDIT_RDPANEL_H
+#ifndef EDIT_PANELCHANNELS_H
+#define EDIT_PANELCHANNELS_H
 
-#include <qdialog.h>
+#include <qwidget.h>
 #include <qsqldatabase.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
@@ -34,50 +32,40 @@
 #include <qbuttongroup.h>
 
 #include <rd.h>
-#include <rdairplay_conf.h>
 #include <rdcardselector.h>
 #include <rdstation.h>
 #include <rdchannels.h>
+#include <rdsound_panel.h>
 
-/*
- * Application Settings
- */
-#define LOG_PLAY_PORTS 2
-#define MAX_MANUAL_SEGUE 10
-
-class EditRDPanel : public QDialog
+class EditPanelChannels : public QWidget
 {
  Q_OBJECT
  public:
-  EditRDPanel(RDStation *station,RDStation *cae_station,RDChannels *chan,
-	      QWidget *parent=0);
-  ~EditRDPanel();
+  EditPanelChannels(RDStation *cae_station,RDChannels *chans,
+		    RDChannels::Channel type,QWidget *parent=0);
+  ~EditPanelChannels();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-  
- private slots:
-  void selectSkinData();
-  void okData();
-  void cancelData();
+  void load();
+  void save();
 
+ private slots:
+  void audioSettingsChangedData(int id,int card,int port);
+  void editGpiosData(int num);
+  
  private:
-  RDAirPlayConf *air_conf;
+  RDStation *air_cae_station;
   RDChannels *air_channels;
-  RDCardSelector *air_card_sel[5];
-  QLineEdit *air_start_rml_edit[5];
-  QLineEdit *air_stop_rml_edit[5];
-  QLabel *air_station_label;
-  QSpinBox *air_station_box;
-  QLabel *air_user_label;
-  QSpinBox *air_user_box;
-  QCheckBox *air_clearfilter_box;
-  QCheckBox *air_flash_box;
-  QCheckBox *air_panel_pause_box;
-  QLineEdit *air_label_template_edit;
-  QComboBox *air_defaultsvc_box;
-  QLineEdit *air_skin_edit;
+  RDChannels::Channel air_channel_type;
+  QLabel *air_panel_card_label[PANEL_MAX_OUTPUTS];
+  RDCardSelector *air_panel_card_sel[PANEL_MAX_OUTPUTS];
+  QLabel *air_panel_start_rml_label[PANEL_MAX_OUTPUTS];
+  QLineEdit *air_panel_start_rml_edit[PANEL_MAX_OUTPUTS];
+  QLabel *air_panel_stop_rml_label[PANEL_MAX_OUTPUTS];
+  QLineEdit *air_panel_stop_rml_edit[PANEL_MAX_OUTPUTS];
+  QPushButton *air_panel_channel_button[PANEL_MAX_OUTPUTS];
 };
 
 
-#endif  // EDIT_RDPANEL_H
+#endif  // EDIT_PANELCHANNELS_H
 

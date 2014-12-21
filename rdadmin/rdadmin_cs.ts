@@ -2238,27 +2238,27 @@ GPIOs</source>
     </message>
     <message>
         <source>Main Log Output 1</source>
-        <translation>Výstup hlavního zápisu 1</translation>
+        <translation type="obsolete">Výstup hlavního zápisu 1</translation>
     </message>
     <message>
         <source>Start RML:</source>
-        <translation>Spustit RML:</translation>
+        <translation type="obsolete">Spustit RML:</translation>
     </message>
     <message>
         <source>Stop RML:</source>
-        <translation>Zastavit RML:</translation>
+        <translation type="obsolete">Zastavit RML:</translation>
     </message>
     <message>
         <source>Main Log Output 2</source>
-        <translation>Výstup hlavního zápisu 2</translation>
+        <translation type="obsolete">Výstup hlavního zápisu 2</translation>
     </message>
     <message>
         <source>Aux Log 1 Output</source>
-        <translation>Výstup pomocného zápisu 1</translation>
+        <translation type="obsolete">Výstup pomocného zápisu 1</translation>
     </message>
     <message>
         <source>Aux Log 2 Output</source>
-        <translation>Výstup pomocného zápisu 2</translation>
+        <translation type="obsolete">Výstup pomocného zápisu 2</translation>
     </message>
     <message>
         <source>Audition/Cue Output</source>
@@ -2266,23 +2266,23 @@ GPIOs</source>
     </message>
     <message>
         <source>SoundPanel First Play Output</source>
-        <translation>Panel zvuku první výstup</translation>
+        <translation type="obsolete">Panel zvuku první výstup</translation>
     </message>
     <message>
         <source>SoundPanel Second Play Output</source>
-        <translation>Panel zvuku druhý výstup</translation>
+        <translation type="obsolete">Panel zvuku druhý výstup</translation>
     </message>
     <message>
         <source>SoundPanel Third Play Output</source>
-        <translation>Panel zvuku třetí výstup</translation>
+        <translation type="obsolete">Panel zvuku třetí výstup</translation>
     </message>
     <message>
         <source>SoundPanel Fourth Play Output</source>
-        <translation>Panel zvuku čtvrtý výstup</translation>
+        <translation type="obsolete">Panel zvuku čtvrtý výstup</translation>
     </message>
     <message>
         <source>SoundPanel Fifth and Later Play Output</source>
-        <translation>Panel zvuku pátý a další výstupy</translation>
+        <translation type="obsolete">Panel zvuku pátý a další výstupy</translation>
     </message>
     <message>
         <source>Manual Segue:</source>
@@ -2538,11 +2538,6 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>Show Hour Selector</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit
-GPIOs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3042,7 +3037,7 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>SoundPanel Cue Output</source>
-        <translation>Panel zvuku Výstup náhledu</translation>
+        <translation type="obsolete">Panel zvuku Výstup náhledu</translation>
     </message>
     <message>
         <source>Display Settings</source>

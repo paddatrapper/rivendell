@@ -77,10 +77,12 @@ dist_rdadmin_SOURCES = add_aux_field.cpp add_aux_field.h\
                        edit_jack.cpp edit_jack.h\
                        edit_jack_client.cpp edit_jack_client.h\
                        edit_livewiregpio.cpp edit_livewiregpio.h\
+                       edit_logchannels.cpp edit_logchannels.h\
                        edit_matrix.cpp edit_matrix.h\
                        edit_node.cpp edit_node.h\
                        edit_now_next.cpp edit_now_next.h\
                        edit_nownextplugin.cpp edit_nownextplugin.h\
+                       edit_panelchannels.cpp edit_panelchannels.h\
                        edit_rdairplay.cpp edit_rdairplay.h\
                        edit_rdlibrary.cpp edit_rdlibrary.h\
                        edit_rdlogedit.cpp edit_rdlogedit.h\
@@ -161,10 +163,12 @@ nodist_rdadmin_SOURCES = moc_add_aux_field.cpp\
                          moc_edit_jack.cpp\
                          moc_edit_jack_client.cpp\
                          moc_edit_livewiregpio.cpp\
+                         moc_edit_logchannels.cpp\
                          moc_edit_matrix.cpp\
                          moc_edit_node.cpp\
                          moc_edit_now_next.cpp\
                          moc_edit_nownextplugin.cpp\
+                         moc_edit_panelchannels.cpp\
                          moc_edit_rdairplay.cpp\
                          moc_edit_rdlibrary.cpp\
                          moc_edit_rdlogedit.cpp\

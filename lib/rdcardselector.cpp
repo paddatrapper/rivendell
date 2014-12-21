@@ -248,3 +248,9 @@ void RDCardSelector::portData(int port)
   emit portChanged(port);
   emit settingsChanged(card_id,card_card_box->value(),port);
 }
+
+
+bool RDCardSelector::isActive() const
+{
+  return (card_card_box->value()>=0)&&(card_port_box->value()>=0);
+}

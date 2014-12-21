@@ -46,8 +46,8 @@
 #include <edit_channelgpios.h>
 
 EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
-			     QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+			     RDChannels *chans,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   RDSqlQuery *q;
@@ -64,6 +64,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   setMaximumHeight(sizeHint().height());
 
   air_conf=new RDAirPlayConf(station->name(),"RDAIRPLAY");
+  air_channels=chans;
 
   //
   // Create Fonts
@@ -96,157 +97,12 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(editGpiosData(int)));
 
   //
-  // Main Log Output 1
+  // Log Machine Channel Assignments
   //
-  label=new QLabel(tr("Main Log Output 1"),this);
-  label->setFont(small_font);
-  label->setGeometry(25,32,200,16);
-  air_card_sel[0]=new RDCardSelector(this);
-  air_card_sel[0]->setId(0);
-  air_card_sel[0]->setGeometry(20,50,120,117);
-  air_start_rml_edit[0]=new QLineEdit(this);
-  air_start_rml_edit[0]->setGeometry(210,50,95,19);
-  air_start_rml_edit[0]->setValidator(validator);
-  air_start_rml_label[0]=new QLabel(air_start_rml_edit[0],tr("Start RML:"),this);
-  air_start_rml_label[0]->setGeometry(140,50,65,19);
-  air_start_rml_label[0]->setAlignment(AlignVCenter|AlignRight);
-  air_stop_rml_edit[0]=new QLineEdit(this);
-  air_stop_rml_edit[0]->setGeometry(210,71,95,19);
-  air_stop_rml_edit[0]->setValidator(validator);
-  air_stop_rml_label[0]=new QLabel(air_start_rml_edit[0],tr("Stop RML:"),this);
-  air_stop_rml_label[0]->setGeometry(140,71,65,19);
-  air_stop_rml_label[0]->setAlignment(AlignVCenter|AlignRight);
-
-  air_channel_button[0]=new QPushButton(tr("Edit\nGPIOs"),this);
-  air_channel_button[0]->setGeometry(310,46,60,50);
-  air_channel_button[0]->setFont(small_font);
-  mapper->setMapping(air_channel_button[0],RDAirPlayConf::MainLog1Channel);
-  connect(air_channel_button[0],SIGNAL(clicked()),mapper,SLOT(map()));
-  connect(air_card_sel[0],SIGNAL(settingsChanged(int,int,int)),
-	  this,SLOT(audioSettingsChangedData(int,int,int)));
-
-  //
-  // Main Log Output 2
-  //
-  label=new QLabel(tr("Main Log Output 2"),this);
-  label->setFont(small_font);
-  label->setGeometry(25,100,200,16);
-  air_card_sel[1]=new RDCardSelector(this);
-  air_card_sel[1]->setId(1);
-  air_card_sel[1]->setGeometry(20,118,120,117);
-  air_start_rml_edit[1]=new QLineEdit(this);
-  air_start_rml_edit[1]->setGeometry(210,118,95,19);
-  air_start_rml_edit[1]->setValidator(validator);
-  air_start_rml_label[1]=new QLabel(air_start_rml_edit[1],tr("Start RML:"),this);
-  air_start_rml_label[1]->setGeometry(140,118,65,19);
-  air_start_rml_label[1]->setAlignment(AlignVCenter|AlignRight);
-  air_stop_rml_edit[1]=new QLineEdit(this);
-  air_stop_rml_edit[1]->setGeometry(210,139,95,19);
-  air_stop_rml_edit[1]->setValidator(validator);
-  air_stop_rml_label[1]=new QLabel(air_start_rml_edit[1],tr("Stop RML:"),this);
-  air_stop_rml_label[1]->setGeometry(140,139,65,19);
-  air_stop_rml_label[1]->setAlignment(AlignVCenter|AlignRight);
-
-  air_channel_button[1]=new QPushButton(tr("Edit\nGPIOs"),this);
-  air_channel_button[1]->setGeometry(310,114,60,50);
-  air_channel_button[1]->setFont(small_font);
-  mapper->setMapping(air_channel_button[1],RDAirPlayConf::MainLog2Channel);
-  connect(air_channel_button[1],SIGNAL(clicked()),mapper,SLOT(map()));
-  connect(air_card_sel[1],SIGNAL(settingsChanged(int,int,int)),
-	  this,SLOT(audioSettingsChangedData(int,int,int)));
-
-  //
-  // Aux Log 1 Output
-  //
-  label=new QLabel(tr("Aux Log 1 Output"),this);
-  label->setFont(small_font);
-  label->setGeometry(25,168,200,16);
-  air_card_sel[4]=new RDCardSelector(this);
-  air_card_sel[4]->setId(4);
-  air_card_sel[4]->setGeometry(20,186,120,117);
-  air_start_rml_edit[4]=new QLineEdit(this);
-  air_start_rml_edit[4]->setGeometry(210,186,95,19);
-  air_start_rml_edit[4]->setValidator(validator);
-  air_start_rml_label[4]=new QLabel(air_start_rml_edit[4],tr("Start RML:"),this);
-  air_start_rml_label[4]->setGeometry(140,186,65,19);
-  air_start_rml_label[4]->setAlignment(AlignVCenter|AlignRight);
-  air_stop_rml_edit[4]=new QLineEdit(this);
-  air_stop_rml_edit[4]->setGeometry(210,207,95,19);
-  air_stop_rml_edit[4]->setValidator(validator);
-  air_stop_rml_label[4]=new QLabel(air_start_rml_edit[4],tr("Stop RML:"),this);
-  air_stop_rml_label[4]->setGeometry(140,207,65,19);
-  air_stop_rml_label[4]->setAlignment(AlignVCenter|AlignRight);
-
-  air_channel_button[4]=new QPushButton(tr("Edit\nGPIOs"),this);
-  air_channel_button[4]->setGeometry(310,182,60,50);
-  air_channel_button[4]->setFont(small_font);
-  mapper->setMapping(air_channel_button[4],RDAirPlayConf::AuxLog1Channel);
-  connect(air_channel_button[4],SIGNAL(clicked()),mapper,SLOT(map()));
-  connect(air_card_sel[4],SIGNAL(settingsChanged(int,int,int)),
-	  this,SLOT(audioSettingsChangedData(int,int,int)));
-
-  //
-  // Aux Log 2 Output
-  //
-  label=new QLabel(tr("Aux Log 2 Output"),this);
-  label->setFont(small_font);
-  label->setGeometry(25,236,200,16);
-  air_card_sel[5]=new RDCardSelector(this);
-  air_card_sel[5]->setId(5);
-  air_card_sel[5]->setGeometry(20,254,120,117);
-  air_start_rml_edit[5]=new QLineEdit(this);
-  air_start_rml_edit[5]->setGeometry(210,254,95,19);
-  air_start_rml_edit[5]->setValidator(validator);
-  air_start_rml_label[5]=new QLabel(air_start_rml_edit[5],tr("Start RML:"),this);
-  air_start_rml_label[5]->setGeometry(140,254,65,19);
-  air_start_rml_label[5]->setAlignment(AlignVCenter|AlignRight);
-  air_stop_rml_edit[5]=new QLineEdit(this);
-  air_stop_rml_edit[5]->setGeometry(210,275,95,19);
-  air_stop_rml_edit[5]->setValidator(validator);
-  air_stop_rml_label[5]=new QLabel(air_start_rml_edit[5],tr("Stop RML:"),this);
-  air_stop_rml_label[5]->setGeometry(140,275,65,19);
-  air_stop_rml_label[5]->setAlignment(AlignVCenter|AlignRight);
-
-  air_channel_button[5]=new QPushButton(tr("Edit\nGPIOs"),this);
-  air_channel_button[5]->setGeometry(310,250,60,50);
-  air_channel_button[5]->setFont(small_font);
-  mapper->setMapping(air_channel_button[5],RDAirPlayConf::AuxLog2Channel);
-  connect(air_channel_button[5],SIGNAL(clicked()),mapper,SLOT(map()));
-  connect(air_card_sel[5],SIGNAL(settingsChanged(int,int,int)),
-	  this,SLOT(audioSettingsChangedData(int,int,int)));
-
-  //
-  // Audition/Cue Output
-  //
-  /*
-  label=new QLabel(tr("Audition/Cue Output"),this);
-  label->setFont(small_font);
-  label->setGeometry(25,304,200,16);
-  */
-  air_card_sel[3]=new RDCardSelector(this);
-  air_card_sel[3]->setId(3);
-  air_card_sel[3]->setGeometry(20,322,120,117);
-  air_start_rml_edit[3]=new QLineEdit(this);
-  air_start_rml_edit[3]->setGeometry(210,322,160,19);
-  air_start_rml_edit[3]->setValidator(validator);
-  air_start_rml_label[3]=new QLabel(air_start_rml_edit[3],tr("Start RML:"),this);
-  air_start_rml_label[3]->setGeometry(140,322,65,19);
-  air_start_rml_label[3]->setAlignment(AlignVCenter|AlignRight);
-  air_stop_rml_edit[3]=new QLineEdit(this);
-  air_stop_rml_edit[3]->setGeometry(210,343,160,19);
-  air_stop_rml_edit[3]->setValidator(validator);
-  air_stop_rml_label[3]=new QLabel(air_start_rml_edit[3],tr("Stop RML:"),this);
-  air_stop_rml_label[3]->setGeometry(140,343,65,19);
-  air_stop_rml_label[3]->setAlignment(AlignVCenter|AlignRight);
-
-  air_channel_button[3]=NULL;
-  connect(air_card_sel[3],SIGNAL(settingsChanged(int,int,int)),
-	  this,SLOT(audioSettingsChangedData(int,int,int)));
-  air_card_sel[3]->hide();
-  air_start_rml_edit[3]->hide();
-  air_start_rml_label[3]->hide();
-  air_stop_rml_edit[3]->hide();
-  air_stop_rml_label[3]->hide();
+  air_edit_logchannels=new EditLogChannels(air_conf,cae_station,chans,this);
+  air_edit_logchannels->
+    setGeometry(25,32,air_edit_logchannels->sizeHint().width(),
+		air_edit_logchannels->sizeHint().height());
 
   //
   // HotKeys Configuration Button
@@ -267,154 +123,14 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   connect(button,SIGNAL(clicked()),this,SLOT(nownextData()));
 
   //
-  // Sound Panel First Play Output
+  // SoundPanel Channel Assignments
   //
-  label=new QLabel(tr("SoundPanel First Play Output"),this);
-  label->setFont(small_font);
-  label->setGeometry(395,32,300,16);
-  air_card_sel[2]=new RDCardSelector(this);
-  air_card_sel[2]->setId(2);
-  air_card_sel[2]->setGeometry(390,50,120,117);
-  air_start_rml_edit[2]=new QLineEdit(this);
-  air_start_rml_edit[2]->setGeometry(580,50,95,19);
-  air_start_rml_edit[2]->setValidator(validator);
-  air_start_rml_label[2]=new QLabel(air_start_rml_edit[2],tr("Start RML:"),this);
-  air_start_rml_label[2]->setGeometry(510,50,65,19);
-  air_start_rml_label[2]->setAlignment(AlignVCenter|AlignRight);
-  air_stop_rml_edit[2]=new QLineEdit(this);
-  air_stop_rml_edit[2]->setGeometry(580,71,95,19);
-  air_stop_rml_edit[2]->setValidator(validator);
-  air_stop_rml_label[2]=new QLabel(air_start_rml_edit[2],tr("Stop RML:"),this);
-  air_stop_rml_label[2]->setGeometry(510,71,65,19);
-  air_stop_rml_label[2]->setAlignment(AlignVCenter|AlignRight);
-
-  air_channel_button[2]=new QPushButton(tr("Edit\nGPIOs"),this);
-  air_channel_button[2]->setGeometry(680,46,60,50);
-  air_channel_button[2]->setFont(small_font);
-  mapper->setMapping(air_channel_button[2],RDAirPlayConf::SoundPanel1Channel);
-  connect(air_channel_button[2],SIGNAL(clicked()),mapper,SLOT(map()));
-  connect(air_card_sel[2],SIGNAL(settingsChanged(int,int,int)),
-	  this,SLOT(audioSettingsChangedData(int,int,int)));
-
-  //
-  // Sound Panel Second Play Output
-  //
-  label=new QLabel(tr("SoundPanel Second Play Output"),this);
-  label->setFont(small_font);
-  label->setGeometry(395,100,300,16);
-  air_card_sel[6]=new RDCardSelector(this);
-  air_card_sel[6]->setId(6);
-  air_card_sel[6]->setGeometry(390,118,120,117);
-  air_start_rml_edit[6]=new QLineEdit(this);
-  air_start_rml_edit[6]->setGeometry(580,118,95,19);
-  air_start_rml_edit[6]->setValidator(validator);
-  air_start_rml_label[6]=new QLabel(air_start_rml_edit[6],tr("Start RML:"),this);
-  air_start_rml_label[6]->setGeometry(510,118,65,19);
-  air_start_rml_label[6]->setAlignment(AlignVCenter|AlignRight);
-  air_stop_rml_edit[6]=new QLineEdit(this);
-  air_stop_rml_edit[6]->setGeometry(580,139,95,19);
-  air_stop_rml_edit[6]->setValidator(validator);
-  air_stop_rml_label[6]=new QLabel(air_start_rml_edit[6],tr("Stop RML:"),this);
-  air_stop_rml_label[6]->setGeometry(510,139,65,19);
-  air_stop_rml_label[6]->setAlignment(AlignVCenter|AlignRight);
-
-  air_channel_button[6]=new QPushButton(tr("Edit\nGPIOs"),this);
-  air_channel_button[6]->setGeometry(680,114,60,50);
-  air_channel_button[6]->setFont(small_font);
-  mapper->setMapping(air_channel_button[6],RDAirPlayConf::SoundPanel2Channel);
-  connect(air_channel_button[6],SIGNAL(clicked()),mapper,SLOT(map()));
-  connect(air_card_sel[6],SIGNAL(settingsChanged(int,int,int)),
-	  this,SLOT(audioSettingsChangedData(int,int,int)));
-
-  //
-  // Sound Panel Third Play Output
-  //
-  label=new QLabel(tr("SoundPanel Third Play Output"),this);
-  label->setFont(small_font);
-  label->setGeometry(395,168,300,16);
-  air_card_sel[7]=new RDCardSelector(this);
-  air_card_sel[7]->setId(7);
-  air_card_sel[7]->setGeometry(390,186,120,117);
-  air_start_rml_edit[7]=new QLineEdit(this);
-  air_start_rml_edit[7]->setGeometry(580,186,95,19);
-  air_start_rml_edit[7]->setValidator(validator);
-  air_start_rml_label[7]=new QLabel(air_start_rml_edit[7],tr("Start RML:"),this);
-  air_start_rml_label[7]->setGeometry(510,186,65,19);
-  air_start_rml_label[7]->setAlignment(AlignVCenter|AlignRight);
-  air_stop_rml_edit[7]=new QLineEdit(this);
-  air_stop_rml_edit[7]->setGeometry(580,207,95,19);
-  air_stop_rml_edit[7]->setValidator(validator);
-  air_stop_rml_label[7]=new QLabel(air_start_rml_edit[7],tr("Stop RML:"),this);
-  air_stop_rml_label[7]->setGeometry(510,207,65,19);
-  air_stop_rml_label[7]->setAlignment(AlignVCenter|AlignRight);
-
-  air_channel_button[7]=new QPushButton(tr("Edit\nGPIOs"),this);
-  air_channel_button[7]->setGeometry(680,182,60,50);
-  air_channel_button[7]->setFont(small_font);
-  mapper->setMapping(air_channel_button[7],RDAirPlayConf::SoundPanel3Channel);
-  connect(air_channel_button[7],SIGNAL(clicked()),mapper,SLOT(map()));
-  connect(air_card_sel[7],SIGNAL(settingsChanged(int,int,int)),
-	  this,SLOT(audioSettingsChangedData(int,int,int)));
-
-  //
-  // Sound Panel Fourth Play Output
-  //
-  label=new QLabel(tr("SoundPanel Fourth Play Output"),this);
-  label->setFont(small_font);
-  label->setGeometry(395,236,300,16);
-  air_card_sel[8]=new RDCardSelector(this);
-  air_card_sel[8]->setId(8);
-  air_card_sel[8]->setGeometry(390,254,120,117);
-  air_start_rml_edit[8]=new QLineEdit(this);
-  air_start_rml_edit[8]->setGeometry(580,254,95,19);
-  air_start_rml_edit[8]->setValidator(validator);
-  air_start_rml_label[8]=new QLabel(air_start_rml_edit[8],tr("Start RML:"),this);
-  air_start_rml_label[8]->setGeometry(510,254,65,19);
-  air_start_rml_label[8]->setAlignment(AlignVCenter|AlignRight);
-  air_stop_rml_edit[8]=new QLineEdit(this);
-  air_stop_rml_edit[8]->setGeometry(580,275,95,19);
-  air_stop_rml_edit[8]->setValidator(validator);
-  air_stop_rml_label[8]=new QLabel(air_start_rml_edit[8],tr("Stop RML:"),this);
-  air_stop_rml_label[8]->setGeometry(510,275,65,19);
-  air_stop_rml_label[8]->setAlignment(AlignVCenter|AlignRight);
-
-  air_channel_button[8]=new QPushButton(tr("Edit\nGPIOs"),this);
-  air_channel_button[8]->setGeometry(680,250,60,50);
-  air_channel_button[8]->setFont(small_font);
-  mapper->setMapping(air_channel_button[8],RDAirPlayConf::SoundPanel4Channel);
-  connect(air_channel_button[8],SIGNAL(clicked()),mapper,SLOT(map()));
-  connect(air_card_sel[8],SIGNAL(settingsChanged(int,int,int)),
-	  this,SLOT(audioSettingsChangedData(int,int,int)));
-
-  //
-  // Sound Panel Fifth Play Output
-  //
-  label=new QLabel(tr("SoundPanel Fifth and Later Play Output"),this);
-  label->setFont(small_font);
-  label->setGeometry(395,304,300,16);
-  air_card_sel[9]=new RDCardSelector(this);
-  air_card_sel[9]->setId(9);
-  air_card_sel[9]->setGeometry(390,322,120,117);
-  air_start_rml_edit[9]=new QLineEdit(this);
-  air_start_rml_edit[9]->setGeometry(580,322,95,19);
-  air_start_rml_edit[9]->setValidator(validator);
-  air_start_rml_label[9]=new QLabel(air_start_rml_edit[9],tr("Start RML:"),this);
-  air_start_rml_label[9]->setGeometry(510,322,65,19);
-  air_start_rml_label[9]->setAlignment(AlignVCenter|AlignRight);
-  air_stop_rml_edit[9]=new QLineEdit(this);
-  air_stop_rml_edit[9]->setGeometry(580,343,95,19);
-  air_stop_rml_edit[9]->setValidator(validator);
-  air_stop_rml_label[9]=new QLabel(air_start_rml_edit[9],tr("Stop RML:"),this);
-  air_stop_rml_label[9]->setGeometry(510,343,65,19);
-  air_stop_rml_label[9]->setAlignment(AlignVCenter|AlignRight);
-
-  air_channel_button[9]=new QPushButton(tr("Edit\nGPIOs"),this);
-  air_channel_button[9]->setGeometry(680,318,60,50);
-  air_channel_button[9]->setFont(small_font);
-  mapper->setMapping(air_channel_button[9],RDAirPlayConf::SoundPanel5Channel);
-  connect(air_channel_button[9],SIGNAL(clicked()),mapper,SLOT(map()));
-  connect(air_card_sel[9],SIGNAL(settingsChanged(int,int,int)),
-	  this,SLOT(audioSettingsChangedData(int,int,int)));
+  air_edit_panelchannels=
+    new EditPanelChannels(cae_station,chans,RDChannels::AirplayButtonOutput,
+			  this);
+  air_edit_panelchannels->
+    setGeometry(400,32,air_edit_panelchannels->sizeHint().width(),
+		air_edit_panelchannels->sizeHint().height());
 
   //
   // Main Log Play Section
@@ -831,24 +547,33 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   // Populate Fields
   //
   if(cae_station->scanned()) {
+    
+    /*
     for(int i=0;i<10;i++) {
       air_card_sel[i]->setMaxCards(cae_station->cards());
       for(int j=0;j<air_card_sel[i]->maxCards();j++) {
 	air_card_sel[i]->setMaxPorts(j,cae_station->cardOutputs(j));
       }
     }
+    */
   }
   else {
+    air_edit_logchannels->setDisabled(true);
     QMessageBox::information(this,tr("No Audio Configuration Data"),
 			     tr("Channel assignments will not be available for this host as audio resource data\nhas not yet been generated.  Please start the Rivendell daemons on the host\nconfigured to run the CAE service in order to populate the audio resources database."));
+    /*
     for(int i=0;i<10;i++) {
       air_card_sel[i]->setDisabled(true);
     }
+    */
   }
+  /*
   for(int i=0;i<RDAirPlayConf::LastChannel;i++) {
     air_card_sel[i]->setCard(air_conf->card((RDAirPlayConf::Channel)i));
     air_card_sel[i]->setPort(air_conf->port((RDAirPlayConf::Channel)i));
   }
+  */
+  air_edit_panelchannels->load();
   air_segue_edit->setText(QString().sprintf("%d",air_conf->segueLength()));
   air_trans_edit->setText(QString().sprintf("%d",air_conf->transLength()));
   air_piecount_box->setValue(air_conf->pieCountLength()/1000);
@@ -886,12 +611,14 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_artist_template_edit->setText(air_conf->artistTemplate());
   air_outcue_template_edit->setText(air_conf->outcueTemplate());
   air_description_template_edit->setText(air_conf->descriptionTemplate());
+  /*
   for(int i=0;i<RDAirPlayConf::LastChannel;i++) {
     air_start_rml_edit[i]->setText(air_conf->
 				   startRml((RDAirPlayConf::Channel)i));
     air_stop_rml_edit[i]->setText(air_conf->
 				  stopRml((RDAirPlayConf::Channel)i));
   }
+  */
   air_modecontrol_box->setCurrentItem((int)air_conf->opModeStyle());
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_startmode[i]=air_conf->startMode(i);
@@ -905,9 +632,11 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_skin_edit->setText(air_conf->skinPath());
   startModeChangedData(air_startmode[air_logmachine]);
 
+  /*
   for(unsigned i=0;i<RDAirPlayConf::LastChannel;i++) {
     audioSettingsChangedData(i,air_card_sel[i]->card(),air_card_sel[i]->port());
   }
+  */
 }
 
 
@@ -930,6 +659,7 @@ QSizePolicy EditRDAirPlay::sizePolicy() const
 
 void EditRDAirPlay::audioSettingsChangedData(int id,int card,int port)
 {
+  /*
   if(air_channel_button[id]!=NULL) {
     bool state=air_card_sel[id]->isDisabled();
     air_start_rml_label[id]->setDisabled(state);
@@ -955,15 +685,18 @@ void EditRDAirPlay::audioSettingsChangedData(int id,int card,int port)
       air_channel_button[id]->setDisabled(air_card_sel[id]->isDisabled());
     }
   }
+  */
 }
 
 
 void EditRDAirPlay::editGpiosData(int num)
 {
+  /*
   EditChannelGpios *d=
     new EditChannelGpios(air_conf,(RDAirPlayConf::Channel)num,this);
   d->exec();
   delete d;
+  */
 }
 
 
@@ -1080,6 +813,7 @@ void EditRDAirPlay::okData()
 			 tr("Invalid Forced Segue Length!"));
     return;
   }
+  /*
   for(int i=0;i<RDAirPlayConf::LastChannel;i++) {
     RDAirPlayConf::Channel chan=(RDAirPlayConf::Channel)i;
     air_conf->setStartRml(chan,air_start_rml_edit[i]->text());
@@ -1093,6 +827,9 @@ void EditRDAirPlay::okData()
       air_conf->setStopGpoMatrix(chan,-1);
     }
   }
+  */
+  air_edit_logchannels->save();
+  air_edit_panelchannels->save();
   air_conf->setSegueLength(segue);
   air_conf->setTransLength(trans);
   air_conf->setPieCountLength(air_piecount_box->value()*1000);

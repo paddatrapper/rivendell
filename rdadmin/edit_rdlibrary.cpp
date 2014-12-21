@@ -2,9 +2,7 @@
 //
 // Edit an RDLibrary Configuration
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_rdlibrary.cpp,v 1.33.6.1 2014/01/09 01:03:55 cvs Exp $
+//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,7 +39,7 @@
 
 
 EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
-			     QWidget *parent,const char *name)
+			     RDChannels *chans,QWidget *parent,const char *name)
   : QDialog(parent,name,true)
 {
   //
@@ -53,6 +51,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   setMaximumHeight(sizeHint().height());
 
   lib_lib=new RDLibraryConf(station->name(),0);
+  lib_channels=chans;
 
   //
   // Create Fonts
@@ -347,10 +346,10 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
     lib_input_card->setDisabled(true);
     lib_output_card->setDisabled(true);
   }
-  lib_input_card->setCard(lib_lib->inputCard());
-  lib_input_card->setPort(lib_lib->inputPort());
-  lib_output_card->setCard(lib_lib->outputCard());
-  lib_output_card->setPort(lib_lib->outputPort());
+  lib_input_card->setCard(lib_channels->card(RDChannels::LibraryInput));
+  lib_input_card->setPort(lib_channels->port(RDChannels::LibraryInput));
+  lib_output_card->setCard(lib_channels->card(RDChannels::LibraryOutput));
+  lib_output_card->setPort(lib_channels->port(RDChannels::LibraryOutput));
   lib_maxlength_time->setTime(QTime().addMSecs(lib_lib->maxLength()));
   lib_vox_spin->setValue(lib_lib->voxThreshold()/100);
   lib_trim_spin->setValue(lib_lib->trimThreshold()/100);
@@ -427,10 +426,10 @@ void EditRDLibrary::okData()
 {
   unsigned rate=0;
 
-  lib_lib->setInputCard(lib_input_card->card());
-  lib_lib->setInputPort(lib_input_card->port());
-  lib_lib->setOutputCard(lib_output_card->card());
-  lib_lib->setOutputPort(lib_output_card->port());
+  lib_channels->setCard(lib_input_card->card(),RDChannels::LibraryInput);
+  lib_channels->setPort(lib_input_card->port(),RDChannels::LibraryInput);
+  lib_channels->setCard(lib_output_card->card(),RDChannels::LibraryOutput);
+  lib_channels->setPort(lib_output_card->port(),RDChannels::LibraryOutput);
   lib_lib->setMaxLength(QTime().msecsTo(lib_maxlength_time->time()));
   lib_lib->setVoxThreshold(100*lib_vox_spin->value());
   lib_lib->setTrimThreshold(100*lib_trim_spin->value());

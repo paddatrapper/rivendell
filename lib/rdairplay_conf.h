@@ -51,6 +51,7 @@ class RDAirPlayConf
   enum GpioType {EdgeGpio=0,LevelGpio=1};
   RDAirPlayConf(const QString &station,const QString &tablename);
   QString station() const;
+  /*
   int card(Channel chan) const;
   void setCard(Channel chan,int card) const;
   int port(Channel chan) const;
@@ -78,6 +79,7 @@ class RDAirPlayConf
   void setStopGpoMatrix(Channel chan,int matrix) const;
   int stopGpoLine(Channel chan) const;
   void setStopGpoLine(Channel chan,int line) const;
+  */
   int segueLength() const;
   void setSegueLength(int len) const;
   int transLength() const;
@@ -88,6 +90,8 @@ class RDAirPlayConf
   void setOpMode(int mach,RDAirPlayConf::OpMode mode) const;
   RDAirPlayConf::OpMode logStartMode(int mach) const;
   void setLogStartMode(int mach,RDAirPlayConf::OpMode mode) const;
+  unsigned logQuantity() const;
+  void setLogQuantity(unsigned quan) const;
   int pieCountLength() const;
   void setPieCountLength(int len) const;
   RDAirPlayConf::PieEndPoint pieEndPoint() const;

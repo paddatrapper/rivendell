@@ -46,6 +46,7 @@
 #include <rdcmd_switch.h>
 #include <rddb.h>
 #include <rddbheartbeat.h>
+#include <rdchannels.h>
 
 #include <globals.h>
 #include <login.h>
@@ -75,6 +76,7 @@
 //
 RDRipc *rdripc;
 RDConfig *admin_config;
+RDChannels *admin_channels;
 RDUser *admin_user;
 RDStation *admin_station;
 RDSystem *admin_system;
@@ -183,6 +185,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   rdripc->connectHost("localhost",RIPCD_TCP_PORT,temp);
   admin_station=new RDStation(admin_config->stationName(),this);
   admin_system=new RDSystem();
+  admin_channels=new RDChannels(admin_config->stationName());
 
   //
   // Log In
@@ -209,7 +212,8 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   admin_cart_dialog=
     new RDCartDialog(&admin_filter,&admin_group,&admin_schedcode,NULL,
-		     rdripc,admin_station,admin_system,admin_config,this);
+		     rdripc,admin_station,admin_system,admin_channels,
+		     admin_config,this);
 
   //
   // User Labels

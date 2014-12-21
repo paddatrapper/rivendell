@@ -56,6 +56,7 @@
 #include <rdcmd_switch.h>
 #include <rdcatch_connect.h>
 #include <rdsettings.h>
+#include <rdchannels.h>
 
 #include <catch_event.h>
 
@@ -259,6 +260,7 @@ class MainObject : public QObject
   QTimer *catch_xload_timer;
   QString catch_temp_dir;
   RDCatchConf *catch_conf;
+  RDChannels *catch_channels;
 };
 
 

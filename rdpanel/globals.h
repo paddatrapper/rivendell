@@ -29,6 +29,7 @@
 #include <rduser.h>
 #include <rdripc.h>
 #include <rdcart_dialog.h>
+#include <rdchannels.h>
 
 //
 // Global Resources
@@ -40,6 +41,6 @@ extern RDAudioPort *rdaudioport_conf;
 extern RDUser *rduser;
 extern RDRipc *rdripc;
 extern RDCartDialog *panel_cart_dialog;
-
+extern RDChannels *rdchannels;
 
 #endif  // GLOBALS_H

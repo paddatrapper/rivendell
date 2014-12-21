@@ -109,6 +109,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   panel_station=new RDStation(panel_config->stationName());
   panel_system=new RDSystem();
+  panel_channels=new RDChannels(panel_config->stationName());
 
   //
   // RDAirPlay Configuration
@@ -149,12 +150,13 @@ MainWidget::MainWidget(QWidget *parent)
   //
   panel_cart_dialog=new RDCartDialog(&panel_filter,&panel_group,
 				     &panel_schedcode,panel_cae,panel_ripc,
-				     panel_station,panel_system,panel_config,
-				     this);
+				     panel_station,panel_system,panel_channels,
+				     panel_config,this);
   panel_slot_dialog=new RDSlotDialog(tr("RDCartSlots"),this);
-  panel_cue_dialog=new RDCueEditDialog(panel_cae,panel_station->cueCard(),
-				       panel_station->cuePort(),
-				       tr("RDCartSlots"),this);
+  panel_cue_dialog=
+    new RDCueEditDialog(panel_cae,panel_channels->card(RDChannels::CueOutput),
+			panel_channels->port(RDChannels::CueOutput),
+			tr("RDCartSlots"),this);
 
   //
   // Cart Slots
@@ -167,7 +169,7 @@ MainWidget::MainWidget(QWidget *parent)
 				 panel_station,panel_config,panel_svcs_dialog,
 				 panel_slot_dialog,panel_cart_dialog,
 				 panel_cue_dialog,tr("RDCartSlots"),
-				 panel_airplay_conf,this));
+				 panel_airplay_conf,panel_channels,this));
       panel_slots.back()->
 	setGeometry(10+i*(panel_slots.back()->sizeHint().width()+10),
 		    10+j*(panel_slots.back()->sizeHint().height()+5),

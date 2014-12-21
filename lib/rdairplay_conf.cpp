@@ -65,7 +65,7 @@ QString RDAirPlayConf::station() const
   return air_station;
 }
 
-
+/*
 int RDAirPlayConf::card(RDAirPlayConf::Channel chan) const
 {
   return GetChannelValue("CARD",chan).toInt();
@@ -222,7 +222,7 @@ void RDAirPlayConf::setStopGpoLine(RDAirPlayConf::Channel chan,int line) const
 {
   SetChannelValue("STOP_GPO_LINE",chan,line);
 }
-
+*/
 
 int RDAirPlayConf::segueLength() const
 {
@@ -282,6 +282,18 @@ RDAirPlayConf::OpMode RDAirPlayConf::logStartMode(int mach) const
 void RDAirPlayConf::setLogStartMode(int mach,RDAirPlayConf::OpMode mode) const
 {
   SetLogMode("START_MODE",mach,mode);
+}
+
+
+unsigned RDAirPlayConf::logQuantity() const
+{
+  return RDGetSqlValue(air_tablename,"ID",air_id,"LOG_QUANTITY").toInt();
+}
+
+
+void RDAirPlayConf::setLogQuantity(unsigned quan) const
+{
+  SetRow("LOG_QUANTITY",quan);
 }
 
 

@@ -81,6 +81,7 @@ RDConfig *lib_config;
 RDUser *lib_user;
 bool audio_changed;
 RDSystem *lib_system=NULL;
+RDChannels *rdchannels;
 
 //
 // Prototypes
@@ -211,8 +212,9 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   rdlibrary_conf=new RDLibraryConf(lib_config->stationName(),0);
   rdstation_conf=new RDStation(lib_config->stationName());
   lib_filter_mode=rdstation_conf->filterMode();
+  rdchannels=new RDChannels(lib_config->stationName());
   rdaudioport_conf=new RDAudioPort(lib_config->stationName(),
-				   rdlibrary_conf->inputCard());
+				   rdchannels->card(RDChannels::LibraryInput));
   rdripc=new RDRipc(lib_config->stationName());
   connect(rdripc,SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
   connect(rdripc,SIGNAL(userChanged()),this,SLOT(userData()));

@@ -34,6 +34,7 @@
 #include <rdconfig.h>
 #include <rduser.h>
 #include <rdsystem.h>
+#include <rdchannels.h>
 
 extern RDLibraryConf *rdlibrary_conf;
 extern RDStation *rdstation_conf;
@@ -45,6 +46,7 @@ extern RDCut *cut_clipboard;
 extern RDConfig *lib_config;
 extern RDUser *lib_user;
 extern RDSystem *lib_system;
+extern RDChannels *rdchannels;
 
 extern bool import_running;
 extern bool ripper_running;

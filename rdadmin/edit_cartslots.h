@@ -30,14 +30,15 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 
+#include <rdchannels.h>
 #include <rdstation.h>
 
 class EditCartSlots : public QDialog
 {
   Q_OBJECT
  public:
-  EditCartSlots(RDStation *station,RDStation *cae_station,
-		QWidget *parent=0,const char *name=0);
+  EditCartSlots(RDStation *station,RDStation *cae_station,RDChannels *chans,
+		QWidget *parent=0);
   ~EditCartSlots();
   QSize sizeHint() const;
  
@@ -58,6 +59,7 @@ class EditCartSlots : public QDialog
   void WriteSlot(unsigned slotnum);
   RDStation *edit_station;
   RDStation *edit_cae_station;
+  RDChannels *edit_channels;
   QLabel *edit_slot_columns_label;
   QSpinBox *edit_slot_columns_spin;
   QLabel *edit_slot_rows_label;

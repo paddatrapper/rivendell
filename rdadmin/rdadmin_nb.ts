@@ -2205,27 +2205,27 @@ GPIOs</source>
     </message>
     <message>
         <source>Main Log Output 1</source>
-        <translation>Hovudlogg-utgang 1</translation>
+        <translation type="obsolete">Hovudlogg-utgang 1</translation>
     </message>
     <message>
         <source>Start RML:</source>
-        <translation>Start RML:</translation>
+        <translation type="obsolete">Start RML:</translation>
     </message>
     <message>
         <source>Stop RML:</source>
-        <translation>Slutt-RML:</translation>
+        <translation type="obsolete">Slutt-RML:</translation>
     </message>
     <message>
         <source>Main Log Output 2</source>
-        <translation>Hovudloggutgang 2</translation>
+        <translation type="obsolete">Hovudloggutgang 2</translation>
     </message>
     <message>
         <source>Aux Log 1 Output</source>
-        <translation>Hjelpelogg 1-utgang</translation>
+        <translation type="obsolete">Hjelpelogg 1-utgang</translation>
     </message>
     <message>
         <source>Aux Log 2 Output</source>
-        <translation>Hjelpelogg 2-utgang</translation>
+        <translation type="obsolete">Hjelpelogg 2-utgang</translation>
     </message>
     <message>
         <source>Audition/Cue Output</source>
@@ -2233,23 +2233,23 @@ GPIOs</source>
     </message>
     <message>
         <source>SoundPanel First Play Output</source>
-        <translation>Fyrste spelutgang for Lydpanel</translation>
+        <translation type="obsolete">Fyrste spelutgang for Lydpanel</translation>
     </message>
     <message>
         <source>SoundPanel Second Play Output</source>
-        <translation>Andre speleutgang for lydpanelet</translation>
+        <translation type="obsolete">Andre speleutgang for lydpanelet</translation>
     </message>
     <message>
         <source>SoundPanel Third Play Output</source>
-        <translation>Tredje speleutgang for lydpanelet</translation>
+        <translation type="obsolete">Tredje speleutgang for lydpanelet</translation>
     </message>
     <message>
         <source>SoundPanel Fourth Play Output</source>
-        <translation>Fjerde speleutgang for lydpanelet</translation>
+        <translation type="obsolete">Fjerde speleutgang for lydpanelet</translation>
     </message>
     <message>
         <source>SoundPanel Fifth and Later Play Output</source>
-        <translation>Femte og høgare speleutgangar for lydpanelet</translation>
+        <translation type="obsolete">Femte og høgare speleutgangar for lydpanelet</translation>
     </message>
     <message>
         <source>Manual Segue:</source>
@@ -2507,11 +2507,6 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Show Hour Selector</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit
-GPIOs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3004,10 +2999,6 @@ configured to run the CAE service in order to populate the audio resources datab
     <message>
         <source>SoundPanel Fifth and Later Play Output</source>
         <translation type="unfinished">Femte og høgare speleutgangar for lydpanelet</translation>
-    </message>
-    <message>
-        <source>SoundPanel Cue Output</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Display Settings</source>

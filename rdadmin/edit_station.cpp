@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Workstation Configuration
 //
-//   (C) Copyright 2002-2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_station.cpp,v 1.57.4.12 2014/03/05 17:59:39 cvs Exp $
+//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -89,6 +87,11 @@ EditStation::EditStation(QString sname,QWidget *parent,const char *name)
   station_catch_connect=new RDCatchConnect(0,this);
   station_catch_connect->connectHost(station_station->address().toString(),
 				     RDCATCHD_TCP_PORT,temp);
+
+  //
+  // Channel Assignments
+  //
+  station_channels=new RDChannels(sname);
 
   //
   // Validators
@@ -549,17 +552,20 @@ EditStation::EditStation(QString sname,QWidget *parent,const char *name)
   if(cue_station!=station_station) {
     delete cue_station;
   }
-  station_cue_sel->setCard(station_station->cueCard());
-  station_cue_sel->setPort(station_station->cuePort());
-  if(station_station->cueStartCart()>0) {
+  station_cue_sel->setCard(station_channels->card(RDChannels::CueOutput,0));
+  station_cue_sel->setPort(station_channels->port(RDChannels::CueOutput,0));
+  if(station_channels->cart(RDChannels::Start,RDChannels::CueOutput,0)>0) {
     station_start_cart_edit->
-      setText(QString().sprintf("%06u",station_station->cueStartCart()));
-  }
-  if(station_station->cueStopCart()>0) {
-    station_stop_cart_edit->
-      setText(QString().sprintf("%06u",station_station->cueStopCart()));
-  }
+      setText(QString().sprintf("%06u",station_channels->
+			     cart(RDChannels::Start,RDChannels::CueOutput,0)));
 
+  }
+  if(station_channels->cart(RDChannels::Stop,RDChannels::CueOutput,0)>0) {
+    station_stop_cart_edit->
+      setText(QString().sprintf("%06u",station_channels->
+			     cart(RDChannels::Stop,RDChannels::CueOutput,0)));
+
+  }
   sql="select LOGIN_NAME from USERS";
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -602,9 +608,7 @@ EditStation::EditStation(QString sname,QWidget *parent,const char *name)
   }
 
   station_http_station_box->insertItem("localhost");
-  //station_http_station_box->insertItem(RD_RDSELECT_LABEL);
   station_cae_station_box->insertItem("localhost");
-  //station_cae_station_box->insertItem(RD_RDSELECT_LABEL);
   sql=QString().sprintf("select NAME from STATIONS \
                          where NAME!=\"%s\" order by NAME",
 			(const char *)RDEscapeString(sname));
@@ -637,6 +641,7 @@ EditStation::~EditStation()
 {
   delete station_station;
   delete station_cae_station;
+  delete station_channels;
 }
 
 
@@ -773,10 +778,12 @@ void EditStation::okData()
     station_station->setHeartbeatCart(0);
     station_station->setHeartbeatInterval(0);
   }
-  station_station->setCueCard(station_cue_sel->card());
-  station_station->setCuePort(station_cue_sel->port());
-  station_station->setCueStartCart(station_start_cart_edit->text().toInt());
-  station_station->setCueStopCart(station_stop_cart_edit->text().toInt());
+  station_channels->setCard(station_cue_sel->card(),RDChannels::CueOutput,0);
+  station_channels->setPort(station_cue_sel->port(),RDChannels::CueOutput,0);
+  station_channels->setCart(station_start_cart_edit->text().toInt(),
+			    RDChannels::Start,RDChannels::CueOutput,0);
+  station_channels->setCart(station_stop_cart_edit->text().toInt(),
+			    RDChannels::Stop,RDChannels::CueOutput,0);
   station_station->setDescription(station_description_edit->text());
   station_station->setDefaultName(station_default_name_edit->currentText());
   station_station->
@@ -831,8 +838,9 @@ void EditStation::cancelData()
 
 void EditStation::editLibraryData()
 {
-  EditRDLibrary *edit_conf=
-    new EditRDLibrary(station_station,station_cae_station);
+  EditRDLibrary *edit_conf=new EditRDLibrary(station_station,
+					     station_cae_station,
+					     station_channels,this);
   edit_conf->exec();
   delete edit_conf;
 }
@@ -840,7 +848,8 @@ void EditStation::editLibraryData()
 
 void EditStation::editDeckData()
 {
-  EditDecks *edit_conf=new EditDecks(station_station,station_cae_station,this);
+  EditDecks *edit_conf=
+    new EditDecks(station_station,station_cae_station,station_channels,this);
   if(edit_conf->exec()==0) {
     station_catch_connect->reload();
   }
@@ -851,7 +860,8 @@ void EditStation::editDeckData()
 void EditStation::editAirPlayData()
 {
   EditRDAirPlay *edit_conf=
-    new EditRDAirPlay(station_station,station_cae_station);
+    new EditRDAirPlay(station_station,station_cae_station,station_channels,
+		      this);
   edit_conf->exec();
   delete edit_conf;
 }
@@ -860,7 +870,7 @@ void EditStation::editAirPlayData()
 void EditStation::editPanelData()
 {
   EditRDPanel *edit_conf=
-    new EditRDPanel(station_station,station_cae_station,this);
+    new EditRDPanel(station_station,station_cae_station,station_channels,this);
   edit_conf->exec();
   delete edit_conf;
 }
@@ -869,7 +879,8 @@ void EditStation::editPanelData()
 void EditStation::editLogEditData()
 {
   EditRDLogedit *edit_conf=
-    new EditRDLogedit(station_station,station_cae_station);
+    new EditRDLogedit(station_station,station_cae_station,
+		      station_channels,this);
   edit_conf->exec();
   delete edit_conf;
 }
@@ -878,7 +889,8 @@ void EditStation::editLogEditData()
 void EditStation::editCartSlotsData()
 {
   EditCartSlots *edit_conf=
-    new EditCartSlots(station_station,station_cae_station,this);
+    new EditCartSlots(station_station,station_cae_station,
+		      station_channels,this);
   edit_conf->exec();
   delete edit_conf;
 }

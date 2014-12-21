@@ -2213,27 +2213,27 @@ GPIOs</source>
     </message>
     <message>
         <source>Main Log Output 1</source>
-        <translation>Haupt-Log-Ausgang 1</translation>
+        <translation type="obsolete">Haupt-Log-Ausgang 1</translation>
     </message>
     <message>
         <source>Start RML:</source>
-        <translation>Start-RML:</translation>
+        <translation type="obsolete">Start-RML:</translation>
     </message>
     <message>
         <source>Stop RML:</source>
-        <translation>Stop-RML:</translation>
+        <translation type="obsolete">Stop-RML:</translation>
     </message>
     <message>
         <source>Main Log Output 2</source>
-        <translation>Haupt-Log-Ausgang 2</translation>
+        <translation type="obsolete">Haupt-Log-Ausgang 2</translation>
     </message>
     <message>
         <source>Aux Log 1 Output</source>
-        <translation>Aux Log1 Ausgang</translation>
+        <translation type="obsolete">Aux Log1 Ausgang</translation>
     </message>
     <message>
         <source>Aux Log 2 Output</source>
-        <translation>Aux Log 2 Ausgang</translation>
+        <translation type="obsolete">Aux Log 2 Ausgang</translation>
     </message>
     <message>
         <source>Audition/Cue Output</source>
@@ -2241,23 +2241,23 @@ GPIOs</source>
     </message>
     <message>
         <source>SoundPanel First Play Output</source>
-        <translation>SoundPanel Erster Ausgang</translation>
+        <translation type="obsolete">SoundPanel Erster Ausgang</translation>
     </message>
     <message>
         <source>SoundPanel Second Play Output</source>
-        <translation>SoundPanel zweiter Ausgang</translation>
+        <translation type="obsolete">SoundPanel zweiter Ausgang</translation>
     </message>
     <message>
         <source>SoundPanel Third Play Output</source>
-        <translation>SoundPanel dritter Ausgang</translation>
+        <translation type="obsolete">SoundPanel dritter Ausgang</translation>
     </message>
     <message>
         <source>SoundPanel Fourth Play Output</source>
-        <translation>SoundPanel vierter Ausgang</translation>
+        <translation type="obsolete">SoundPanel vierter Ausgang</translation>
     </message>
     <message>
         <source>SoundPanel Fifth and Later Play Output</source>
-        <translation>Sound Panel fünfter und weitere Ausgänge</translation>
+        <translation type="obsolete">Sound Panel fünfter und weitere Ausgänge</translation>
     </message>
     <message>
         <source>Manual Segue:</source>
@@ -2511,11 +2511,6 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Show Hour Selector</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit
-GPIOs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3008,10 +3003,6 @@ configured to run the CAE service in order to populate the audio resources datab
     <message>
         <source>SoundPanel Fifth and Later Play Output</source>
         <translation type="unfinished">Sound Panel fünfter und weitere Ausgänge</translation>
-    </message>
-    <message>
-        <source>SoundPanel Cue Output</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Display Settings</source>

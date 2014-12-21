@@ -33,13 +33,13 @@
 #include <rdstation.h>
 #include <rdlogedit_conf.h>
 #include <rdcardselector.h>
-
+#include <rdchannels.h>
 
 class EditRDLogedit : public QDialog
 {
   Q_OBJECT
  public:
-  EditRDLogedit(RDStation *station,RDStation *cae_station,
+  EditRDLogedit(RDStation *station,RDStation *cae_station,RDChannels *chans,
 		QWidget *parent=0,const char *name=0);
   ~EditRDLogedit();
   QSize sizeHint() const;
@@ -57,6 +57,7 @@ class EditRDLogedit : public QDialog
  private:
   void ShowBitRates(int layer,int rate);
   RDLogeditConf *lib_lib;
+  RDChannels *lib_channels;
   RDCardSelector *lib_input_card;
   RDCardSelector *lib_output_card;
   QComboBox *lib_format_box;

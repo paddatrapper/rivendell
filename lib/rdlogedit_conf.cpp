@@ -53,54 +53,6 @@ QString RDLogeditConf::station() const
 }
 
 
-int RDLogeditConf::inputCard() const
-{
-  return RDGetSqlValue("RDLOGEDIT","STATION",lib_station,"INPUT_CARD").toInt();
-}
-
-
-int RDLogeditConf::inputPort() const
-{
-  return RDGetSqlValue("RDLOGEDIT","STATION",lib_station,"INPUT_PORT").toInt();
-}
-
-
-void RDLogeditConf::setInputCard(int input) const
-{
-  SetRow("INPUT_CARD",input);
-}
-
-
-void RDLogeditConf::setInputPort(int input) const
-{
-  SetRow("INPUT_PORT",input);
-}
-
-
-int RDLogeditConf::outputCard() const
-{
-  return RDGetSqlValue("RDLOGEDIT","STATION",lib_station,"OUTPUT_CARD").toInt();
-}
-
-
-int RDLogeditConf::outputPort() const
-{
-  return RDGetSqlValue("RDLOGEDIT","STATION",lib_station,"OUTPUT_PORT").toInt();
-}
-
-
-void RDLogeditConf::setOutputCard(int output) const
-{
-  SetRow("OUTPUT_CARD",output);
-}
-
-
-void RDLogeditConf::setOutputPort(int output) const
-{
-  SetRow("OUTPUT_PORT",output);
-}
-
-
 unsigned RDLogeditConf::format() const
 {
   return RDGetSqlValue("RDLOGEDIT","STATION",lib_station,"FORMAT").toUInt();
@@ -184,56 +136,6 @@ unsigned RDLogeditConf::tailPreroll() const
 void RDLogeditConf::setTailPreroll(unsigned length) const
 {
   SetRow("TAIL_PREROLL",length);
-}
-
-
-unsigned RDLogeditConf::startCart() const
-{
-  return RDGetSqlValue("RDLOGEDIT","STATION",lib_station,"START_CART").toUInt();
-}
-
-
-void RDLogeditConf::setStartCart(unsigned cartnum) const
-{
-  SetRow("START_CART",cartnum);
-}
-
-
-unsigned RDLogeditConf::endCart() const
-{
-  return RDGetSqlValue("RDLOGEDIT","STATION",lib_station,"END_CART").toUInt();
-}
-
-
-void RDLogeditConf::setEndCart(unsigned cartnum) const
-{
-  SetRow("END_CART",cartnum);
-}
-
-
-unsigned RDLogeditConf::recStartCart() const
-{
-  return RDGetSqlValue("RDLOGEDIT","STATION",lib_station,"REC_START_CART").
-    toUInt();
-}
-
-
-void RDLogeditConf::setRecStartCart(unsigned cartnum) const
-{
-  SetRow("REC_START_CART",cartnum);
-}
-
-
-unsigned RDLogeditConf::recEndCart() const
-{
-  return RDGetSqlValue("RDLOGEDIT","STATION",lib_station,"REC_END_CART").
-    toUInt();
-}
-
-
-void RDLogeditConf::setRecEndCart(unsigned cartnum) const
-{
-  SetRow("REC_END_CART",cartnum);
 }
 
 
