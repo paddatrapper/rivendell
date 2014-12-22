@@ -630,6 +630,8 @@ void EditDecks::WriteRecord(int chan)
 			   RDChannels::CatchOutput,chan-129);
     edit_channels->setPort(edit_play_selector->port(),
 			   RDChannels::CatchOutput,chan-129);
+    edit_play_deck->setActive((edit_play_selector->card()>=0)&&
+			      (edit_play_selector->port()>=0));
   }
   if((chan>0)&&(chan<(MAX_DECKS+1))) {     // Record Deck
     edit_channels->setCard(edit_record_selector->card(),
@@ -652,12 +654,12 @@ void EditDecks::WriteRecord(int chan)
       }
     }
     switch(edit_format_box->currentItem()) {
-	case 0:
-	  edit_record_deck->setDefaultFormat(RDSettings::Pcm16);
-	  break;
-	case 1:
-	  edit_record_deck->setDefaultFormat(RDSettings::MpegL2);
-	  break;
+    case 0:
+      edit_record_deck->setDefaultFormat(RDSettings::Pcm16);
+      break;
+    case 1:
+      edit_record_deck->setDefaultFormat(RDSettings::MpegL2);
+      break;
     }
     edit_record_deck->setDefaultChannels(edit_channels_box->currentItem()+1);
     sscanf((const char *)edit_bitrate_box->currentText(),"%d",&temp);
@@ -667,6 +669,10 @@ void EditDecks::WriteRecord(int chan)
     edit_record_deck->setSwitchOutput(GetOutput());
     edit_record_deck->setSwitchDelay(100*edit_swdelay_box->value());
     edit_record_deck->setDefaultThreshold(-edit_threshold_box->value()*100);
+    edit_record_deck->setActive((edit_record_selector->card()>=0)&&
+				(edit_record_selector->port()>=0));
+    edit_record_deck->setMonitorActive((edit_record_selector->card()>=0)&&
+				       (edit_monitor_box->value()>=0));
   }
 }
 

@@ -2,10 +2,7 @@
 ##
 ## docs/tables/automake.am for Rivendell
 ##
-## (C) Copyright 2002-2006 Fred Gleason <fredg@salemradiolabs.com>
-##
-##      $Id: Makefile.am,v 1.16.8.5.2.1 2014/06/03 18:23:34 cvs Exp $
-##      $Date: 2014/06/03 18:23:34 $
+## (C) Copyright 2002-2014 Fred Gleason <fredg@salemradiolabs.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -55,12 +52,10 @@ EXTRA_DIST = audio_perms.txt\
              nownext_plugins.txt\
              panels.txt\
              panel_names.txt\
-             rdairplay_channels.txt\
              rd_airplay.txt\
              rd_catch.txt\
              rd_library.txt\
              rd_logedit.txt\
-             rdpanel_channels.txt\
              recordings.txt\
              repl_cart_state.txt\
              repl_cut_state.txt\

@@ -2,9 +2,7 @@
 //
 // The Event Schedule Manager for Rivendell.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcatch.cpp,v 1.127.4.8 2014/02/11 23:46:30 cvs Exp $
+//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -308,8 +306,8 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
 		  catch_config->password());
     catch_station_count++;
 
-    sql=QString().sprintf("select CHANNEL,MON_PORT_NUMBER from DECKS \
-where (CARD_NUMBER!=-1)&&(PORT_NUMBER!=-1)&&(CHANNEL>0)&&(STATION_NAME=\"%s\") \
+    sql=QString().sprintf("select CHANNEL from DECKS \
+where (IS_ACTIVE=\"Y\")&&(CHANNEL>0)&&(STATION_NAME=\"%s\") \
 order by CHANNEL",(const char *)q->value(0).toString().lower());
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
@@ -328,7 +326,8 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
       catch_monitor_vbox->addWidget(catch_monitor.back()->deckMon());
 
       catch_monitor.back()->deckMon()->
-	enableMonitorButton((q1->value(1).toInt()>=0)&&
+	enableMonitorButton((catch_channels->
+			     port(RDChannels::CatchMonitor)>=0)&&
 			    (catch_config->stationName().lower()==
 			     q->value(0).toString().lower()));
       catch_monitor.back()->deckMon()->show();
@@ -953,7 +952,6 @@ void MainWidget::statusChangedData(int serial,unsigned chan,
 				   RDDeck::Status status,int id,
 				   const QString &cutname)
 {
-  // printf("statusChangedData(%d,%u,%d,%d)\n",serial,chan,status,id);
   int mon=GetMonitor(serial,chan);
   if(id>0) {
     RDListViewItem *item=GetItem(id);

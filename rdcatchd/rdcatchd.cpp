@@ -307,7 +307,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   RDSetMixerPorts(catch_config->stationName(),catch_cae);
   sql=QString().sprintf("select CHANNEL from DECKS \
                          where (STATION_NAME=\"%s\")&&\
-                         (CARD_NUMBER!=-1)&&(CHANNEL>0)&&(CHANNEL<9)",
+                         (IS_ACTIVE=\"Y\")&&(CHANNEL>0)&&(CHANNEL<9)",
 			(const char *)catch_config->stationName());
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -325,7 +325,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   sql=QString().sprintf("select CHANNEL from DECKS\
                          where (STATION_NAME=\"%s\")&&(CHANNEL<=%d)&&\
-                         (CARD_NUMBER>=0)&&(MON_PORT_NUMBER>=0)&&\
+                         (IS_ACTIVE=\"Y\")&&(MON_IS_ACTIVE=\"Y\")&&\
                          (DEFAULT_MONITOR_ON=\"Y\")",
 			(const char *)catch_config->stationName(),
 			MAX_DECKS);
@@ -1975,7 +1975,7 @@ void MainObject::LoadDeckList()
   }
   QString sql=QString().sprintf("select CHANNEL from DECKS \
                                  where (STATION_NAME=\"%s\")&&\
-                                 (CARD_NUMBER!=-1)&&(CHANNEL>0)&&(CHANNEL<9)",
+                                 (IS_ACTIVE=\"Y\")&&(CHANNEL>0)&&(CHANNEL<9)",
 				(const char *)catch_config->stationName());
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {

@@ -333,6 +333,23 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   }
 
   //
+  // Fixup Single Port GPIO Channel Assignments
+  //
+  for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+    if(((rdchannels->card(RDChannels::AirplayLogOutput,i,0)==
+	 rdchannels->card(RDChannels::AirplayLogOutput,i,1))&&
+	(rdchannels->port(RDChannels::AirplayLogOutput,i,0)==
+	 rdchannels->port(RDChannels::AirplayLogOutput,i,1)))||
+       (rdchannels->card(RDChannels::AirplayLogOutput,i,0)<0)||
+       (rdchannels->port(RDChannels::AirplayLogOutput,i,0)<0)) {
+      air_log_start_gpi_matrices[i][1]=-1;
+      air_log_start_gpo_matrices[i][1]=-1;
+      air_log_stop_gpi_matrices[i][1]=air_log_stop_gpi_matrices[i][0];
+      air_log_stop_gpo_matrices[i][1]=-1;
+    }
+  }
+
+  //
   // Load SoundPanel GPIO Channel Configuration
   //
   for(int i=0;i<PANEL_MAX_OUTPUTS;i++) {
@@ -370,64 +387,6 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
     }
   }
 
-  /*
-  for(unsigned i=0;i<RDAirPlayConf::LastChannel;i++) {
-    RDAirPlayConf::Channel chan=(RDAirPlayConf::Channel)i;
-    air_start_gpi_matrices[i]=rdairplay_conf->startGpiMatrix(chan);
-    air_start_gpi_lines[i]=rdairplay_conf->startGpiLine(chan)-1;
-    air_start_gpo_matrices[i]=rdairplay_conf->startGpoMatrix(chan);
-    air_start_gpo_lines[i]=rdairplay_conf->startGpoLine(chan)-1;
-    air_stop_gpi_matrices[i]=rdairplay_conf->stopGpiMatrix(chan);
-    air_stop_gpi_lines[i]=rdairplay_conf->stopGpiLine(chan)-1;
-    air_stop_gpo_matrices[i]=rdairplay_conf->stopGpoMatrix(chan);
-    air_stop_gpo_lines[i]=rdairplay_conf->stopGpoLine(chan)-1;
-    air_channel_gpio_types[i]=rdairplay_conf->gpioType(chan);
-    air_audio_channels[i]=
-      AudioChannel(rdairplay_conf->card(chan),rdairplay_conf->port(chan));
-
-    if((rdairplay_conf->card(chan)>=0)&&(rdairplay_conf->port(chan)>=0)) {
-      int achan=
-	AudioChannel(rdairplay_conf->card(chan),rdairplay_conf->port(chan));
-      if(air_channel_timers[0][achan]==NULL) {
-	air_channel_timers[0][achan]=new QTimer(this);
-	air_channel_timers[1][achan]=new QTimer(this);
-      }
-    }
-  }
-  */
-  //
-  // Fixup Single Port GPIO Channel Assignments
-  //
-  for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    if(((rdchannels->card(RDChannels::AirplayLogOutput,i,0)==
-	 rdchannels->card(RDChannels::AirplayLogOutput,i,1))&&
-	(rdchannels->port(RDChannels::AirplayLogOutput,i,0)==
-	 rdchannels->port(RDChannels::AirplayLogOutput,i,1)))||
-       (rdchannels->card(RDChannels::AirplayLogOutput,i,0)<0)||
-       (rdchannels->port(RDChannels::AirplayLogOutput,i,0)<0)) {
-      air_log_start_gpi_matrices[i][1]=-1;
-      air_log_start_gpo_matrices[i][1]=-1;
-      air_log_stop_gpi_matrices[i][1]=air_log_stop_gpi_matrices[i][0];
-      air_log_stop_gpo_matrices[i][1]=-1;
-    }
-  }
-
-  /*
-  //
-  // Fixup Main Log GPIO Channel Assignments
-  //
-  if(((rdairplay_conf->card(RDAirPlayConf::MainLog1Channel)==
-      rdairplay_conf->card(RDAirPlayConf::MainLog2Channel))&&
-     (rdairplay_conf->port(RDAirPlayConf::MainLog1Channel)==
-      rdairplay_conf->port(RDAirPlayConf::MainLog2Channel)))||
-     rdairplay_conf->card(RDAirPlayConf::MainLog2Channel)<0) {
-    air_start_gpi_matrices[RDAirPlayConf::MainLog2Channel]=-1;
-    air_start_gpo_matrices[RDAirPlayConf::MainLog2Channel]=-1;
-    air_stop_gpi_matrices[RDAirPlayConf::MainLog2Channel]=
-      air_stop_gpi_matrices[RDAirPlayConf::MainLog1Channel];
-    air_stop_gpo_matrices[RDAirPlayConf::MainLog2Channel]=-1;
-  }
-  */
   //
   // CAE Connection
   //
@@ -721,7 +680,6 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   if (rdairplay_conf->panels(RDAirPlayConf::StationPanel) || 
       rdairplay_conf->panels(RDAirPlayConf::UserPanel)){
-    int card=-1;
     air_panel=
       new RDSoundPanel(AIR_PANEL_BUTTON_COLUMNS,AIR_PANEL_BUTTON_ROWS,
 		       rdairplay_conf->panels(RDAirPlayConf::StationPanel),
@@ -892,7 +850,6 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
     air_log_button[0]->setPalette (active_color);
     air_log_list[0]->show();
   }	  
-
 
   //
   // Button Log
@@ -2538,32 +2495,4 @@ bool MainWidget::AssertChannelLock(int dir,int achan)
 int MainWidget::AudioChannel(int card,int port) const
 {
   return RD_MAX_PORTS*card+port;
-}
-
-
-RDAirPlayConf::Channel MainWidget::PanelChannel(int mport) const
-{
-  RDAirPlayConf::Channel chan=RDAirPlayConf::SoundPanel1Channel;
-  switch(mport) {
-  case 0:
-    chan=RDAirPlayConf::SoundPanel1Channel;
-    break;
-
-  case 1:
-    chan=RDAirPlayConf::SoundPanel2Channel;
-    break;
-
-  case 2:
-    chan=RDAirPlayConf::SoundPanel3Channel;
-    break;
-
-  case 3:
-    chan=RDAirPlayConf::SoundPanel4Channel;
-    break;
-
-  case 4:
-    chan=RDAirPlayConf::SoundPanel5Channel;
-    break;
-  }
-  return chan;
 }

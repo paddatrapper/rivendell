@@ -18,6 +18,3 @@ DEFAULT_CART_NUMBER  int(11) signed    -1=Previous, 0=None, >0=Cart
 HOOK_MODE            int(11) signed
 DEFAULT_HOOK_MODE    int(11) signed    -1=Previous, 0=Off, 1=On
 SERVICE_NAME         char(10)          From SERVICES.NAME
-CARD                 int(11) signed
-INPUT_PORT           int(11) signed
-OUTPUT_PORT          int(11) signed

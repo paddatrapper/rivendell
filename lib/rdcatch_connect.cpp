@@ -65,7 +65,7 @@ RDCatchConnect::~RDCatchConnect()
 
 
 void RDCatchConnect::connectHost(QString hostname,Q_UINT16 hostport,
-			       QString password)
+				 QString password)
 {
   cc_password=password;
   cc_socket->connectToHost(hostname,hostport);

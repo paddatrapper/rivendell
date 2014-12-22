@@ -44,42 +44,8 @@ class RDAirPlayConf
   enum PanelType {StationPanel=0,UserPanel=1};
   enum ExitCode {ExitClean=0,ExitDirty=1};
   enum StartMode {StartEmpty=0,StartPrevious=1,StartSpecified=2};
-  enum Channel {MainLog1Channel=0,MainLog2Channel=1,SoundPanel1Channel=2,
-		CueChannel=3,AuxLog1Channel=4,AuxLog2Channel=5,
-		SoundPanel2Channel=6,SoundPanel3Channel=7,
-		SoundPanel4Channel=8,SoundPanel5Channel=9,LastChannel=10};
-  enum GpioType {EdgeGpio=0,LevelGpio=1};
   RDAirPlayConf(const QString &station,const QString &tablename);
   QString station() const;
-  /*
-  int card(Channel chan) const;
-  void setCard(Channel chan,int card) const;
-  int port(Channel chan) const;
-  void setPort(Channel chan,int port) const;
-  QString startRml(Channel chan) const;
-  void setStartRml(Channel chan,QString str) const;
-  QString stopRml(Channel chan) const;
-  void setStopRml(Channel chan,QString str) const;
-  RDAirPlayConf::GpioType gpioType(RDAirPlayConf::Channel chan) const;
-  void setGpioType(RDAirPlayConf::Channel chan,RDAirPlayConf::GpioType type) 
-    const;
-  int startGpiMatrix(Channel chan) const;
-  void setStartGpiMatrix(Channel chan,int matrix) const;
-  int startGpiLine(Channel chan) const;
-  void setStartGpiLine(Channel chan,int line) const;
-  int startGpoMatrix(Channel chan) const;
-  void setStartGpoMatrix(Channel chan,int matrix) const;
-  int startGpoLine(Channel chan) const;
-  void setStartGpoLine(Channel chan,int line) const;
-  int stopGpiMatrix(Channel chan) const;
-  void setStopGpiMatrix(Channel chan,int matrix) const;
-  int stopGpiLine(Channel chan) const;
-  void setStopGpiLine(Channel chan,int line) const;
-  int stopGpoMatrix(Channel chan) const;
-  void setStopGpoMatrix(Channel chan,int matrix) const;
-  int stopGpoLine(Channel chan) const;
-  void setStopGpoLine(Channel chan,int line) const;
-  */
   int segueLength() const;
   void setSegueLength(int len) const;
   int transLength() const;
@@ -164,14 +130,10 @@ class RDAirPlayConf
   void setLogNowCart(int lognum,unsigned cartnum) const;
   unsigned logNextCart(int lognum) const;
   void setLogNextCart(int lognum,unsigned cartnum) const;
-  static QString channelText(RDAirPlayConf::Channel chan);
+  //  static QString channelText(RDAirPlayConf::Channel chan);
   static QString logModeText(RDAirPlayConf::OpMode mode);
 
  private:
-  QVariant GetChannelValue(const QString &param,Channel chan) const;
-  void SetChannelValue(const QString &param,Channel chan,int value) const;
-  void SetChannelValue(const QString &param,Channel chan,
-		       const QString &value) const;
   RDAirPlayConf::OpMode GetLogMode(const QString &param,int mach) const;
   void SetLogMode(const QString &param,int mach,
 		  RDAirPlayConf::OpMode mode) const;

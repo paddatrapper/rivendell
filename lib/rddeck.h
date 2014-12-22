@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Record/Play Deck
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddeck.h,v 1.20 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,9 +31,12 @@ class RDDeck
   public:
    enum Status {Offline=0,Idle=1,Ready=2,Recording=3,Waiting=4};
    RDDeck(QString station,unsigned channel,bool create=false);
-   bool isActive() const;
    QString station() const;
    int channel() const;
+   bool isActive() const;
+   void setActive(bool state);
+   bool monitorIsActive() const;
+   void setMonitorActive(bool state);
    bool defaultMonitorOn() const;
    void setDefaultMonitorOn(bool state) const;
    RDSettings::Format defaultFormat() const;

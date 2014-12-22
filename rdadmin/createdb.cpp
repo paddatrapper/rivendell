@@ -979,13 +979,7 @@ bool CreateDb(QString name,QString pwd)
       ID INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,\
       STATION CHAR(40) NOT NULL,\
       INSTANCE INT UNSIGNED NOT NULL,\
-      INPUT_CARD INT DEFAULT 0,\
-      INPUT_STREAM INT DEFAULT 0,\
-      INPUT_PORT INT DEFAULT 0,\
       INPUT_TYPE ENUM('A','D') DEFAULT 'A',\
-      OUTPUT_CARD INT DEFAULT 0,\
-      OUTPUT_STREAM INT DEFAULT 0,\
-      OUTPUT_PORT INT DEFAULT 0,\
       VOX_THRESHOLD INT DEFAULT -5000,\
       TRIM_THRESHOLD INT DEFAULT 0,\
       RECORD_GPI INT DEFAULT -1,\
@@ -1054,10 +1048,8 @@ bool CreateDb(QString name,QString pwd)
       ID INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,\
       STATION_NAME CHAR(64) NOT NULL,\
       CHANNEL INT UNSIGNED NOT NULL,\
-      CARD_NUMBER INT DEFAULT -1,\
-      STREAM_NUMBER INT DEFAULT -1,\
-      PORT_NUMBER INT DEFAULT -1,\
-      MON_PORT_NUMBER int default -1,\
+      IS_ACTIVE enum('N','Y') default 'N',\
+      MON_IS_ACTIVE enum('N','Y') default 'N',\
       DEFAULT_MONITOR_ON enum('N','Y') default 'N',\
       PORT_TYPE ENUM('A','D') DEFAULT 'A',\
       DEFAULT_FORMAT INT DEFAULT 0,\
@@ -1235,46 +1227,6 @@ bool CreateDb(QString name,QString pwd)
       ID int not null primary key auto_increment,\
       STATION char(40) not null,\
       INSTANCE int unsigned not null,\
-      CARD0 int default 0,\
-      PORT0 int default 0,\
-      START_RML0 char(255),\
-      STOP_RML0 char(255),\
-      CARD1 int default 0,\
-      PORT1 int default 0,\
-      START_RML1 char(255),\
-      STOP_RML1 char(255),\
-      CARD2 int default 0,\
-      PORT2 int default 0,\
-      START_RML2 char(255),\
-      STOP_RML2 char(255),\
-      CARD3 int default 0,\
-      PORT3 int default 0,\
-      START_RML3 char(255),\
-      STOP_RML3 char(255),\
-      CARD4 int default 0,\
-      PORT4 int default 0,\
-      START_RML4 char(255),\
-      STOP_RML4 char(255),\
-      CARD5 int default 0,\
-      PORT5 int default 0,\
-      START_RML5 char(255),\
-      STOP_RML5 char(255),\
-      CARD6 int default 0,\
-      PORT6 int default 0,\
-      START_RML6 char(255),\
-      STOP_RML6 char(255),\
-      CARD7 int default 0,\
-      PORT7 int default 0,\
-      START_RML7 char(255),\
-      STOP_RML7 char(255),\
-      CARD8 int default 0,\
-      PORT8 int default 0,\
-      START_RML8 char(255),\
-      STOP_RML8 char(255),\
-      CARD9 int default 0,\
-      PORT9 int default 0,\
-      START_RML9 char(255),\
-      STOP_RML9 char(255),\
       SEGUE_LENGTH int default 250,\
       TRANS_LENGTH int default 50,\
       OP_MODE int default 2,\
@@ -1684,10 +1636,6 @@ bool CreateDb(QString name,QString pwd)
   sql=QString("create table if not exists RDLOGEDIT (\
       ID int unsigned primary key auto_increment,\
       STATION char(64) not null,\
-      INPUT_CARD int default -1,\
-      INPUT_PORT int default 0,\
-      OUTPUT_CARD int default -1,\
-      OUTPUT_PORT int default 0,\
       FORMAT int unsigned default 0,\
       SAMPRATE int unsigned default 44100,\
       LAYER int unsigned default 0,\
@@ -1696,10 +1644,6 @@ bool CreateDb(QString name,QString pwd)
       DEFAULT_CHANNELS int unsigned default 2,\
       MAXLENGTH int default 0,\
       TAIL_PREROLL int unsigned default 2000,\
-      START_CART int unsigned default 0,\
-      END_CART int unsigned default 0,\
-      REC_START_CART int unsigned default 0,\
-      REC_END_CART int unsigned default 0,\
       TRIM_THRESHOLD int default -3000,\
       RIPPER_LEVEL int default -1300,\
       DEFAULT_TRANS_TYPE int default 0,\
@@ -1767,30 +1711,6 @@ bool CreateDb(QString name,QString pwd)
       ID int not null primary key auto_increment,\
       STATION char(40) not null,\
       INSTANCE int unsigned not null,\
-      CARD2 int default 0,\
-      PORT2 int default 0,\
-      START_RML2 char(255),\
-      STOP_RML2 char(255),\
-      CARD3 int default 0,\
-      PORT3 int default 0,\
-      START_RML3 char(255),\
-      STOP_RML3 char(255),\
-      CARD6 int default 0,\
-      PORT6 int default 0,\
-      START_RML6 char(255),\
-      STOP_RML6 char(255),\
-      CARD7 int default 0,\
-      PORT7 int default 0,\
-      START_RML7 char(255),\
-      STOP_RML7 char(255),\
-      CARD8 int default 0,\
-      PORT8 int default 0,\
-      START_RML8 char(255),\
-      STOP_RML8 char(255),\
-      CARD9 int default 0,\
-      PORT9 int default 0,\
-      START_RML9 char(255),\
-      STOP_RML9 char(255),\
       STATION_PANELS int default 3,\
       USER_PANELS int default 3,\
       CLEAR_FILTER enum('N','Y') default 'N',\
@@ -2255,9 +2175,6 @@ bool CreateDb(QString name,QString pwd)
     "HOOK_MODE int default 0,"+
     "DEFAULT_HOOK_MODE int not null default -1,"+
     "SERVICE_NAME char(10),"+
-    "CARD int not null default 0,"+
-    "INPUT_PORT int not null default 0,"+
-    "OUTPUT_PORT int not null default 0,"+
     "index STATION_NAME_IDX(STATION_NAME,SLOT_NUMBER))";
   if(!RunQuery(sql)) {
      return false;
@@ -2274,56 +2191,6 @@ bool CreateDb(QString name,QString pwd)
     "IP_ADDRESS char(15),"+
     "SOURCE_NUMBER int,"+
     "index STATION_NAME_IDX(STATION_NAME,MATRIX))";
-  if(!RunQuery(sql)) {
-     return false;
-  }
-
-  //
-  // Create RDAIRPLAY_CHANNELS table
-  //
-  sql=QString("create table if not exists RDAIRPLAY_CHANNELS (")+
-    "ID int unsigned auto_increment not null primary key,"+
-    "STATION_NAME char(64) not null,"+
-    "INSTANCE int unsigned not null,"+
-    "CARD int not null default 0,"+
-    "PORT int not null default 0,"+
-    "START_RML char(255),"+
-    "STOP_RML char(255),"+
-    "GPIO_TYPE int unsigned default 0,"+
-    "START_GPI_MATRIX int not null default -1,"+
-    "START_GPI_LINE int not null default -1,"+
-    "START_GPO_MATRIX int not null default -1,"+
-    "START_GPO_LINE int not null default -1,"+
-    "STOP_GPI_MATRIX int not null default -1,"+
-    "STOP_GPI_LINE int not null default -1,"+
-    "STOP_GPO_MATRIX int not null default -1,"+
-    "STOP_GPO_LINE int not null default -1,"+
-    "index STATION_NAME_IDX(STATION_NAME,INSTANCE))";
-  if(!RunQuery(sql)) {
-     return false;
-  }
-
-  //
-  // Create RDPANEL_CHANNELS table
-  //
-  sql=QString("create table if not exists RDPANEL_CHANNELS (")+
-    "ID int unsigned auto_increment not null primary key,"+
-    "STATION_NAME char(64) not null,"+
-    "INSTANCE int unsigned not null,"+
-    "CARD int not null default 0,"+
-    "PORT int not null default 0,"+
-    "START_RML char(255),"+
-    "STOP_RML char(255),"+
-    "GPIO_TYPE int unsigned default 0,"+
-    "START_GPI_MATRIX int not null default -1,"+
-    "START_GPI_LINE int not null default -1,"+
-    "START_GPO_MATRIX int not null default -1,"+
-    "START_GPO_LINE int not null default -1,"+
-    "STOP_GPI_MATRIX int not null default -1,"+
-    "STOP_GPI_LINE int not null default -1,"+
-    "STOP_GPO_MATRIX int not null default -1,"+
-    "STOP_GPO_LINE int not null default -1,"+
-    "index STATION_NAME_IDX(STATION_NAME,INSTANCE))";
   if(!RunQuery(sql)) {
      return false;
   }
@@ -8210,7 +8077,7 @@ int UpdateDb(int ver)
       delete q1;
     }
     delete q;
-    /*
+
     sql=QString("alter table STATIONS drop column CUE_CARD");
     q=new QSqlQuery(sql);
     delete q;
@@ -8226,7 +8093,7 @@ int UpdateDb(int ver)
     sql=QString("alter table STATIONS drop column CUE_STOP_CART");
     q=new QSqlQuery(sql);
     delete q;
-    */
+
     //
     // Migrate RDLibrary Settings
     //
@@ -8253,7 +8120,7 @@ int UpdateDb(int ver)
       delete q1;      
     }
     delete q;
-    /*
+
     sql=QString("alter table RDLIBRARY drop column INPUT_CARD");
     q=new QSqlQuery(sql);
     delete q;
@@ -8270,10 +8137,6 @@ int UpdateDb(int ver)
     q=new QSqlQuery(sql);
     delete q;
 
-    sql=QString("alter table RDLIBRARY drop column OUTPUT_CARD");
-    q=new QSqlQuery(sql);
-    delete q;
-
     sql=QString("alter table RDLIBRARY drop column OUTPUT_STREAM");
     q=new QSqlQuery(sql);
     delete q;
@@ -8281,7 +8144,6 @@ int UpdateDb(int ver)
     sql=QString("alter table RDLIBRARY drop column OUTPUT_PORT");
     q=new QSqlQuery(sql);
     delete q;
-    */
 
     //
     // Migrate RDLogEdit Settings
@@ -8318,7 +8180,7 @@ int UpdateDb(int ver)
       delete q1;
     }
     delete q;
-    /*
+
     sql=QString("alter table RDLOGEDIT drop column INPUT_CARD");
     q=new QSqlQuery(sql);
     delete q;
@@ -8349,7 +8211,6 @@ int UpdateDb(int ver)
     sql=QString("alter table RDLOGEDIT drop column END_CART");
     q=new QSqlQuery(sql);
     delete q;
-    */
 
     //
     // Migrate RDCartSlot Settings
@@ -8379,7 +8240,7 @@ int UpdateDb(int ver)
       delete q1;
     }
     delete q;
-    /*
+
     sql=QString("alter table CARTSLOTS drop column CARD");
     q=new QSqlQuery(sql);
     delete q;
@@ -8391,11 +8252,29 @@ int UpdateDb(int ver)
     sql=QString("alter table CARTSLOTS drop column OUTPUT_PORT");
     q=new QSqlQuery(sql);
     delete q;
-    */
 
     //
     // Migrate RDCatch Settings
     //
+    sql=QString("alter table DECKS add column IS_ACTIVE enum('N','Y') ")+
+      "default 'N' after CHANNEL";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("update DECKS set IS_ACTIVE=\"Y\" where CARD_NUMBER>=0");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table DECKS add column MON_IS_ACTIVE enum('N','Y') ")+
+      "default 'N' after IS_ACTIVE";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("update DECKS set MON_IS_ACTIVE=\"Y\" ")+
+      "where MON_PORT_NUMBER>=0";
+    q=new QSqlQuery(sql);
+    delete q;
+
     sql=QString("select STATION_NAME,CHANNEL,CARD_NUMBER,PORT_NUMBER,")+
       "MON_PORT_NUMBER from DECKS";
     q=new QSqlQuery(sql);
@@ -8433,7 +8312,7 @@ int UpdateDb(int ver)
       }
     }
     delete q;
-    /*
+
     sql=QString("alter table DECKS drop column CARD_NUMBER");
     q=new QSqlQuery(sql);
     delete q;
@@ -8449,13 +8328,16 @@ int UpdateDb(int ver)
     sql=QString("alter table DECKS drop column MON_PORT_NUMBER");
     q=new QSqlQuery(sql);
     delete q;
-    */
+
+    sql=QString("alter table DECKS drop column DEFAULT_SAMPRATE");
+    q=new QSqlQuery(sql);
+    delete q;
 
     //
     // Migrate RDPanel Settings
     //
     MigrateButtonChannels("RDPANEL_CHANNELS",RDChannels::PanelButtonOutput);
-    /*
+
     sql=QString("drop table RDPANEL_CHANNELS");
     q=new QSqlQuery(sql);
     delete q;
@@ -8481,14 +8363,72 @@ int UpdateDb(int ver)
       q=new QSqlQuery(sql);
       delete q;
     }
-    */
 
     //
     // Migrate RDAirPlay Settings
     //
-    // MigrateButtonChannels("RDAIRPLAY_CHANNELS",RDChannels::AirplayButtonOutput);
-    // Log Migration Here...
-    /*
+    MigrateButtonChannels("RDAIRPLAY_CHANNELS",RDChannels::AirplayButtonOutput);
+
+    sql=QString("select NAME from STATIONS");
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("select INSTANCE,CARD,PORT,START_RML,STOP_RML,GPIO_TYPE,")+
+	"START_GPI_MATRIX,START_GPI_LINE,START_GPO_MATRIX,START_GPO_LINE,"+
+	"STOP_GPI_MATRIX,STOP_GPI_LINE,STOP_GPO_MATRIX,STOP_GPO_LINE "+
+	"from RDAIRPLAY_CHANNELS where STATION_NAME=\""+
+	RDEscapeString(q->value(0).toString())+"\"";
+      q1=new QSqlQuery(sql);
+      while(q1->next()) {
+	int num=-1;
+	int sub_num=-1;
+	switch(q1->value(0).toInt()) {
+	case 0:  // MainLog1Channel
+	  num=0;
+	  sub_num=0;
+	  break;
+
+	case 1:  // MainLog2Channel
+	  num=0;
+	  sub_num=1;
+	  break;
+
+	case 4:  // AuxLog1Channel
+	  num=1;
+	  sub_num=0;
+	  break;
+
+	case 5:  // AuxLog2Channel
+	  num=2;
+	  sub_num=0;
+	  break;
+	}
+	if(num>=0) {
+	  sql=QString("insert into CHANNELS set ")+
+	    "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	    QString().sprintf("CHANNEL=%d,",RDChannels::AirplayLogOutput)+
+	    QString().sprintf("NUMBER=%d,",num)+
+	    QString().sprintf("SUB_NUMBER=%d,",sub_num)+
+	    QString().sprintf("CARD=%d,",q1->value(1).toInt())+
+	    QString().sprintf("PORT=%d,",q1->value(2).toInt())+
+	    "START_RML=\""+RDEscapeString(q1->value(3).toString())+"\","+
+	    "STOP_RML=\""+RDEscapeString(q1->value(4).toString())+"\","+
+	    QString().sprintf("GPIO_TYPE=%d,",q1->value(5).toInt())+
+	    QString().sprintf("START_GPI_MATRIX=%d,",q1->value(6).toInt())+
+	    QString().sprintf("START_GPI_LINE=%d,",q1->value(7).toInt())+
+	    QString().sprintf("START_GPO_MATRIX=%d,",q1->value(8).toInt())+
+	    QString().sprintf("START_GPO_LINE=%d,",q1->value(9).toInt())+
+	    QString().sprintf("STOP_GPI_MATRIX=%d,",q1->value(10).toInt())+
+	    QString().sprintf("STOP_GPI_LINE=%d,",q1->value(11).toInt())+
+	    QString().sprintf("STOP_GPO_MATRIX=%d,",q1->value(12).toInt())+
+	    QString().sprintf("STOP_GPO_LINE=%d",q1->value(13).toInt());
+	  q2=new QSqlQuery(sql);
+	  delete q2;
+	}
+      }
+      delete q1;
+    }
+    delete q;
+
     sql=QString("drop table RDAIRPLAY_CHANNELS");
     q=new QSqlQuery(sql);
     delete q;
@@ -8514,7 +8454,6 @@ int UpdateDb(int ver)
       q=new QSqlQuery(sql);
       delete q;
     }
-    */
 
 
   }

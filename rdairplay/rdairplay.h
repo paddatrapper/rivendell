@@ -148,7 +148,6 @@ class MainWidget : public QWidget
   bool AssertChannelLock(int dir,int card,int port);
   bool AssertChannelLock(int dir,int achan);
   int AudioChannel(int card,int port) const;
-  RDAirPlayConf::Channel PanelChannel(int mport) const;
   LogPlay *air_log[RDAIRPLAY_LOG_QUANTITY];
   RDSoundPanel *air_panel;
   PostCounter *air_post_counter;
@@ -221,7 +220,6 @@ class MainWidget : public QWidget
   int air_log_stop_gpo_lines[RDAIRPLAY_LOG_QUANTITY][AIR_LOG_PORTS];
   RDChannels::GpioType air_log_channel_gpio_types[RDAIRPLAY_LOG_QUANTITY]
     [AIR_LOG_PORTS];
-
   int air_panel_audio_channels[PANEL_MAX_OUTPUTS];
   int air_panel_start_gpo_matrices[PANEL_MAX_OUTPUTS];
   int air_panel_start_gpo_lines[PANEL_MAX_OUTPUTS];
@@ -230,22 +228,7 @@ class MainWidget : public QWidget
   int air_panel_stop_gpo_matrices[PANEL_MAX_OUTPUTS];
   int air_panel_stop_gpo_lines[PANEL_MAX_OUTPUTS];
   RDChannels::GpioType air_panel_channel_gpio_types[PANEL_MAX_OUTPUTS];
-
   std::map<unsigned,QTimer *> air_channel_timers[2];
-  
-  /*
-  int air_audio_channels[RDAirPlayConf::LastChannel];
-  int air_start_gpi_matrices[RDAirPlayConf::LastChannel];
-  int air_start_gpi_lines[RDAirPlayConf::LastChannel];
-  int air_start_gpo_matrices[RDAirPlayConf::LastChannel];
-  int air_start_gpo_lines[RDAirPlayConf::LastChannel];
-  int air_stop_gpi_matrices[RDAirPlayConf::LastChannel];
-  int air_stop_gpi_lines[RDAirPlayConf::LastChannel];
-  int air_stop_gpo_matrices[RDAirPlayConf::LastChannel];
-  int air_stop_gpo_lines[RDAirPlayConf::LastChannel];
-  RDAirPlayConf::GpioType air_channel_gpio_types[RDAirPlayConf::LastChannel];
-  std::map<unsigned,QTimer *> air_channel_timers[2];
-  */
   RDEmptyCart *air_empty_cart;
   RDChannels *air_channels;
 };

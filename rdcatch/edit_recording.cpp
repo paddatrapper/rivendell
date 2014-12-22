@@ -803,7 +803,7 @@ void EditRecording::PopulateDecks(QComboBox *box)
 
   box->clear();
   QString sql=QString("select STATION_NAME,CHANNEL from DECKS \
-where (CARD_NUMBER!=-1)&&(PORT_NUMBER!=-1)&&(CHANNEL!=0) \
+where (IS_ACTIVE=\"Y\")&&(CHANNEL!=0) \
 &&(CHANNEL<9) order by STATION_NAME,CHANNEL");
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {

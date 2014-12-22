@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Deck.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddeck.cpp,v 1.17 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -55,24 +53,6 @@ RDDeck::RDDeck(QString station,unsigned channel,bool create)
 }
 
 
-bool RDDeck::isActive() const
-{
-  QString sql;
-  RDSqlQuery *q;
-  bool ret=false;
-
-  sql=QString().sprintf("select ID from DECKS where (STATION_NAME=\"%s\")&&\
-                         (CHANNEL=%u)&&(CARD_NUMBER>=0)&&(PORT_NUMBER>=0)",
-			(const char *)RDEscapeString(deck_station),
-			deck_channel);
-  q=new RDSqlQuery(sql);
-  ret=q->first();
-  delete q;
-
-  return ret;
-}
-
-
 QString RDDeck::station() const
 {
   return deck_station;
@@ -82,6 +62,30 @@ QString RDDeck::station() const
 int RDDeck::channel() const
 {
   return deck_channel;
+}
+
+
+bool RDDeck::isActive() const
+{
+  return RDBool(GetStringValue("IS_ACTIVE"));
+}
+
+
+void RDDeck::setActive(bool state)
+{
+  SetRow("IS_ACTIVE",state);
+}
+
+
+bool RDDeck::monitorIsActive() const
+{
+  return RDBool(GetStringValue("MON_IS_ACTIVE"));
+}
+
+
+void RDDeck::setMonitorActive(bool state)
+{
+  SetRow("MON_IS_ACTIVE",state);
 }
 
 

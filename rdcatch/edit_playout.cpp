@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell RDCatch Playout
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_playout.cpp,v 1.23.4.1 2014/01/07 23:40:36 cvs Exp $
+//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -415,7 +413,7 @@ void EditPlayout::PopulateDecks(QComboBox *box)
 
   box->clear();
   QString sql=QString("select STATION_NAME,CHANNEL from DECKS \
-where (CARD_NUMBER!=-1)&&(PORT_NUMBER!=-1)&&\
+where (IS_ACTIVE=\"Y\")&&\
 (CHANNEL>128) order by STATION_NAME,CHANNEL");
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
