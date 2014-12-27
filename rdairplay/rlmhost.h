@@ -34,6 +34,7 @@
 #include <rdttydevice.h>
 #include <rdlog_line.h>
 #include <rdairplay_conf.h>
+#include <rdlogmodes.h>
 #include "../rlm/rlm.h"
 
 class RLMHost : public QObject
@@ -47,7 +48,7 @@ class RLMHost : public QObject
   QString pluginArg() const;
   void sendEvent(const QString &svcname,const QString &logname,
 		 int lognum,RDLogLine **loglines,bool onair,
-		 RDAirPlayConf::OpMode mode);
+		 RDLogModes::OpMode mode);
   bool load();
   void unload();
   static void loadMetadata(const RDLogLine *logline,struct rlm_pad *pad,

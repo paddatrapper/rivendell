@@ -64,7 +64,7 @@ class PieCounter : public QWidget
   void setTalkStart(int msecs);
   void setTalkEnd(int msecs);
   void resetTime();
-  void setOpMode(RDAirPlayConf::OpMode opmode);
+  void setOpMode(RDLogModes::OpMode opmode);
   void setTransType(RDLogLine::TransType trans);
   void start(int offset=0);
   void stop();
@@ -89,7 +89,7 @@ class PieCounter : public QWidget
   int pie_count_length;
   bool pie_running;
   QColor pie_color;
-  RDAirPlayConf::OpMode pie_op_mode;
+  RDLogModes::OpMode pie_op_mode;
   RDLogLine::TransType pie_trans_type;
   int air_line;
   QColor onair_off_color;

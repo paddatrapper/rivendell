@@ -377,16 +377,16 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
 	return;
       }
     }
-    switch((RDAirPlayConf::OpMode)rml->arg(0).toInt()) {
-    case RDAirPlayConf::LiveAssist:
+    switch((RDLogModes::OpMode)rml->arg(0).toInt()) {
+    case RDLogModes::LiveAssist:
       SetLiveAssistMode(mach-1);
       break;
 
-    case RDAirPlayConf::Manual:
+    case RDLogModes::Manual:
       SetManualMode(mach-1);
       break;
 
-    case RDAirPlayConf::Auto:
+    case RDLogModes::Auto:
       SetAutoMode(mach-1);
       break;
 

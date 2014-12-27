@@ -27,13 +27,15 @@
 
 #include "rdslotoptions.h"
 
-RDSlotOptions::RDSlotOptions(const QString &stationname,unsigned slotno)
+RDSlotOptions::RDSlotOptions(const QString &stationname,RDChannels *chans,
+			     unsigned slotno)
 {
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
 
   set_stationname=stationname;
+  set_channels=chans;
   set_slotno=slotno;
 
   //
@@ -121,24 +123,6 @@ void RDSlotOptions::setService(const QString &str)
   set_service=str;
 }
 
-/*
-int RDSlotOptions::card() const
-{
-  return set_card;
-}
-
-
-int RDSlotOptions::inputPort() const
-{
-  return set_input_port;
-}
-
-
-int RDSlotOptions::outputPort() const
-{
-  return set_output_port;
-}
-*/
 
 bool RDSlotOptions::load()
 {
@@ -146,8 +130,8 @@ bool RDSlotOptions::load()
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString("select CARD,INPUT_PORT,OUTPUT_PORT,")+
-    "MODE,DEFAULT_MODE,HOOK_MODE,DEFAULT_HOOK_MODE,"+
+  //sql=QString("select CARD,INPUT_PORT,OUTPUT_PORT,")+
+  sql=QString("MODE,DEFAULT_MODE,HOOK_MODE,DEFAULT_HOOK_MODE,")+
     "STOP_ACTION,DEFAULT_STOP_ACTION,"+
     "CART_NUMBER,DEFAULT_CART_NUMBER,SERVICE_NAME from CARTSLOTS "+
     "where (STATION_NAME=\""+RDEscapeString(set_stationname)+"\")&&"+
@@ -157,18 +141,11 @@ bool RDSlotOptions::load()
     ret=true;
 
     //
-    // Channel Assignments
-    //
-    set_card=q->value(0).toInt();
-    set_input_port=q->value(1).toInt();
-    set_output_port=q->value(2).toInt();
-
-    //
     // Mode
     //
-    switch(q->value(4).toInt()) {
+    switch(q->value(1).toInt()) {
     case -1:
-      set_mode=(RDSlotOptions::Mode)q->value(3).toInt();
+      set_mode=(RDSlotOptions::Mode)q->value(0).toInt();
       break;
 
     case 1:
@@ -183,9 +160,9 @@ bool RDSlotOptions::load()
     //
     // Play Mode
     //
-    switch(q->value(6).toInt()) {
+    switch(q->value(3).toInt()) {
     case -1:
-      set_hook_mode=q->value(5).toInt()==1;
+      set_hook_mode=q->value(2).toInt()==1;
       break;
 
     case 1:
@@ -200,19 +177,19 @@ bool RDSlotOptions::load()
     //
     // Stop Action
     //
-    if(q->value(8).toInt()<0) {
-      set_stop_action=(RDSlotOptions::StopAction)q->value(7).toInt();
+    if(q->value(5).toInt()<0) {
+      set_stop_action=(RDSlotOptions::StopAction)q->value(4).toInt();
     }
     else {
-      set_stop_action=(RDSlotOptions::StopAction)q->value(8).toInt();
+      set_stop_action=(RDSlotOptions::StopAction)q->value(5).toInt();
     }
 
     //
     // Cart
     //
-    switch(q->value(10).toInt()) {
+    switch(q->value(7).toInt()) {
     case -1:
-      set_cart_number=q->value(9).toInt();
+      set_cart_number=q->value(6).toInt();
       break;
 
     case 0:
@@ -220,15 +197,19 @@ bool RDSlotOptions::load()
       break;
 
     default:
-      set_cart_number=q->value(10).toInt();
+      set_cart_number=q->value(7).toInt();
       break;
     }
 
     //
     // Breakaway Service
     //
-    set_service=q->value(11).toString();
+    set_service=q->value(8).toString();
   }
+
+  set_card=set_channels->card(RDChannels::CartSlotOutput,set_slotno);
+  set_input_port=set_channels->port(RDChannels::CartSlotInput,set_slotno);
+  set_output_port=set_channels->port(RDChannels::CartSlotOutput,set_slotno);
 
   return ret;
 }

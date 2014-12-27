@@ -33,6 +33,7 @@
 
 #include <rd.h>
 #include <rdairplay_conf.h>
+#include <rdlogmodes.h>
 #include <rdlog_event.h>
 #include <rdmacro_event.h>
 #include <rdplay_deck.h>
@@ -70,8 +71,8 @@ class LogPlay : public QObject,public RDLogEvent
   void setDefaultServiceName(const QString &svcname);
   int card(int channum) const;
   int port(int channum) const;
-  RDAirPlayConf::OpMode mode() const;
-  void setOpMode(RDAirPlayConf::OpMode mode);
+  RDLogModes::OpMode mode() const;
+  void setOpMode(RDLogModes::OpMode mode);
   void setLogName(QString name);
   void setChannels(int cards[2],int ports[2],
 		   const QString start_rml[2],const QString stop_rml[2]);
@@ -195,7 +196,7 @@ class LogPlay : public QObject,public RDLogEvent
   bool ClearBlock(int start_line);
   void SendNowNext();
   RDCae *play_cae;
-  RDAirPlayConf::OpMode play_op_mode;
+  RDLogModes::OpMode play_op_mode;
   int play_slot_id[LOGPLAY_MAX_PLAYS];
   int play_segue_length;
   int play_trans_length;

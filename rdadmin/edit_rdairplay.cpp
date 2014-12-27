@@ -65,6 +65,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
 
   air_conf=new RDAirPlayConf(station->name(),"RDAIRPLAY");
   air_channels=chans;
+  air_modes=new RDLogModes(station->name());
 
   //
   // Create Fonts
@@ -75,11 +76,6 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   small_font.setPixelSize(12);
   QFont big_font=QFont("Helvetica",14,QFont::Bold);
   big_font.setPixelSize(14);
-
-  //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // Dialog Name
@@ -621,10 +617,10 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   */
   air_modecontrol_box->setCurrentItem((int)air_conf->opModeStyle());
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_startmode[i]=air_conf->startMode(i);
-    air_startlog[i]=air_conf->logName(i);
-    air_autorestart[i]=air_conf->autoRestart(i);
-    air_logstartmode_box[i]->setCurrentItem(air_conf->logStartMode(i));
+    air_startmode[i]=air_modes->startMode(i);
+    air_startlog[i]=air_modes->logName(i);
+    air_autorestart[i]=air_modes->autoRestart(i);
+    air_logstartmode_box[i]->setCurrentItem(air_modes->logStartMode(i));
   }
   air_startmode_box->setCurrentItem((int)air_startmode[air_logmachine]);
   air_startlog_edit->setText(air_startlog[air_logmachine]);
@@ -709,7 +705,7 @@ void EditRDAirPlay::exitPasswordChangedData(const QString &str)
 void EditRDAirPlay::logActivatedData(int lognum)
 {
   air_startmode[air_logmachine]=
-    (RDAirPlayConf::StartMode)air_startmode_box->currentItem();
+    (RDLogModes::StartMode)air_startmode_box->currentItem();
   air_startlog[air_logmachine]=air_startlog_edit->text();
   air_autorestart[air_logmachine]=air_autorestart_box->isChecked();
 
@@ -723,16 +719,16 @@ void EditRDAirPlay::logActivatedData(int lognum)
 
 void EditRDAirPlay::startModeChangedData(int mode)
 {
-  air_startlog_edit->setEnabled((RDAirPlayConf::StartMode)mode==
-				RDAirPlayConf::StartSpecified);
-  air_startlog_label->setEnabled((RDAirPlayConf::StartMode)mode==
-				 RDAirPlayConf::StartSpecified);
-  air_startlog_button->setEnabled((RDAirPlayConf::StartMode)mode==
-				 RDAirPlayConf::StartSpecified);
-  air_autorestart_box->setDisabled((RDAirPlayConf::StartMode)mode==
-				   RDAirPlayConf::StartEmpty);
-  air_autorestart_label->setDisabled((RDAirPlayConf::StartMode)mode==
-				     RDAirPlayConf::StartEmpty);
+  air_startlog_edit->setEnabled((RDLogModes::StartMode)mode==
+				RDLogModes::StartSpecified);
+  air_startlog_label->setEnabled((RDLogModes::StartMode)mode==
+				 RDLogModes::StartSpecified);
+  air_startlog_button->setEnabled((RDLogModes::StartMode)mode==
+				 RDLogModes::StartSpecified);
+  air_autorestart_box->setDisabled((RDLogModes::StartMode)mode==
+				   RDLogModes::StartEmpty);
+  air_autorestart_label->setDisabled((RDLogModes::StartMode)mode==
+				     RDLogModes::StartEmpty);
 }
 
 
@@ -751,7 +747,7 @@ void EditRDAirPlay::selectData()
 
 void EditRDAirPlay::nownextData()
 {
-  EditNowNext *edit=new EditNowNext(air_conf,this,"edit");
+  EditNowNext *edit=new EditNowNext(air_conf,air_modes,this);
   edit->exec();
   delete edit;
 }
@@ -867,17 +863,17 @@ void EditRDAirPlay::okData()
     air_conf->setExitPassword(air_exitpasswd_edit->text());
   }
   air_startmode[air_logmachine]=
-    (RDAirPlayConf::StartMode)air_startmode_box->currentItem();
+    (RDLogModes::StartMode)air_startmode_box->currentItem();
   air_startlog[air_logmachine]=air_startlog_edit->text();
   air_autorestart[air_logmachine]=air_autorestart_box->isChecked();
   air_conf->setOpModeStyle((RDAirPlayConf::OpModeStyle)
 			   air_modecontrol_box->currentItem());
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_conf->setStartMode(i,air_startmode[i]);
-    air_conf->setLogName(i,air_startlog[i]);
-    air_conf->setAutoRestart(i,air_autorestart[i]);
-    air_conf->
-      setLogStartMode(i,(RDAirPlayConf::OpMode)air_logstartmode_box[i]->
+    air_modes->setStartMode(i,air_startmode[i]);
+    air_modes->setLogName(i,air_startlog[i]);
+    air_modes->setAutoRestart(i,air_autorestart[i]);
+    air_modes->
+      setLogStartMode(i,(RDLogModes::OpMode)air_logstartmode_box[i]->
 		      currentItem());
   }
   air_conf->setSkinPath(air_skin_edit->text());

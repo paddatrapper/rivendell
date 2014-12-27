@@ -32,6 +32,7 @@
 
 #include <rdlistview.h>
 #include <rdairplay_conf.h>
+#include <rdlogmodes.h>
 #include <rdripc.h>
 
 
@@ -39,7 +40,7 @@ class EditNowNext : public QDialog
 {
   Q_OBJECT
   public:
-   EditNowNext(RDAirPlayConf *conf,QWidget *parent=0,const char *name=0);
+  EditNowNext(RDAirPlayConf *conf,RDLogModes *modes,QWidget *parent=0);
    ~EditNowNext();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;
@@ -66,6 +67,7 @@ class EditNowNext : public QDialog
    QPushButton *nownext_edit_button;
    QPushButton *nownext_delete_button;
    RDAirPlayConf *nownext_conf;
+   RDLogModes *nownext_modes;
 };
 
 

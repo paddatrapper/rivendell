@@ -25,12 +25,14 @@
 
 #include <qstring.h>
 
+#include <rdchannels.h>
+
 class RDSlotOptions
 {
  public:
   enum Mode {CartDeckMode=0,BreakawayMode=1,LastMode=2};
   enum StopAction {UnloadOnStop=0,RecueOnStop=1,LoopOnStop=2,LastStop=3};
-  RDSlotOptions(const QString &stationname,unsigned slotno);
+  RDSlotOptions(const QString &stationname,RDChannels *chans,unsigned slotno);
   RDSlotOptions::Mode mode() const;
   unsigned slotNumber() const;
   void setMode(RDSlotOptions::Mode mode);
@@ -42,11 +44,6 @@ class RDSlotOptions
   void setCartNumber(int cart);
   QString service() const;
   void setService(const QString &str);
-  /*
-  int card() const;
-  int inputPort() const;
-  int outputPort() const;
-  */
   bool load();
   void save() const;
   void clear();
@@ -54,6 +51,7 @@ class RDSlotOptions
   static QString stopActionText(RDSlotOptions::StopAction action);
 
  private:
+  RDChannels *set_channels;
   Mode set_mode;
   bool set_hook_mode;
   StopAction set_stop_action;

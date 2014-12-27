@@ -56,8 +56,8 @@ class ButtonLog : public QWidget
 	    QWidget *parent=0,const char *name=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-  RDAirPlayConf::OpMode opMode() const;
-  void setOpMode(RDAirPlayConf::OpMode mode);
+  RDLogModes::OpMode opMode() const;
+  void setOpMode(RDLogModes::OpMode mode);
   RDAirPlayConf::ActionMode actionMode() const;
   void setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum=0);
   void setTimeMode(RDAirPlayConf::TimeMode mode);
@@ -87,7 +87,7 @@ class ButtonLog : public QWidget
   LogPlay *log_log;
   int log_id;
   int *log_cart;
-  RDAirPlayConf::OpMode log_op_mode;
+  RDLogModes::OpMode log_op_mode;
   RDAirPlayConf::ActionMode log_action_mode;
   LogLineBox *log_line_box[BUTTON_TOTAL_BUTTONS];
   StartButton *log_start_button[BUTTON_TOTAL_BUTTONS];

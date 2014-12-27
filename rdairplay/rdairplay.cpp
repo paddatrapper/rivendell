@@ -84,6 +84,7 @@ RDConfig *air_config;
 MainWidget *prog_ptr;
 RDHotKeyList *rdkeylist;
 RDHotkeys *rdhotkeys;
+RDLogModes *rdlogmodes;
 RDChannels *rdchannels;
 
 //
@@ -107,8 +108,6 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
 {
   prog_ptr=this;
   QString str;
-  int cards[3];
-  int ports[3];
   QString start_rmls[3];
   QString stop_rmls[3];
   QPixmap *mainmap=NULL;
@@ -269,12 +268,13 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   rdchannels=new RDChannels(air_config->stationName());
   rdairplay_previous_exit_code=rdairplay_conf->exitCode();
   rdairplay_conf->setExitCode(RDAirPlayConf::ExitDirty);
+  rdlogmodes=new RDLogModes(air_config->stationName());
   air_clear_filter=rdairplay_conf->clearFilter();
   air_bar_action=rdairplay_conf->barAction();
   air_op_mode_style=rdairplay_conf->opModeStyle();
   air_channels=new RDChannels(air_config->stationName());
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_op_mode[i]=RDAirPlayConf::Previous;
+    air_op_mode[i]=RDLogModes::Previous;
   }
   air_editor_cmd=rdstation_conf->editorPath();
   mainmap=new QPixmap(rdairplay_conf->skinPath());
@@ -436,8 +436,8 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_log[i]=new LogPlay(rdcae,i,air_nownext_socket,"",&air_plugin_hosts);
     air_log[i]->setDefaultServiceName(default_svcname);
-    air_log[i]->setNowCart(rdairplay_conf->logNowCart(i));
-    air_log[i]->setNextCart(rdairplay_conf->logNextCart(i));
+    air_log[i]->setNowCart(rdlogmodes->logNowCart(i));
+    air_log[i]->setNextCart(rdlogmodes->logNextCart(i));
     reload_mapper->setMapping(air_log[i],i);
     connect(air_log[i],SIGNAL(reloaded()),reload_mapper,SLOT(map()));
     rename_mapper->setMapping(air_log[i],i);
@@ -453,24 +453,47 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
 	  this,SLOT(transportChangedData()));
 
   //
-  // Audio Channel Assignments
+  // Cue Output Assignment
   //
   air_cue_card=air_channels->card(RDChannels::CueOutput);
   air_cue_port=air_channels->port(RDChannels::CueOutput);
-  for(int i=0;i<3;i++) {
-    for(int j=0;j<3;j++) {
-      air_meter_card[j]=air_channels->card(RDChannels::AirplayLogOutput,i,j);
-      air_meter_port[j]=air_channels->port(RDChannels::AirplayLogOutput,i,j);
+
+  //
+  // Main Log Output Assignments
+  //
+  int cards[3];
+  int ports[3];
+  for(int i=0;i<AIR_LOG_PORTS;i++) {
+    air_meter_card[i]=air_channels->card(RDChannels::AirplayLogOutput,0,i);
+    air_meter_port[i]=air_channels->port(RDChannels::AirplayLogOutput,0,i);
+    cards[i]=air_channels->card(RDChannels::AirplayLogOutput,0,i);
+    ports[i]=air_channels->port(RDChannels::AirplayLogOutput,0,i);
+    start_rmls[i]=
+      air_channels->rml(RDChannels::AirplayLogOutput,RDChannels::Start,0,i);
+    stop_rmls[i]=
+      air_channels->rml(RDChannels::AirplayLogOutput,RDChannels::Stop,0,i);
+  }
+  if((air_meter_card[1]<0)||(air_meter_port[1]<0)) {  // Fixup disabled 2nd port playout
+    air_meter_card[1]=air_meter_card[0];
+    air_meter_port[1]=air_meter_port[0];
+    cards[1]=cards[0];
+    ports[1]=ports[0];
+  }
+  air_log[0]->setChannels(cards,ports,start_rmls,stop_rmls);
+
+  //
+  // Aux Log Output Assignments
+  //
+  for(int i=1;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+    for(int j=0;j<AIR_LOG_PORTS;j++) {
       cards[j]=air_channels->card(RDChannels::AirplayLogOutput,i,j);
       ports[j]=air_channels->port(RDChannels::AirplayLogOutput,i,j);
       start_rmls[j]=
 	air_channels->rml(RDChannels::AirplayLogOutput,RDChannels::Start,i,j);
-      stop_rmls[j]=
+      stop_rmls[i]=
 	air_channels->rml(RDChannels::AirplayLogOutput,RDChannels::Stop,i,j);
     }
-    if((air_meter_card[1]<0)||(air_meter_port[1]<0)) {  // Fixup disabled main log port 2 playout
-      air_meter_card[1]=air_meter_card[0];
-      air_meter_port[1]=air_meter_port[0];
+    if((cards[1]<0)||(ports[1]<0)) {
       cards[1]=cards[0];
       ports[1]=ports[0];
     }
@@ -703,21 +726,33 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
     air_panel->setPauseEnabled(rdairplay_conf->panelPauseEnabled());
 
     air_panel->setCard(0,air_channels->card(RDChannels::AirplayButtonOutput,0));
+    air_meter_card[AIR_LOG_PORTS]=
+      air_channels->card(RDChannels::AirplayButtonOutput,0);
     air_panel->setPort(0,air_channels->port(RDChannels::AirplayButtonOutput,0));
+    air_meter_port[AIR_LOG_PORTS]=
+      air_channels->port(RDChannels::AirplayButtonOutput,0);
     int next_output=1;
     air_panel->setOutputText(0,QString().sprintf("%d",next_output));
     for(int i=1;i<PANEL_MAX_OUTPUTS;i++) {
       if((air_channels->card(RDChannels::AirplayButtonOutput,i)<0)||
 	 (air_channels->port(RDChannels::AirplayButtonOutput,i)<0)) {
 	air_panel->setCard(i,air_panel->card(i-1));
+	air_meter_card[AIR_LOG_PORTS+i]=
+	  air_channels->card(RDChannels::AirplayButtonOutput,i-1);
 	air_panel->setPort(i,air_panel->port(i-1));
+	air_meter_port[AIR_LOG_PORTS+i]=
+	  air_channels->port(RDChannels::AirplayButtonOutput,i-1);
 	air_panel->setOutputText(i,QString().sprintf("%d",next_output));
       }
       else {
 	air_panel->setCard(i,air_channels->
 			   card(RDChannels::AirplayButtonOutput,i));
+	air_meter_card[AIR_LOG_PORTS+i]=
+	  air_channels->card(RDChannels::AirplayButtonOutput,i);
 	air_panel->setPort(i,air_channels->
 			   port(RDChannels::AirplayButtonOutput,i));
+	air_meter_port[AIR_LOG_PORTS+i]=
+	  air_channels->port(RDChannels::AirplayButtonOutput,i);
 	air_panel->setOutputText(i,QString().sprintf("%d",++next_output));
       }
     }
@@ -876,25 +911,25 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   // Set Startup Mode
   //
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    switch(rdairplay_conf->logStartMode(i)) {
-      case RDAirPlayConf::Manual:
+    switch(rdlogmodes->logStartMode(i)) {
+      case RDLogModes::Manual:
 	SetManualMode(i);
 	break;
 	
-      case RDAirPlayConf::LiveAssist:
+      case RDLogModes::LiveAssist:
 	SetLiveAssistMode(i);
 	break;
 	
-      case RDAirPlayConf::Auto:
+      case RDLogModes::Auto:
 	SetAutoMode(i);
 	break;
 	
-      case RDAirPlayConf::Previous:
+      case RDLogModes::Previous:
 	if(air_op_mode_style==RDAirPlayConf::Unified) {
-	  SetMode(i,rdairplay_conf->opMode(0));
+	  SetMode(i,rdlogmodes->opMode(0));
 	}
 	else {
-	  SetMode(i,rdairplay_conf->opMode(i));
+	  SetMode(i,rdlogmodes->opMode(i));
 	}
 	break;
     }
@@ -985,19 +1020,19 @@ void MainWidget::ripcConnected(bool state)
   //
   for(unsigned i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     if(air_start_logname[i].isNull()) {
-      switch(rdairplay_conf->startMode(i)) {
-	  case RDAirPlayConf::StartEmpty:
+      switch(rdlogmodes->startMode(i)) {
+	  case RDLogModes::StartEmpty:
 	    break;
 	    
-	  case RDAirPlayConf::StartPrevious:
+	  case RDLogModes::StartPrevious:
 	    air_start_logname[i]=
-	      RDDateTimeDecode(rdairplay_conf->currentLog(i),
+	      RDDateTimeDecode(rdlogmodes->currentLog(i),
 			       air_startup_datetime);
 	    if(!air_start_logname[i].isEmpty()) {
 	      if(rdairplay_previous_exit_code==RDAirPlayConf::ExitDirty) {
-		if((air_start_line[i]=rdairplay_conf->logCurrentLine(i))>=0) {
-		  air_start_start[i]=rdairplay_conf->autoRestart(i)&&
-		    rdairplay_conf->logRunning(i);
+		if((air_start_line[i]=rdlogmodes->logCurrentLine(i))>=0) {
+		  air_start_start[i]=rdlogmodes->autoRestart(i)&&
+		    rdlogmodes->logRunning(i);
 		}
 	      }
 	      else {
@@ -1007,17 +1042,17 @@ void MainWidget::ripcConnected(bool state)
 	    }
 	    break;
 
-	  case RDAirPlayConf::StartSpecified:
+	  case RDLogModes::StartSpecified:
 	    air_start_logname[i]=
-	      RDDateTimeDecode(rdairplay_conf->logName(i),
+	      RDDateTimeDecode(rdlogmodes->logName(i),
 			       air_startup_datetime);
 	    if(!air_start_logname[i].isEmpty()) {
 	      if(rdairplay_previous_exit_code==RDAirPlayConf::ExitDirty) {
-		if(air_start_logname[i]==rdairplay_conf->currentLog(i)) {
-		  if((air_start_line[i]=rdairplay_conf->logCurrentLine(i))>=
+		if(air_start_logname[i]==rdlogmodes->currentLog(i)) {
+		  if((air_start_line[i]=rdlogmodes->logCurrentLine(i))>=
 		     0) {
-		    air_start_start[i]=rdairplay_conf->autoRestart(i)&&
-		      rdairplay_conf->logRunning(i);
+		    air_start_start[i]=rdlogmodes->autoRestart(i)&&
+		      rdlogmodes->logRunning(i);
 		  }
 		  else {
 		    air_start_line[i]=0;
@@ -1459,16 +1494,16 @@ void MainWidget::modeButtonData()
     break;
   }
   switch(air_op_mode[0]) {
-      case RDAirPlayConf::Manual:
-	SetMode(mach,RDAirPlayConf::LiveAssist);
+      case RDLogModes::Manual:
+	SetMode(mach,RDLogModes::LiveAssist);
 	break;
 
-      case RDAirPlayConf::LiveAssist:
-	SetMode(mach,RDAirPlayConf::Auto);
+      case RDLogModes::LiveAssist:
+	SetMode(mach,RDLogModes::Auto);
 	break;
 
-      case RDAirPlayConf::Auto:
-	SetMode(mach,RDAirPlayConf::Manual);
+      case RDLogModes::Auto:
+	SetMode(mach,RDLogModes::Manual);
 	break;
 
       default:
@@ -1671,7 +1706,7 @@ void MainWidget::meterData()
   double ratio[2]={0.0,0.0};
   short level[2];
 
-  for(int i=0;i<AIR_TOTAL_PORTS;i++) {
+  for(int i=0;i<(AIR_LOG_PORTS+PANEL_MAX_OUTPUTS);i++) {
     if(FirstPort(i)) {
       rdcae->outputMeterUpdate(air_meter_card[i],air_meter_port[i],level);
       for(int j=0;j<2;j++) {
@@ -1741,12 +1776,12 @@ void MainWidget::transportChangedData()
 
     logline=air_log[0]->logLine(line);
     switch(air_op_mode[0]) {
-	case RDAirPlayConf::Manual:
-	case RDAirPlayConf::LiveAssist:
+	case RDLogModes::Manual:
+	case RDLogModes::LiveAssist:
 	  pie_end=RDAirPlayConf::CartEnd;
 	  break;
 
-	case RDAirPlayConf::Auto:
+	case RDLogModes::Auto:
 	  pie_end=air_pie_end;
 	  break;
 
@@ -2107,7 +2142,7 @@ void MainWidget::SetCaption()
 }
 
 
-void MainWidget::SetMode(int mach,RDAirPlayConf::OpMode mode)
+void MainWidget::SetMode(int mach,RDLogModes::OpMode mode)
 {
   if(mach<0) {
     for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
@@ -2119,15 +2154,15 @@ void MainWidget::SetMode(int mach,RDAirPlayConf::OpMode mode)
     return;
   }
   switch(mode) {
-      case RDAirPlayConf::Manual:
+      case RDLogModes::Manual:
 	SetManualMode(mach);
 	break;
 
-      case RDAirPlayConf::LiveAssist:
+      case RDLogModes::LiveAssist:
 	SetLiveAssistMode(mach);
 	break;
 
-      case RDAirPlayConf::Auto:
+      case RDLogModes::Auto:
 	SetAutoMode(mach);
 	break;
 
@@ -2146,15 +2181,15 @@ void MainWidget::SetManualMode(int mach)
     return;
   }
   if(mach==0) {
-    air_pie_counter->setOpMode(RDAirPlayConf::Manual);
+    air_pie_counter->setOpMode(RDLogModes::Manual);
   }
-  air_mode_display->setOpMode(mach,RDAirPlayConf::Manual);
-  air_op_mode[mach]=RDAirPlayConf::Manual;
-  rdairplay_conf->setOpMode(mach,RDAirPlayConf::Manual);
-  air_log[mach]->setOpMode(RDAirPlayConf::Manual);
-  air_log_list[mach]->setOpMode(RDAirPlayConf::Manual);
+  air_mode_display->setOpMode(mach,RDLogModes::Manual);
+  air_op_mode[mach]=RDLogModes::Manual;
+  rdlogmodes->setOpMode(mach,RDLogModes::Manual);
+  air_log[mach]->setOpMode(RDLogModes::Manual);
+  air_log_list[mach]->setOpMode(RDLogModes::Manual);
   if(mach==0) {
-    air_button_list->setOpMode(RDAirPlayConf::Manual);
+    air_button_list->setOpMode(RDLogModes::Manual);
     air_post_counter->setDisabled(true);
   }
   LogLine(RDConfig::LogInfo,
@@ -2171,15 +2206,15 @@ void MainWidget::SetAutoMode(int mach)
     return;
   }
   if(mach==0) {
-    air_pie_counter->setOpMode(RDAirPlayConf::Auto);
+    air_pie_counter->setOpMode(RDLogModes::Auto);
   }
-  air_mode_display->setOpMode(mach,RDAirPlayConf::Auto);
-  air_op_mode[mach]=RDAirPlayConf::Auto;
-  rdairplay_conf->setOpMode(mach,RDAirPlayConf::Auto);
-  air_log[mach]->setOpMode(RDAirPlayConf::Auto);
-  air_log_list[mach]->setOpMode(RDAirPlayConf::Auto);
+  air_mode_display->setOpMode(mach,RDLogModes::Auto);
+  air_op_mode[mach]=RDLogModes::Auto;
+  rdlogmodes->setOpMode(mach,RDLogModes::Auto);
+  air_log[mach]->setOpMode(RDLogModes::Auto);
+  air_log_list[mach]->setOpMode(RDLogModes::Auto);
   if(mach==0) {
-    air_button_list->setOpMode(RDAirPlayConf::Auto);
+    air_button_list->setOpMode(RDLogModes::Auto);
     air_post_counter->setEnabled(true);
   }
   LogLine(RDConfig::LogInfo,
@@ -2196,15 +2231,15 @@ void MainWidget::SetLiveAssistMode(int mach)
     return;
   }
   if(mach==0) {
-    air_pie_counter->setOpMode(RDAirPlayConf::LiveAssist);
+    air_pie_counter->setOpMode(RDLogModes::LiveAssist);
   }
-  air_mode_display->setOpMode(mach,RDAirPlayConf::LiveAssist);
-  air_op_mode[mach]=RDAirPlayConf::LiveAssist;
-  rdairplay_conf->setOpMode(mach,RDAirPlayConf::LiveAssist);
-  air_log[mach]->setOpMode(RDAirPlayConf::LiveAssist);
-  air_log_list[mach]->setOpMode(RDAirPlayConf::LiveAssist);
+  air_mode_display->setOpMode(mach,RDLogModes::LiveAssist);
+  air_op_mode[mach]=RDLogModes::LiveAssist;
+  rdlogmodes->setOpMode(mach,RDLogModes::LiveAssist);
+  air_log[mach]->setOpMode(RDLogModes::LiveAssist);
+  air_log_list[mach]->setOpMode(RDLogModes::LiveAssist);
   if(mach==0) {
-    air_button_list->setOpMode(RDAirPlayConf::LiveAssist); 
+    air_button_list->setOpMode(RDLogModes::LiveAssist); 
     air_post_counter->setDisabled(true);
   }
   LogLine(RDConfig::LogInfo,

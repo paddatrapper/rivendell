@@ -29,6 +29,7 @@
 #include <qpixmap.h>
 
 #include <rdairplay_conf.h>
+#include <rdlogmodes.h>
 
 //
 // Widget Settings
@@ -43,12 +44,12 @@ class ModeDisplay : public QPushButton
   ModeDisplay(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-  void setOpMode(int mach,RDAirPlayConf::OpMode mode);
+  void setOpMode(int mach,RDLogModes::OpMode mode);
   void setOpModeStyle(RDAirPlayConf::OpModeStyle style);
 
  private:
   void WriteMap();
-  RDAirPlayConf::OpMode mode_mode[RDAIRPLAY_LOG_QUANTITY];
+  RDLogModes::OpMode mode_mode[RDAIRPLAY_LOG_QUANTITY];
   RDAirPlayConf::OpModeStyle mode_style;
   QPalette auto_color;
   QPalette manual_color;

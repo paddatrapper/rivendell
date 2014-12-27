@@ -2,9 +2,7 @@
 //
 // Create, Initialize and/or Update a Rivendell Database
 //
-//   (C) Copyright 2002-2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: createdb.cpp,v 1.195.2.32.2.5 2014/06/05 19:04:25 cvs Exp $
+//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -2204,6 +2202,15 @@ bool CreateDb(QString name,QString pwd)
     "MACHINE int unsigned not null,"+
     "START_MODE int not null default 0,"+
     "OP_MODE int not null default 2,"+
+    "CURRENT_START_MODE int default 0,"+
+    "CURRENT_AUTO_RESTART enum('N','Y') default 'N',"+
+    "CURRENT_LOG_NAME char(64),"+
+    "CURRENT_CURRENT_LOG char(64),"+
+    "CURRENT_RUNNING enum('N','Y') default 'N',"+
+    "CURRENT_LOG_ID int default -1,"+
+    "CURRENT_LOG_LINE int default -1,"+
+    "CURRENT_NOW_CART int unsigned default 0,"+
+    "CURRENT_NEXT_CART int unsigned default 0,"+
     "index STATION_NAME_IDX(STATION_NAME,MACHINE))";
   if(!RunQuery(sql)) {
      return false;
@@ -8454,8 +8461,144 @@ int UpdateDb(int ver)
       q=new QSqlQuery(sql);
       delete q;
     }
+  }
 
+  if(ver<245) {
+    sql=QString("alter table LOG_MODES add column ")+
+      "CURRENT_START_MODE int default 0 after OP_MODE";
+    q=new QSqlQuery(sql);
+    delete q;
 
+    sql=QString("alter table LOG_MODES add column ")+
+      "CURRENT_AUTO_RESTART enum('N','Y') default 'N' after CURRENT_START_MODE";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table LOG_MODES add column ")+
+      "CURRENT_LOG_NAME char(64) after CURRENT_AUTO_RESTART";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table LOG_MODES add column ")+
+      "CURRENT_CURRENT_LOG char(64) after CURRENT_LOG_NAME";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table LOG_MODES add column ")+
+      "CURRENT_RUNNING enum('N','Y') default 'N' after CURRENT_CURRENT_LOG";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table LOG_MODES add column ")+
+      "CURRENT_LOG_ID int default -1 after CURRENT_RUNNING";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table LOG_MODES add column ")+
+      "CURRENT_LOG_LINE int default -1 after CURRENT_LOG_ID";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table LOG_MODES add column ")+
+      "CURRENT_NOW_CART int unsigned default 0 after CURRENT_LOG_LINE";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table LOG_MODES add column ")+
+      "CURRENT_NEXT_CART int unsigned default 0 after CURRENT_NOW_CART";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    for(int i=0;i<3;i++) {
+      sql=QString("select STATION,")+
+	QString().sprintf("LOG%d_START_MODE,",i)+
+	QString().sprintf("LOG%d_AUTO_RESTART,",i)+
+	QString().sprintf("LOG%d_LOG_NAME,",i)+
+	QString().sprintf("LOG%d_CURRENT_LOG,",i)+
+	QString().sprintf("LOG%d_RUNNING,",i)+
+	QString().sprintf("LOG%d_LOG_ID,",i)+
+	QString().sprintf("LOG%d_LOG_LINE,",i)+
+	QString().sprintf("LOG%d_NOW_CART,",i)+
+	QString().sprintf("LOG%d_NEXT_CART",i)+
+	" from RDAIRPLAY";
+      q=new QSqlQuery(sql);
+      while(q->next()) {
+	sql=QString("update LOG_MODES set ")+
+	  QString().sprintf("CURRENT_START_MODE=%d,",q->value(1).toInt())+
+	  "CURRENT_AUTO_RESTART=\""+q->value(2).toString()+"\","+
+	  "CURRENT_LOG_NAME=\""+RDEscapeString(q->value(3).toString())+"\","+
+	  "CURRENT_CURRENT_LOG=\""+RDEscapeString(q->value(4).toString())+"\","+
+	  "CURRENT_RUNNING=\""+q->value(5).toString()+"\","+
+	  QString().sprintf("CURRENT_LOG_ID=%d,",q->value(6).toInt())+
+	  QString().sprintf("CURRENT_LOG_LINE=%d,",q->value(7).toInt())+
+	  QString().sprintf("CURRENT_NOW_CART=%u,",q->value(8).toUInt())+
+	  QString().sprintf("CURRENT_NEXT_CART=%u ",q->value(9).toUInt())+
+	  "where (STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\")"+
+	  QString().sprintf("&&(MACHINE=%d)",i);
+	q1=new QSqlQuery(sql);
+	delete q1;
+      }
+      delete q;
+    }
+    sql=QString("select NAME from STATIONS");
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      for(int i=3;i<16;i++) {
+	sql=QString("insert into LOG_MODES set ")+
+	  "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  QString().sprintf("MACHINE=%d",i);
+	q1=new QSqlQuery(sql);
+	delete q1;
+      }
+    }
+    delete q;
+
+    for(int i=0;i<3;i++) {
+      sql=QString("alter table RDAIRPLAY drop column ")+
+	QString().sprintf("LOG%d_START_MODE",i);
+      q=new QSqlQuery(sql);
+      delete q;
+
+      sql=QString("alter table RDAIRPLAY drop column ")+
+	QString().sprintf("LOG%d_AUTO_RESTART",i);
+      q=new QSqlQuery(sql);
+      delete q;
+
+      sql=QString("alter table RDAIRPLAY drop column ")+
+	QString().sprintf("LOG%d_LOG_NAME",i);
+      q=new QSqlQuery(sql);
+      delete q;
+
+      sql=QString("alter table RDAIRPLAY drop column ")+
+	QString().sprintf("LOG%d_CURRENT_LOG",i);
+      q=new QSqlQuery(sql);
+      delete q;
+
+      sql=QString("alter table RDAIRPLAY drop column ")+
+	QString().sprintf("LOG%d_RUNNING",i);
+      q=new QSqlQuery(sql);
+      delete q;
+
+      sql=QString("alter table RDAIRPLAY drop column ")+
+	QString().sprintf("LOG%d_LOG_ID",i);
+      q=new QSqlQuery(sql);
+      delete q;
+
+      sql=QString("alter table RDAIRPLAY drop column ")+
+	QString().sprintf("LOG%d_LOG_LINE",i);
+      q=new QSqlQuery(sql);
+      delete q;
+
+      sql=QString("alter table RDAIRPLAY drop column ")+
+	QString().sprintf("LOG%d_NOW_CART",i);
+      q=new QSqlQuery(sql);
+      delete q;
+
+      sql=QString("alter table RDAIRPLAY drop column ")+
+	QString().sprintf("LOG%d_NEXT_CART",i);
+      q=new QSqlQuery(sql);
+      delete q;
+    }
   }
 
 

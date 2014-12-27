@@ -37,7 +37,7 @@ ButtonLog::ButtonLog(LogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause,
   log_id=id;
   log_log=log;
   log_action_mode=RDAirPlayConf::Normal;
-  log_op_mode=RDAirPlayConf::LiveAssist;
+  log_op_mode=RDLogModes::LiveAssist;
   log_time_mode=RDAirPlayConf::TwentyFourHour;
   log_pause_enabled=allow_pause;
 
@@ -128,13 +128,13 @@ QSizePolicy ButtonLog::sizePolicy() const
 }
 
 
-RDAirPlayConf::OpMode ButtonLog::opMode() const
+RDLogModes::OpMode ButtonLog::opMode() const
 {
   return log_op_mode;
 }
 
 
-void ButtonLog::setOpMode(RDAirPlayConf::OpMode mode)
+void ButtonLog::setOpMode(RDLogModes::OpMode mode)
 {
   if(mode==log_op_mode) {
     return;
@@ -595,7 +595,7 @@ void ButtonLog::UpdateButtons()
 	if((next_logline=log_log->logLine(log_log->nextLine(lines[i])))!=
 	   NULL) {
 	  switch(log_log->mode()) {
-	      case RDAirPlayConf::Auto:
+	      case RDLogModes::Auto:
 		switch(next_logline->transType()) {
 		    case RDLogLine::Play:
 		    case RDLogLine::Segue:
@@ -616,8 +616,8 @@ void ButtonLog::UpdateButtons()
 		}
 		break;
 
-	      case RDAirPlayConf::LiveAssist:
-	      case RDAirPlayConf::Manual:
+	      case RDLogModes::LiveAssist:
+	      case RDLogModes::Manual:
 		switch(next_logline->status()) {
 		    case RDLogLine::Playing:
 		    case RDLogLine::Finishing:

@@ -393,7 +393,8 @@ void EditCartSlots::ReadSlot(unsigned slotnum)
   //
   // Ensure that the record exists
   //
-  RDSlotOptions *opts=new RDSlotOptions(edit_station->name(),slotnum);
+  RDSlotOptions *opts=
+    new RDSlotOptions(edit_station->name(),edit_channels,slotnum);
   delete opts;
 
   edit_card_spin->

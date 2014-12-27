@@ -39,7 +39,7 @@ PieCounter::PieCounter(int count_length,QWidget *parent,const char *name)
   pie_color=BUTTON_PLAY_BACKGROUND_COLOR;
   pie_talk_start=-1;
   pie_talk_end=-1;
-  pie_op_mode=RDAirPlayConf::LiveAssist;
+  pie_op_mode=RDLogModes::LiveAssist;
   pie_trans_type=RDLogLine::Stop;
   air_line=-1;
   pie_onair=false;
@@ -130,7 +130,7 @@ void PieCounter::resetTime()
 }
 
 
-void PieCounter::setOpMode(RDAirPlayConf::OpMode opmode)
+void PieCounter::setOpMode(RDLogModes::OpMode opmode)
 {
   if(opmode==pie_op_mode) {
     return;
@@ -318,12 +318,12 @@ void PieCounter::paintEvent(QPaintEvent *e)
 void PieCounter::SetPieColor()
 {
   switch(pie_op_mode) {
-      case RDAirPlayConf::Manual:
-      case RDAirPlayConf::LiveAssist:
+      case RDLogModes::Manual:
+      case RDLogModes::LiveAssist:
 	pie_color=BUTTON_PLAY_BACKGROUND_COLOR;
 	break;
 	
-      case RDAirPlayConf::Auto:
+      case RDLogModes::Auto:
 	switch(pie_trans_type) {
 	    case RDLogLine::Play:
 	    case RDLogLine::Segue:

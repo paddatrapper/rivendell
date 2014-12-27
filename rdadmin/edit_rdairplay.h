@@ -38,6 +38,7 @@
 #include <rdcardselector.h>
 #include <rdstation.h>
 #include <rdchannels.h>
+#include <rdlogmodes.h>
 #include <rdsound_panel.h>
 
 #include "edit_logchannels.h"
@@ -79,6 +80,7 @@ class EditRDAirPlay : public QDialog
   
  private:
   RDAirPlayConf *air_conf;
+  RDLogModes *air_modes;
   RDChannels *air_channels;
   EditLogChannels *air_edit_logchannels;
   EditPanelChannels *air_edit_panelchannels;
@@ -132,7 +134,7 @@ class EditRDAirPlay : public QDialog
   int air_logmachine;
   QComboBox *air_logmachine_box;
   QComboBox *air_startmode_box;
-  RDAirPlayConf::StartMode air_startmode[RDAIRPLAY_LOG_QUANTITY];
+  RDLogModes::StartMode air_startmode[RDAIRPLAY_LOG_QUANTITY];
   QLineEdit *air_startlog_edit;
   QLabel *air_startlog_label;
   QPushButton *air_startlog_button;

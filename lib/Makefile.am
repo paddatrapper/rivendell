@@ -168,6 +168,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdlogedit_conf.cpp rdlogedit_conf.h\
                         rdlog_event.cpp rdlog_event.h\
                         rdlog_line.cpp rdlog_line.h\
+                        rdlogmodes.cpp rdlogmodes.h\
                         rdmacro.cpp rdmacro.h\
                         rdmacro_event.cpp rdmacro_event.h\
                         rdmarker_bar.cpp rdmarker_bar.h\

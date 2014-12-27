@@ -52,7 +52,7 @@ ListLog::ListLog(LogPlay *log,int id,bool allow_pause,
 {
   list_id=id;
   list_log=log;
-  list_op_mode=RDAirPlayConf::LiveAssist;
+  list_op_mode=RDLogModes::LiveAssist;
   list_action_mode=RDAirPlayConf::Normal;
   list_time_mode=RDAirPlayConf::TwentyFourHour;
   list_scroll=true;
@@ -440,7 +440,7 @@ void ListLog::setStatus(int line,RDLogLine::Status status)
 }
 
 
-void ListLog::setOpMode(RDAirPlayConf::OpMode mode)
+void ListLog::setOpMode(RDLogModes::OpMode mode)
 {
   if(mode==list_op_mode) {
     return;

@@ -80,7 +80,7 @@ RDCartSlot::RDCartSlot(int slotnum,RDRipc *ripc,RDCae *cae,RDStation *station,
   //
   // Slot Options
   //
-  slot_options=new RDSlotOptions(station->name(),slotnum);
+  slot_options=new RDSlotOptions(station->name(),slot_channels,slotnum);
   slot_options->load();
 
   //

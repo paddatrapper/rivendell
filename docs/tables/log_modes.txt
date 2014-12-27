@@ -12,3 +12,12 @@ START_MODE             int(11)           0=Previous, 1=LiveAssist, 2=Automatic,
                                          3=Manual
 OP_MODE                int(11)           0=Previous, 1=LiveAssist, 2=Automatic,
                                          3=Manual
+CURRENT_START_MODE     int(11)           0=Empty log, 1=Previous, 2=Specified
+CURRENT_AUTO_RESTART   enum('N','Y')
+CURRENT_LOG_NAME       char(64)          For CURRENT_START_MODE=2
+CURRENT_CURRENT_LOG    char(64)
+CURRENT_RUNNING        enum('N','Y')
+CURRENT_LOG_ID         int(11)
+CURRENT_LOG_LINE       int(11)
+CURRENT_NOW_CART       int(10) unsigned
+CURRENT_NEXT_CART      int(10) unsigned

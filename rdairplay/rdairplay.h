@@ -137,7 +137,7 @@ class MainWidget : public QWidget
   void RunLocalMacros(RDMacro *rml);
   void StopEvent(int button_id);
   void SetCaption();
-  void SetMode(int mach,RDAirPlayConf::OpMode mode);
+  void SetMode(int mach,RDLogModes::OpMode mode);
   void SetManualMode(int mach);
   void SetAutoMode(int mach);
   void SetLiveAssistMode(int mach);
@@ -170,7 +170,7 @@ class MainWidget : public QWidget
   int air_segue_length;
   int air_next_button;
   RDAirPlayConf::OpModeStyle air_op_mode_style;
-  RDAirPlayConf::OpMode air_op_mode[RDAIRPLAY_LOG_QUANTITY];
+  RDLogModes::OpMode air_op_mode[RDAIRPLAY_LOG_QUANTITY];
   bool air_start_next;
   int air_time_start_line;
   RDAirPlayConf::PieEndPoint air_pie_end;
@@ -184,8 +184,8 @@ class MainWidget : public QWidget
   QString air_add_schedcode;
   RDLabel *air_message_label;
   int air_source_id;
-  int air_meter_card[3];
-  int air_meter_port[3];
+  int air_meter_card[AIR_LOG_PORTS+PANEL_MAX_OUTPUTS];
+  int air_meter_port[AIR_LOG_PORTS+PANEL_MAX_OUTPUTS];
   int air_cue_card;
   int air_cue_port;
   RDInstanceLock *air_lock;

@@ -29,7 +29,7 @@ ModeDisplay::ModeDisplay(QWidget *parent)
   : QPushButton(parent)
 {
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    mode_mode[i]=RDAirPlayConf::Previous;
+    mode_mode[i]=RDLogModes::Previous;
   }
 
   //
@@ -68,7 +68,7 @@ QSizePolicy ModeDisplay::sizePolicy() const
 }
 
 
-void ModeDisplay::setOpMode(int mach,RDAirPlayConf::OpMode mode)
+void ModeDisplay::setOpMode(int mach,RDLogModes::OpMode mode)
 {
   if(mach<0) {
     return;
@@ -98,7 +98,7 @@ void ModeDisplay::WriteMap()
   QPainter *p=new QPainter(pix);
   if(mode_style==RDAirPlayConf::Unified) {
     switch(mode_mode[0]) {
-    case RDAirPlayConf::LiveAssist:
+    case RDLogModes::LiveAssist:
       p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
 		  BUTTON_MODE_LIVE_ASSIST_COLOR);
       p->setPen(QColor(color1));
@@ -112,7 +112,7 @@ void ModeDisplay::WriteMap()
       setPalette(live_assist_color);
       break;
 
-    case RDAirPlayConf::Auto:
+    case RDLogModes::Auto:
       p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
 		  BUTTON_MODE_AUTO_COLOR);
       p->setPen(QColor(color1));
@@ -126,7 +126,7 @@ void ModeDisplay::WriteMap()
       setPalette(auto_color);
       break;
 
-    case RDAirPlayConf::Manual:
+    case RDLogModes::Manual:
       p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
 		  BUTTON_MODE_MANUAL_COLOR);
       p->setPen(QColor(color1));
@@ -140,13 +140,13 @@ void ModeDisplay::WriteMap()
       setPalette(manual_color);
       break;
 
-    case RDAirPlayConf::Previous:
+    case RDLogModes::Previous:
       break;
     }
   }
   else {
     switch(mode_mode[0]) {
-    case RDAirPlayConf::LiveAssist:
+    case RDLogModes::LiveAssist:
       p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
 		  BUTTON_MODE_LIVE_ASSIST_COLOR);
       p->setPen(QColor(color1));
@@ -160,7 +160,7 @@ void ModeDisplay::WriteMap()
       setPalette(live_assist_color);
       break;
 
-    case RDAirPlayConf::Auto:
+    case RDLogModes::Auto:
       p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
 		  BUTTON_MODE_AUTO_COLOR);
       p->setPen(QColor(color1));
@@ -174,7 +174,7 @@ void ModeDisplay::WriteMap()
       setPalette(auto_color);
       break;
 
-    case RDAirPlayConf::Manual:
+    case RDLogModes::Manual:
       p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
 		  BUTTON_MODE_MANUAL_COLOR);
       p->setPen(QColor(color1));
@@ -188,13 +188,13 @@ void ModeDisplay::WriteMap()
       setPalette(manual_color);
       break;
 
-    case RDAirPlayConf::Previous:
+    case RDLogModes::Previous:
       break;
     }
     p->setFont(mode_tiny_font);
-    str=tr("Aux1")+": "+RDAirPlayConf::logModeText(mode_mode[1]);
+    str=tr("Aux1")+": "+RDLogModes::logModeText(mode_mode[1]);
     p->drawText((sizeHint().width()/2-p->fontMetrics().width(str))/2,sizeHint().height()-5,str);
-    str=tr("Aux2")+": "+RDAirPlayConf::logModeText(mode_mode[2]);
+    str=tr("Aux2")+": "+RDLogModes::logModeText(mode_mode[2]);
     p->drawText(sizeHint().width()/2+(sizeHint().width()/2-p->fontMetrics().width(str))/2,sizeHint().height()-5,str);
   }
   p->end();

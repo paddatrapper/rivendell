@@ -83,7 +83,7 @@ LogPlay::LogPlay(RDCae *cae,int id,QSocketDevice *nn_sock,QString logname,
   play_next_cartnum=0;
   play_prevnow_cartnum=0;
   play_prevnext_cartnum=0;
-  play_op_mode=RDAirPlayConf::Auto;
+  play_op_mode=RDLogModes::Auto;
 
   //
   // Macro Cart Decks
@@ -183,13 +183,13 @@ int LogPlay::port(int channum) const
 }
 
 
-RDAirPlayConf::OpMode LogPlay::mode() const
+RDLogModes::OpMode LogPlay::mode() const
 {
   return play_op_mode;
 }
 
 
-void LogPlay::setOpMode(RDAirPlayConf::OpMode mode)
+void LogPlay::setOpMode(RDLogModes::OpMode mode)
 {
   if(mode==play_op_mode) {
     return;
@@ -204,7 +204,7 @@ void LogPlay::setLogName(QString name)
   if(logName()!=name) {
     RDLogEvent::setLogName(name);
     emit renamed();
-    rdairplay_conf->setCurrentLog(play_id,name.left(name.length()-4));
+    rdlogmodes->setCurrentLog(play_id,name.left(name.length()-4));
   }
 }
 
@@ -299,7 +299,7 @@ bool LogPlay::play(int line,RDLogLine::StartSource src,
      (logline->status()!=RDLogLine::Paused)) {
     return false;
   }
-  if(play_op_mode==RDAirPlayConf::Auto) {
+  if(play_op_mode==RDLogModes::Auto) {
     skip_meta=false;
   }
 
@@ -1360,7 +1360,7 @@ void LogPlay::transTimerData()
     play_grace_timer->stop();
   }
 
-  if(play_op_mode==RDAirPlayConf::Auto) {
+  if(play_op_mode==RDLogModes::Auto) {
     if(!GetNextPlayable(&play_trans_line,false)) {
       SetTransTimer();
       return;
@@ -1418,7 +1418,7 @@ void LogPlay::graceTimerData()
   int lines[TRANSPORT_QUANTITY];
   int line=play_grace_line;
 
-  if(play_op_mode==RDAirPlayConf::Auto) {
+  if(play_op_mode==RDLogModes::Auto) {
     if(!GetNextPlayable(&line,false)) {
       SetTransTimer();
       return;
@@ -1493,7 +1493,7 @@ void LogPlay::segueStartData(int id)
   if((logline=logLine(line))==NULL) {
     return;
   }
-  if((play_op_mode==RDAirPlayConf::Auto)&&
+  if((play_op_mode==RDLogModes::Auto)&&
      ((next_logline->transType()==RDLogLine::Segue))&&
      (logline->status()==RDLogLine::Playing)&&
      (logline->id()!=-1)) {
@@ -1520,7 +1520,7 @@ void LogPlay::segueEndData(int id)
   if((logline=logLine(line))==NULL) {
     return;
   }
-  if((play_op_mode==RDAirPlayConf::Auto)&&
+  if((play_op_mode==RDLogModes::Auto)&&
      (logline->status()==RDLogLine::Finishing)) {
     ((RDPlayDeck *)logline->playDeck())->stop();
     CleanupEvent(id);
@@ -1709,7 +1709,7 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
   // Transition running events
   //
   running=runningEvents(lines);
-  if(play_op_mode!=RDAirPlayConf::Manual) {
+  if(play_op_mode!=RDLogModes::Manual) {
     switch(trans_type) {
 	case RDLogLine::Play:
 	  for(int i=0;i<running;i++) {
@@ -1783,7 +1783,7 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
   switch(logline->type()) {
       case RDLogLine::Cart:
 	if(!StartAudioEvent(line)) {
-	  rdairplay_conf->setLogCurrentLine(play_id,nextLine());
+	  rdlogmodes->setLogCurrentLine(play_id,nextLine());
 	  return false;
 	}
 	aport=GetNextChannel(mport,&card,&port);
@@ -1812,7 +1812,7 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	  LogLine(RDConfig::LogErr,QString().
 		  sprintf("LogPlay::StartEvent(): no audio,CUT=%s",
 			  (const char *)logline->cutName()));
-	  rdairplay_conf->setLogCurrentLine(play_id,nextLine());
+	  rdlogmodes->setLogCurrentLine(play_id,nextLine());
 	  return false;
 	}
 	emit modified(line);
@@ -1988,13 +1988,13 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
     if((logline->state()==RDLogLine::Ok)||
        (logline->state()==RDLogLine::NoCart)||
        (logline->state()==RDLogLine::NoCut)) {
-      rdairplay_conf->setLogCurrentLine(play_id,nextLine());
+      rdlogmodes->setLogCurrentLine(play_id,nextLine());
       return true;
     }
     play_next_line++;
   }
   play_next_line=-1;
-  rdairplay_conf->setLogCurrentLine(play_id,nextLine());
+  rdlogmodes->setLogCurrentLine(play_id,nextLine());
   return true;
 }
 
@@ -2184,7 +2184,7 @@ void LogPlay::FinishEvent(int line)
       if((logline=logLine(play_next_line))==NULL) {
 	return;
       }
-      if((play_op_mode==RDAirPlayConf::Auto)&&
+      if((play_op_mode==RDLogModes::Auto)&&
 	 (logline->id()!=-1)&&(play_next_line<size())) {
 	if(play_next_line>=0) {
 	  if(logline->transType()==RDLogLine::Play) {
@@ -2212,8 +2212,8 @@ QTime LogPlay::GetStartTime(QTime sched_time,
 {
   QTime time;
 
-  if((play_op_mode==RDAirPlayConf::LiveAssist)||
-     (play_op_mode==RDAirPlayConf::Manual)) {
+  if((play_op_mode==RDLogModes::LiveAssist)||
+     (play_op_mode==RDLogModes::Manual)) {
     *stop=true;
     return QTime();
   }
@@ -2290,7 +2290,7 @@ QTime LogPlay::GetNextStop(int line)
       running=true;
     }
     else {
-      if(running&&(play_op_mode==RDAirPlayConf::Auto)&&
+      if(running&&(play_op_mode==RDLogModes::Auto)&&
 	 (status(i)==RDLogLine::Scheduled)) {
 	switch(logLine(i)->transType()) {
 	    case RDLogLine::Stop:
@@ -2521,7 +2521,7 @@ bool LogPlay::GetNextPlayable(int *line,bool skip_meta,bool forced_start)
       if(logline->status()==RDLogLine::Scheduled || logline->status()==RDLogLine::Paused || 
 		      logline->status()==RDLogLine::Auditioning) {
         if(((logline->transType()==RDLogLine::Stop)||
-	    (play_op_mode==RDAirPlayConf::LiveAssist))&&((i-skipped)!=*line)) {
+	    (play_op_mode==RDLogModes::LiveAssist))&&((i-skipped)!=*line)) {
 	  makeNext(i);
 	  return false;
         }

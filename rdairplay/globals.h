@@ -34,6 +34,7 @@
 #include <rdevent_player.h>
 #include <rdcart_dialog.h>
 #include <rdchannels.h>
+#include <rdlogmodes.h>
 #include <rdconfig.h>
 
 //
@@ -52,5 +53,6 @@ extern void LogLine(RDConfig::LogPriority prio,const QString &line);
 extern QString logfile;
 extern RDConfig *air_config;
 extern RDChannels *rdchannels;
+extern RDLogModes *rdlogmodes;
 
 #endif  // GLOBALS_H

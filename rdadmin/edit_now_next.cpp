@@ -2,9 +2,7 @@
 //
 // Edit the Now & Next Configuration for a Rivendell Workstation.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_now_next.cpp,v 1.10.2.1 2012/11/26 20:19:38 cvs Exp $
+//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,14 +31,15 @@
 #include <globals.h>
 
 
-EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditNowNext::EditNowNext(RDAirPlayConf *conf,RDLogModes *modes,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   RDSqlQuery *q;
   RDListViewItem *item;
 
   nownext_conf=conf;
+  nownext_modes=modes;
 
   //
   // Create Fonts
@@ -416,13 +415,13 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent,const char *name)
     nownext_port_spin[i]->setValue(nownext_conf->udpPort(i));
     nownext_string_edit[i]->setText(nownext_conf->udpString(i));
     nownext_rml_edit[i]->setText(nownext_conf->logRml(i));
-    if(nownext_conf->logNowCart(i)>0) {
+    if(nownext_modes->logNowCart(i)>0) {
       nownext_nowcart_edit[i]->
-	setText(QString().sprintf("%06u",nownext_conf->logNowCart(i)));
+	setText(QString().sprintf("%06u",nownext_modes->logNowCart(i)));
     }
-    if(nownext_conf->logNextCart(i)>0) {
+    if(nownext_modes->logNextCart(i)>0) {
       nownext_nextcart_edit[i]->
-	setText(QString().sprintf("%06u",nownext_conf->logNextCart(i)));
+	setText(QString().sprintf("%06u",nownext_modes->logNextCart(i)));
     }
   }
   sql=QString().sprintf("select ID,PLUGIN_PATH,PLUGIN_ARG \
@@ -560,16 +559,17 @@ void EditNowNext::okData()
     nownext_conf->setUdpString(i,nownext_string_edit[i]->text());
     nownext_conf->setLogRml(i,nownext_rml_edit[i]->text());
     if(nownext_nowcart_edit[i]->text().isEmpty()) {
-      nownext_conf->setLogNowCart(i,0);
+      nownext_modes->setLogNowCart(i,0);
     }
     else {
-      nownext_conf->setLogNowCart(i,nownext_nowcart_edit[i]->text().toUInt());
+      nownext_modes->setLogNowCart(i,nownext_nowcart_edit[i]->text().toUInt());
     }
     if(nownext_nextcart_edit[i]->text().isEmpty()) {
-      nownext_conf->setLogNextCart(i,0);
+      nownext_modes->setLogNextCart(i,0);
     }
     else {
-      nownext_conf->setLogNextCart(i,nownext_nextcart_edit[i]->text().toUInt());
+      nownext_modes->
+	setLogNextCart(i,nownext_nextcart_edit[i]->text().toUInt());
     }
     sql=QString().sprintf("delete from NOWNEXT_PLUGINS where \
                            (STATION_NAME=\"%s\")&&(LOG_MACHINE=%d)",

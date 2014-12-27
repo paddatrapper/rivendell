@@ -78,7 +78,7 @@ QString RLMHost::pluginArg() const
 
 void RLMHost::sendEvent(const QString &svcname,const QString &logname,
 			int lognum,RDLogLine **loglines,bool onair,
-			RDAirPlayConf::OpMode mode)
+			RDLogModes::OpMode mode)
 {
   if(plugin_pad_data_sent_sym!=NULL) {
     QDateTime now_dt(QDate::currentDate(),QTime::currentTime());

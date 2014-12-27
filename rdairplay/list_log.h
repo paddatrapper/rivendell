@@ -54,7 +54,7 @@ class ListLog : public QWidget
   void setStatus(int line,RDLogLine::Status status);
   RDAirPlayConf::ActionMode actionMode() const;
   void setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum=0);
-  void setOpMode(RDAirPlayConf::OpMode mode);
+  void setOpMode(RDLogModes::OpMode mode);
   void setTimeMode(RDAirPlayConf::TimeMode mode);
   void userChanged(bool add_allowed,bool delete_allowed,
 		   bool arrange_allowed,bool playout_allowed);
@@ -132,7 +132,7 @@ class ListLog : public QWidget
   QPushButton *list_tail_button;
   int *list_cart;
   int list_id;
-  RDAirPlayConf::OpMode list_op_mode;
+  RDLogModes::OpMode list_op_mode;
   RDAirPlayConf::TimeMode list_time_mode;
   QPalette list_to_color;
   QPalette list_from_color;
