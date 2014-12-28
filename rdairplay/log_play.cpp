@@ -57,7 +57,6 @@ LogPlay::LogPlay(RDCae *cae,int id,QSocketDevice *nn_sock,QString logname,
   play_trans_line=-1;
   play_grace_line=-1;
   next_channel=0;
-  play_nownext_socket=nn_sock;
   play_timescaling_available=false;
   play_rescan_pos=0;
   play_refreshable=false;
@@ -75,10 +74,6 @@ LogPlay::LogPlay(RDCae *cae,int id,QSocketDevice *nn_sock,QString logname,
   }
   play_macro_running=false;
   play_refresh_pending=false;
-  play_nownext_string=rdairplay_conf->udpString(id);
-  play_nownext_address=rdairplay_conf->udpAddress(id);
-  play_nownext_port=rdairplay_conf->udpPort(id);
-  play_nownext_rml=rdairplay_conf->logRml(id);
   play_now_cartnum=0;
   play_next_cartnum=0;
   play_prevnow_cartnum=0;

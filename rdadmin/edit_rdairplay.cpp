@@ -42,7 +42,6 @@
 
 #include <edit_rdairplay.h>
 #include <edit_hotkeys.h>
-#include <edit_now_next.h>
 #include <edit_channelgpios.h>
 
 EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
@@ -52,6 +51,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   QString sql;
   RDSqlQuery *q;
 
+  air_station=station;
   air_exitpasswd_changed=false;
   air_logmachine=0;
 
@@ -89,9 +89,6 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   label->setFont(big_font);
   label->setGeometry(10,10,200,16);
 
-  QSignalMapper *mapper=new QSignalMapper(this);
-  connect(mapper,SIGNAL(mapped(int)),this,SLOT(editGpiosData(int)));
-
   //
   // Log Machine Channel Assignments
   //
@@ -101,22 +98,99 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
 		air_edit_logchannels->sizeHint().height());
 
   //
+  // RLM Plugins
+  //
+  label=new QLabel(tr("Rivendell Loadable Modules"),this);
+  label->setFont(big_font);
+  label->setGeometry(20,220,200,20);
+  air_list_plugins=new ListNowNextPlugins(this);
+  air_list_plugins->setGeometry(10,240,air_list_plugins->sizeHint().width(),
+				air_list_plugins->sizeHint().height());
+  air_list_plugins->load(air_station->name());
+
+  //
+  // Start/Stop Section
+  //
+  label=new QLabel(tr("Start/Stop Settings"),this);
+  label->setFont(big_font);
+  label->setGeometry(10,401,200,16);
+
+  //
+  // Exit Password
+  //
+  air_exitpasswd_edit=new QLineEdit(this);
+  air_exitpasswd_edit->setGeometry(100,424,sizeHint().width()-905,20);
+  air_exitpasswd_edit->setEchoMode(QLineEdit::Password);
+  air_exitpasswd_edit->setText("******");
+  label=new QLabel(air_exitpasswd_edit,tr("Exit Password:"),this);
+  label->setGeometry(0,424,95,20);
+  label->setAlignment(AlignRight|AlignVCenter);
+  connect(air_exitpasswd_edit,SIGNAL(textChanged(const QString &)),
+	  this,SLOT(exitPasswordChangedData(const QString &)));
+
+  //
+  // Log Machine Selector
+  //
+  air_logmachine_box=new QComboBox(this);
+  air_logmachine_box->setGeometry(45,449,100,20);
+  air_logmachine_box->insertItem(tr("Main Log"));
+  for(unsigned i=1;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+    air_logmachine_box->insertItem(QString().sprintf("Aux %d Log",i));
+  }
+  connect(air_logmachine_box,SIGNAL(activated(int)),
+	  this,SLOT(logActivatedData(int)));
+
+  //
+  // Startup Mode
+  //
+  air_startmode_box=new QComboBox(this);
+  air_startmode_box->setGeometry(100,474,240,20);
+  air_startmode_box->insertItem(tr("start with empty log"));
+  air_startmode_box->insertItem(tr("load previous log"));
+  air_startmode_box->insertItem(tr("load specified log"));
+  label=new QLabel(air_exitpasswd_edit,tr("At Startup:"),this);
+  label->setGeometry(30,474,65,20);
+  label->setAlignment(AlignRight|AlignVCenter);
+  connect(air_startmode_box,SIGNAL(activated(int)),
+	  this,SLOT(startModeChangedData(int)));
+
+  //
+  // Auto Restart Checkbox
+  //
+  air_autorestart_box=new QCheckBox(this);
+  air_autorestart_box->setGeometry(105,499,15,15);
+  air_autorestart_label=
+    new QLabel(air_autorestart_box,
+	       tr("Restart Log After Unclean Shutdown"),this);
+  air_autorestart_label->setGeometry(125,499,250,15);
+  air_autorestart_label->setAlignment(AlignLeft|AlignVCenter);
+
+  //
+  // Startup Log
+  //
+  air_startlog_edit=new QLineEdit(this);
+  air_startlog_edit->setGeometry(100,519,240,20);
+  air_startlog_label=new QLabel(air_startlog_edit,tr("Log:"),this);
+  air_startlog_label->setGeometry(30,519,65,20);
+  air_startlog_label->setAlignment(AlignRight|AlignVCenter);
+
+  //
+  //  Log Select Button
+  //
+  air_startlog_button=new QPushButton(this);
+  air_startlog_button->setGeometry(350,517,50,24);
+  air_startlog_button->setFont(small_font);
+  air_startlog_button->setText(tr("&Select"));
+  connect(air_startlog_button,SIGNAL(clicked()),this,SLOT(selectData()));
+
+  //
   // HotKeys Configuration Button
   //
   QPushButton *button=new QPushButton(this);
-  button->setGeometry(10,310,180,50);
+  button->setGeometry(10,550,180,50);
   button->setFont(small_font);
   button->setText(tr("Configure Hot Keys"));
   connect(button,SIGNAL(clicked()),this,SLOT(editHotKeys()));
-
-  //
-  // Now & Next Button
-  //
-  button=new QPushButton(this);
-  button->setGeometry(200,310,180,50);
-  button->setFont(small_font);
-  button->setText(tr("Configure Now && Next\nParameters"));
-  connect(button,SIGNAL(clicked()),this,SLOT(nownextData()));
 
   //
   // SoundPanel Channel Assignments
@@ -351,81 +425,6 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   new QRadioButton(tr("Start Next"),air_bar_group);
 
   //
-  // Start/Stop Section
-  //
-  label=new QLabel(tr("Start/Stop Settings"),this);
-  label->setFont(big_font);
-  label->setGeometry(10,381,200,16);
-
-  //
-  // Exit Password
-  //
-  air_exitpasswd_edit=new QLineEdit(this);
-  air_exitpasswd_edit->setGeometry(100,404,sizeHint().width()-905,20);
-  air_exitpasswd_edit->setEchoMode(QLineEdit::Password);
-  air_exitpasswd_edit->setText("******");
-  label=new QLabel(air_exitpasswd_edit,tr("Exit Password:"),this);
-  label->setGeometry(0,404,95,20);
-  label->setAlignment(AlignRight|AlignVCenter);
-  connect(air_exitpasswd_edit,SIGNAL(textChanged(const QString &)),
-	  this,SLOT(exitPasswordChangedData(const QString &)));
-
-  //
-  // Log Machine Selector
-  //
-  air_logmachine_box=new QComboBox(this);
-  air_logmachine_box->setGeometry(45,429,100,20);
-  air_logmachine_box->insertItem(tr("Main Log"));
-  for(unsigned i=1;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_logmachine_box->insertItem(QString().sprintf("Aux %d Log",i));
-  }
-  connect(air_logmachine_box,SIGNAL(activated(int)),
-	  this,SLOT(logActivatedData(int)));
-
-  //
-  // Startup Mode
-  //
-  air_startmode_box=new QComboBox(this);
-  air_startmode_box->setGeometry(100,454,240,20);
-  air_startmode_box->insertItem(tr("start with empty log"));
-  air_startmode_box->insertItem(tr("load previous log"));
-  air_startmode_box->insertItem(tr("load specified log"));
-  label=new QLabel(air_exitpasswd_edit,tr("At Startup:"),this);
-  label->setGeometry(30,454,65,20);
-  label->setAlignment(AlignRight|AlignVCenter);
-  connect(air_startmode_box,SIGNAL(activated(int)),
-	  this,SLOT(startModeChangedData(int)));
-
-  //
-  // Auto Restart Checkbox
-  //
-  air_autorestart_box=new QCheckBox(this);
-  air_autorestart_box->setGeometry(105,479,15,15);
-  air_autorestart_label=
-    new QLabel(air_autorestart_box,
-	       tr("Restart Log After Unclean Shutdown"),this);
-  air_autorestart_label->setGeometry(125,479,250,15);
-  air_autorestart_label->setAlignment(AlignLeft|AlignVCenter);
-
-  //
-  // Startup Log
-  //
-  air_startlog_edit=new QLineEdit(this);
-  air_startlog_edit->setGeometry(100,499,240,20);
-  air_startlog_label=new QLabel(air_startlog_edit,tr("Log:"),this);
-  air_startlog_label->setGeometry(30,499,65,20);
-  air_startlog_label->setAlignment(AlignRight|AlignVCenter);
-
-  //
-  //  Log Select Button
-  //
-  air_startlog_button=new QPushButton(this);
-  air_startlog_button->setGeometry(350,497,50,24);
-  air_startlog_button->setFont(small_font);
-  air_startlog_button->setText(tr("&Select"));
-  connect(air_startlog_button,SIGNAL(clicked()),this,SLOT(selectData()));
-
-  //
   // Display Settings Section
   //
   label=new QLabel(tr("Display Settings"),this,"globals_label");
@@ -542,33 +541,11 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   // Populate Fields
   //
-  if(cae_station->scanned()) {
-    
-    /*
-    for(int i=0;i<10;i++) {
-      air_card_sel[i]->setMaxCards(cae_station->cards());
-      for(int j=0;j<air_card_sel[i]->maxCards();j++) {
-	air_card_sel[i]->setMaxPorts(j,cae_station->cardOutputs(j));
-      }
-    }
-    */
-  }
-  else {
+  if(!cae_station->scanned()) {
     air_edit_logchannels->setDisabled(true);
     QMessageBox::information(this,tr("No Audio Configuration Data"),
 			     tr("Channel assignments will not be available for this host as audio resource data\nhas not yet been generated.  Please start the Rivendell daemons on the host\nconfigured to run the CAE service in order to populate the audio resources database."));
-    /*
-    for(int i=0;i<10;i++) {
-      air_card_sel[i]->setDisabled(true);
-    }
-    */
   }
-  /*
-  for(int i=0;i<RDAirPlayConf::LastChannel;i++) {
-    air_card_sel[i]->setCard(air_conf->card((RDAirPlayConf::Channel)i));
-    air_card_sel[i]->setPort(air_conf->port((RDAirPlayConf::Channel)i));
-  }
-  */
   air_edit_panelchannels->load();
   air_segue_edit->setText(QString().sprintf("%d",air_conf->segueLength()));
   air_trans_edit->setText(QString().sprintf("%d",air_conf->transLength()));
@@ -607,14 +584,6 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_artist_template_edit->setText(air_conf->artistTemplate());
   air_outcue_template_edit->setText(air_conf->outcueTemplate());
   air_description_template_edit->setText(air_conf->descriptionTemplate());
-  /*
-  for(int i=0;i<RDAirPlayConf::LastChannel;i++) {
-    air_start_rml_edit[i]->setText(air_conf->
-				   startRml((RDAirPlayConf::Channel)i));
-    air_stop_rml_edit[i]->setText(air_conf->
-				  stopRml((RDAirPlayConf::Channel)i));
-  }
-  */
   air_modecontrol_box->setCurrentItem((int)air_conf->opModeStyle());
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_startmode[i]=air_modes->startMode(i);
@@ -627,12 +596,6 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_autorestart_box->setChecked(air_autorestart[air_logmachine]);
   air_skin_edit->setText(air_conf->skinPath());
   startModeChangedData(air_startmode[air_logmachine]);
-
-  /*
-  for(unsigned i=0;i<RDAirPlayConf::LastChannel;i++) {
-    audioSettingsChangedData(i,air_card_sel[i]->card(),air_card_sel[i]->port());
-  }
-  */
 }
 
 
@@ -650,49 +613,6 @@ QSize EditRDAirPlay::sizeHint() const
 QSizePolicy EditRDAirPlay::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
-}
-
-
-void EditRDAirPlay::audioSettingsChangedData(int id,int card,int port)
-{
-  /*
-  if(air_channel_button[id]!=NULL) {
-    bool state=air_card_sel[id]->isDisabled();
-    air_start_rml_label[id]->setDisabled(state);
-    air_start_rml_edit[id]->setDisabled(state);
-    air_stop_rml_label[id]->setDisabled(state);
-    air_stop_rml_edit[id]->setDisabled(state);
-    if((id==RDAirPlayConf::MainLog1Channel)||
-       (id==RDAirPlayConf::MainLog2Channel)) {
-      air_channel_button[RDAirPlayConf::MainLog1Channel]->
-	setDisabled(air_card_sel[RDAirPlayConf::MainLog1Channel]->isDisabled());
-      bool state2=(air_card_sel[RDAirPlayConf::MainLog2Channel]->isDisabled())
-		    ||((air_card_sel[RDAirPlayConf::MainLog1Channel]->card()==
-			air_card_sel[RDAirPlayConf::MainLog2Channel]->card())&&
-		       (air_card_sel[RDAirPlayConf::MainLog1Channel]->port()==
-			air_card_sel[RDAirPlayConf::MainLog2Channel]->port()));
-      air_channel_button[RDAirPlayConf::MainLog2Channel]->setDisabled(state2);
-      air_start_rml_label[RDAirPlayConf::MainLog2Channel]->setDisabled(state2);
-      air_start_rml_edit[RDAirPlayConf::MainLog2Channel]->setDisabled(state2);
-      air_stop_rml_label[RDAirPlayConf::MainLog2Channel]->setDisabled(state2);
-      air_stop_rml_edit[RDAirPlayConf::MainLog2Channel]->setDisabled(state2);
-    }
-    else {
-      air_channel_button[id]->setDisabled(air_card_sel[id]->isDisabled());
-    }
-  }
-  */
-}
-
-
-void EditRDAirPlay::editGpiosData(int num)
-{
-  /*
-  EditChannelGpios *d=
-    new EditChannelGpios(air_conf,(RDAirPlayConf::Channel)num,this);
-  d->exec();
-  delete d;
-  */
 }
 
 
@@ -744,13 +664,6 @@ void EditRDAirPlay::selectData()
   delete ll;
 }
 
-
-void EditRDAirPlay::nownextData()
-{
-  EditNowNext *edit=new EditNowNext(air_conf,air_modes,this);
-  edit->exec();
-  delete edit;
-}
 
 void EditRDAirPlay::editHotKeys()
 {
@@ -809,22 +722,8 @@ void EditRDAirPlay::okData()
 			 tr("Invalid Forced Segue Length!"));
     return;
   }
-  /*
-  for(int i=0;i<RDAirPlayConf::LastChannel;i++) {
-    RDAirPlayConf::Channel chan=(RDAirPlayConf::Channel)i;
-    air_conf->setStartRml(chan,air_start_rml_edit[i]->text());
-    air_conf->setStopRml(chan,air_stop_rml_edit[i]->text());
-    air_conf->setCard(chan,air_card_sel[i]->card());
-    air_conf->setPort(chan,air_card_sel[i]->port());
-    if(air_card_sel[i]->isDisabled()) {
-      air_conf->setStartGpiMatrix(chan,-1);
-      air_conf->setStartGpoMatrix(chan,-1);
-      air_conf->setStopGpiMatrix(chan,-1);
-      air_conf->setStopGpoMatrix(chan,-1);
-    }
-  }
-  */
   air_edit_logchannels->save();
+  air_list_plugins->save(air_station->name());
   air_edit_panelchannels->save();
   air_conf->setSegueLength(segue);
   air_conf->setTransLength(trans);
@@ -891,7 +790,7 @@ void EditRDAirPlay::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
   p->setPen(black);
-  p->drawRect(25,415,395,95);
+  p->drawRect(25,435,395,95);
   p->end();
   delete p;
 }

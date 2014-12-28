@@ -2,9 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: log_play.h,v 1.90.8.3.2.1 2014/05/22 19:37:45 cvs Exp $
+//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -225,11 +223,6 @@ class LogPlay : public QObject,public RDLogEvent
   RDPlayDeck *play_deck[RD_MAX_STREAMS];
   bool play_deck_active[RD_MAX_STREAMS];
   int next_channel;
-  QSocketDevice *play_nownext_socket;
-  QString play_nownext_string;
-  QHostAddress play_nownext_address;
-  Q_UINT16 play_nownext_port;
-  QString play_nownext_rml;
   bool play_timescaling_supported[RD_MAX_CARDS];
   QString play_svc_name;
   QString play_defaultsvc_name;

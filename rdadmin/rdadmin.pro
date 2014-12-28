@@ -54,7 +54,6 @@ x11 {
   SOURCES += edit_livewiregpio.cpp
   SOURCES += edit_matrix.cpp
   SOURCES += edit_nownextplugin.cpp
-  SOURCES += edit_now_next.cpp
   SOURCES += edit_rdairplay.cpp
   SOURCES += edit_rdlibrary.cpp
   SOURCES += edit_rdlogedit.cpp
@@ -80,6 +79,7 @@ x11 {
   SOURCES += list_hostvars.cpp
   SOURCES += list_livewiregpios.cpp
   SOURCES += list_matrices.cpp
+  SOURCES += list_nownextplugs.cpp
   SOURCES += list_reports.cpp
   SOURCES += list_replicator_carts.cpp
   SOURCES += list_replicators.cpp
@@ -130,7 +130,6 @@ x11 {
   HEADERS += edit_livewiregpio.h
   HEADERS += edit_matrix.h
   HEADERS += edit_nownextplugin.h
-  HEADERS += edit_now_next.h
   HEADERS += edit_rdairplay.h
   HEADERS += edit_rdlibrary.h
   HEADERS += edit_rdlogedit.h
@@ -156,6 +155,7 @@ x11 {
   HEADERS += list_hostvars.h
   HEADERS += list_livewiregpios.h
   HEADERS += list_matrices.h
+  HEADERS += list_nownextplugins.h
   HEADERS += list_reports.h
   HEADERS += list_replicator_carts.h
   HEADERS += list_replicators.h

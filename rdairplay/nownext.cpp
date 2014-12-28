@@ -40,11 +40,9 @@ void LogPlay::SendNowNext()
   //
   // Get NOW PLAYING Event
   //
-  if(play_nownext_address.isNull()&&play_nownext_rml.isEmpty()&&
-     (play_rlm_hosts->size()==0)) {
+  if(play_rlm_hosts->size()==0) {
     return;
   }
-  QString cmd=play_nownext_string;
   int lines[TRANSPORT_QUANTITY];
   int running=runningEvents(lines,false);
   for(int i=0;i<running;i++) {
@@ -122,13 +120,6 @@ void LogPlay::SendNowNext()
       sendEvent(svcname,logName().left(logName().length()-4),play_id,logline,
 		play_onair_flag,play_op_mode);
   }
-  RDResolveNowNext(&cmd,logline,0);
-  play_nownext_socket->
-    writeBlock(cmd,cmd.length(),play_nownext_address,play_nownext_port);
-
-  cmd=play_nownext_rml;
-  RDResolveNowNext(&cmd,logline,0);
-  rdevent_player->exec(cmd);
 
   //
   // Clean up

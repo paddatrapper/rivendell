@@ -41,8 +41,6 @@
 #include <rdsound_panel.h>
 
 #include <edit_rdpanel.h>
-#include <edit_now_next.h>
-
 
 EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
 			 RDChannels *chans,QWidget *parent)

@@ -9,8 +9,6 @@ ID                     int(10) unsigned  * Primary key, Auto Increment
 STATION                char(40)          Workstation, Indexed
 SEGUE_LENGTH           int(11)
 TRANS_LENGTH           int(11)
-OP_MODE                int(11)           *** RETIRED @ DB v233 ***
-START_MODE             int(11)           *** RETIRED @ DB v233 ***
 LOG_QUANTITY           int(10) unsigned
 LOG_MODE_STYLE         int(11)           0=Unified, 1=Independent
 PIE_COUNT_LENGTH       int(11)
@@ -29,18 +27,6 @@ BUTTON_LABEL_TEMPLATE  char(32)
 PAUSE_ENABLED          enum('N','Y')
 DEFAULT_SERVICE        char(10)          From SERVICES.NAME
 HOUR_SELECTOR_ENABLED  enum('N','Y')
-UDP_ADDR0              char(255)
-UDP_PORT0              int(10) unsigned
-UDP_STRING0            char(255)
-LOG_RML0               char(255)
-UDP_ADDR1              char(255)
-UDP_PORT1              int(10) unsigned
-UDP_STRING1            char(255)
-LOG_RML1               char(255)
-UDP_ADDR2              char(255)
-UDP_PORT2              int(10) unsigned
-UDP_STRING2            char(255)
-LOG_RML2               char(255)
 EXIT_CODE              int(11)           0=clean, 1=dirty
 EXIT_PASSWORD          char(41)
 SKIN_PATH              char(255)

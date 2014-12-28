@@ -8601,6 +8601,35 @@ int UpdateDb(int ver)
     }
   }
 
+  if(ver<246) {
+    sql=QString("alter table RDAIRPLAY drop column OP_MODE");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table RDAIRPLAY drop column START_MODE");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    for(int i=0;i<3;i++) {
+      sql=QString().sprintf("alter table RDAIRPLAY drop column UDP_ADDR%d",i);
+      q=new QSqlQuery(sql);
+      delete q;
+
+      sql=QString().sprintf("alter table RDAIRPLAY drop column UDP_PORT%d",i);
+      q=new QSqlQuery(sql);
+      delete q;
+
+      sql=QString().sprintf("alter table RDAIRPLAY drop column UDP_STRING%d",i);
+      q=new QSqlQuery(sql);
+      delete q;
+
+      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG_RML%d",i);
+      q=new QSqlQuery(sql);
+      delete q;
+    }
+  }
+
+
 
   // **** End of version updates ****
   

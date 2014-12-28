@@ -1837,97 +1837,6 @@ GPIOs</source>
     </message>
 </context>
 <context>
-    <name>EditNowNext</name>
-    <message>
-        <source>Edit Now &amp; Next Data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Master Log</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>IP Address:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>UDP Port:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>UDP String:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RML:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Aux Log 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The IP address</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>is invalid!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invalid Address</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Argument</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Loadable Modules:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default Now Cart:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default Next Cart:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Aux Log 2</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>EditNowNextPlugin</name>
     <message>
         <source>Edit Plugin</source>
@@ -2097,11 +2006,6 @@ GPIOs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Configure Now &amp;&amp; Next
-Parameters</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Start/Stop Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2249,6 +2153,10 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Aux 2 Log Startup Mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rivendell Loadable Modules</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

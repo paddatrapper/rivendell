@@ -2083,91 +2083,91 @@ GPIOs</source>
     <name>EditNowNext</name>
     <message>
         <source>Edit Now &amp; Next Data</source>
-        <translation>Now &amp; Next Daten editieren</translation>
+        <translation type="obsolete">Now &amp; Next Daten editieren</translation>
     </message>
     <message>
         <source>Master Log</source>
-        <translation>Hauptlog</translation>
+        <translation type="obsolete">Hauptlog</translation>
     </message>
     <message>
         <source>IP Address:</source>
-        <translation>IP-Adresse:</translation>
+        <translation type="obsolete">IP-Adresse:</translation>
     </message>
     <message>
         <source>UDP Port:</source>
-        <translation>UDP Port:</translation>
+        <translation type="obsolete">UDP Port:</translation>
     </message>
     <message>
         <source>UDP String:</source>
-        <translation>UDP String:</translation>
+        <translation type="obsolete">UDP String:</translation>
     </message>
     <message>
         <source>RML:</source>
-        <translation>RML:</translation>
+        <translation type="obsolete">RML:</translation>
     </message>
     <message>
         <source>Aux Log 1</source>
-        <translation>Aux Log 1</translation>
+        <translation type="obsolete">Aux Log 1</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Abbre&amp;chen</translation>
+        <translation type="obsolete">Abbre&amp;chen</translation>
     </message>
     <message>
         <source>The IP address</source>
-        <translation>Die IP-Adresse</translation>
+        <translation type="obsolete">Die IP-Adresse</translation>
     </message>
     <message>
         <source>is invalid!</source>
-        <translation>ist ungültig!</translation>
+        <translation type="obsolete">ist ungültig!</translation>
     </message>
     <message>
         <source>Invalid Address</source>
-        <translation>Ungültige Adresse</translation>
+        <translation type="obsolete">Ungültige Adresse</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Hinzufügen</translation>
+        <translation type="obsolete">Hinzufügen</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation>Editieren</translation>
+        <translation type="obsolete">Editieren</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Löschen</translation>
+        <translation type="obsolete">Löschen</translation>
     </message>
     <message>
         <source>Path</source>
-        <translation>Pfad</translation>
+        <translation type="obsolete">Pfad</translation>
     </message>
     <message>
         <source>Argument</source>
-        <translation>Argument</translation>
+        <translation type="obsolete">Argument</translation>
     </message>
     <message>
         <source>Loadable Modules:</source>
-        <translation>Ladbare Module:</translation>
+        <translation type="obsolete">Ladbare Module:</translation>
     </message>
     <message>
         <source>Default Now Cart:</source>
-        <translation>Standard-Now-Cart:</translation>
+        <translation type="obsolete">Standard-Now-Cart:</translation>
     </message>
     <message>
         <source>Default Next Cart:</source>
-        <translation>Standard-Next-Cart:</translation>
+        <translation type="obsolete">Standard-Next-Cart:</translation>
     </message>
     <message>
         <source>Select</source>
-        <translation>Auswählen</translation>
+        <translation type="obsolete">Auswählen</translation>
     </message>
     <message>
         <source>Aux Log 2</source>
-        <translation type="unfinished">Aux Log 2</translation>
+        <translation type="obsolete">Aux Log 2</translation>
     </message>
 </context>
 <context>
@@ -2394,7 +2394,7 @@ GPIOs</source>
     <message>
         <source>Configure Now &amp;&amp; Next
 Parameters</source>
-        <translation>Now &amp;&amp; Next-Parameter
+        <translation type="obsolete">Now &amp;&amp; Next-Parameter
 konfigurieren</translation>
     </message>
     <message>
@@ -2555,6 +2555,10 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Aux 2 Log Startup Mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rivendell Loadable Modules</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

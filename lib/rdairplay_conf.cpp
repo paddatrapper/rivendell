@@ -360,61 +360,6 @@ void RDAirPlayConf::setDescriptionTemplate(const QString &str)
 }
 
 
-QHostAddress RDAirPlayConf::udpAddress(int logno) const
-{
-  QHostAddress addr;
-  QString str(RDGetSqlValue(air_tablename,"ID",air_id,
-			   QString().sprintf("UDP_ADDR%d",logno)).toString());
-  addr.setAddress(str);
-  return addr;
-}
-
-
-void RDAirPlayConf::setUdpAddress(int logno,QHostAddress addr) const
-{
-  SetRow(QString().sprintf("UDP_ADDR%d",logno),addr.toString());
-}
-
-
-Q_UINT16 RDAirPlayConf::udpPort(int logno) const
-{
-  return (Q_UINT16)RDGetSqlValue(air_tablename,"ID",air_id,QString().
-				sprintf("UDP_PORT%d",logno)).toInt();
-}
-
-
-void RDAirPlayConf::setUdpPort(int logno,Q_UINT16 port) const
-{
-  SetRow(QString().sprintf("UDP_PORT%d",logno),(int)port);
-}
-
-
-QString RDAirPlayConf::udpString(int logno) const
-{
-  return RDGetSqlValue(air_tablename,"ID",air_id,
-		      QString().sprintf("UDP_STRING%d",logno)).toString();
-}
-
-
-void RDAirPlayConf::setUdpString(int logno,const QString &str) const
-{
-  SetRow(QString().sprintf("UDP_STRING%d",logno),str);
-}
-
-
-QString RDAirPlayConf::logRml(int logno) const
-{
-  return RDGetSqlValue(air_tablename,"ID",air_id,
-		      QString().sprintf("LOG_RML%d",logno)).toString();
-}
-
-
-void RDAirPlayConf::setLogRml(int logno,const QString &str) const
-{
-  SetRow(QString().sprintf("LOG_RML%d",logno),str);
-}
-
-
 RDAirPlayConf::ExitCode RDAirPlayConf::exitCode() const
 {
   return (RDAirPlayConf::ExitCode)

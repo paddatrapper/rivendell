@@ -14736,7 +14736,7 @@
 	'rdadmin/edit_panelchannels.cpp' and 'rdadmin/edit_panelchannels.h'.
 	* Added an 'EditLogChannels' widget in
 	'rdadmin/edit_logchannels.cpp' and 'rdadmin/edit_logchannels.h'.
-2014-12-27 Fred Gleason <fredg@paravelsystems.com>
+2014-12-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'LOG_MODES.CURRENT_START_MODE',
 	'LOG_MODES.CURRENT_AUTO_RESTART', 'LOG_MODES.CURRENT_LOG_NAME',
 	'LOG_MODES.CURRENT_CURRENT_LOG', 'LOG_MODES.CURRENT_RUNNING',
@@ -14760,3 +14760,12 @@
 	* Incremented the database version to 245.
 	* Fixed regressions in 'rdairplay/rdairplay.cpp' that caused metering
 	and channel assignments for log playouts to be incorrect.
+	* Removed the 'RDAIRPLAY.UDP_ADDR0', 'RDAIRPLAY.UDP_ADDR1',
+	'RDAIRPLAY.UDP_ADDR2', 'RDAIRPLAY.UDP_PORT0', 'RDAIRPLAY.UDP_PORT1',
+	'RDAIRPLAY.UDP_PORT2', 'RDAIRPLAY.UDP_STRING0',
+	'RDAIRPLAY.UDP_STRING1', 'RDAIRPLAY.UDP_STRING2', 'RDAIRPLAY.LOG_RML0',
+	'RDAIRPLAY.LOG_RML1', 'RDAIRPLAY.LOG_RML2', 'RDAIRPLAY.OP_MODE' and
+	'RDAIRPLAY.START_MODE' fields from the database.
+	* Incremented the database version to 256.
+	* Added a 'ListNowNextPlugins' widget in
+	'rdadmin/list_nownextplugins.cpp' and 'rdadmin/list_nownextplugins.h'.

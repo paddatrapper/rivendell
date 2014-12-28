@@ -43,6 +43,7 @@
 
 #include "edit_logchannels.h"
 #include "edit_panelchannels.h"
+#include "list_nownextplugins.h"
 
 /*
  * Application Settings
@@ -61,13 +62,10 @@ class EditRDAirPlay : public QDialog
   QSizePolicy sizePolicy() const;
   
  private slots:
-  void audioSettingsChangedData(int id,int card,int port);
-  void editGpiosData(int num);
   void exitPasswordChangedData(const QString &str);
   void logActivatedData(int lognum);
   void startModeChangedData(int mode);
   void selectData();
-  void nownextData();
   void editHotKeys();
   void selectSkinData();
   void modeControlActivatedData(int n);
@@ -79,21 +77,13 @@ class EditRDAirPlay : public QDialog
   void paintEvent(QPaintEvent *e);
   
  private:
+  RDStation *air_station;
   RDAirPlayConf *air_conf;
   RDLogModes *air_modes;
   RDChannels *air_channels;
   EditLogChannels *air_edit_logchannels;
   EditPanelChannels *air_edit_panelchannels;
-  /*
-  RDCardSelector *air_card_sel[RDAirPlayConf::LastChannel];
-  QLabel *air_start_rml_label[RDAirPlayConf::LastChannel];
-  QLineEdit *air_start_rml_edit[RDAirPlayConf::LastChannel];
-  QLabel *air_stop_rml_label[RDAirPlayConf::LastChannel];
-  QLineEdit *air_stop_rml_edit[RDAirPlayConf::LastChannel];
-  QPushButton *air_channel_button[RDAirPlayConf::LastChannel];
-  */
-  //  QLabel *air_startup_label;
-  //  QComboBox *air_startup_box;
+  ListNowNextPlugins *air_list_plugins;
   QLabel *air_segue_label;
   QLineEdit *air_segue_edit;
   QLabel *air_trans_label;

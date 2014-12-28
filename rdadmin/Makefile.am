@@ -80,7 +80,6 @@ dist_rdadmin_SOURCES = add_aux_field.cpp add_aux_field.h\
                        edit_logchannels.cpp edit_logchannels.h\
                        edit_matrix.cpp edit_matrix.h\
                        edit_node.cpp edit_node.h\
-                       edit_now_next.cpp edit_now_next.h\
                        edit_nownextplugin.cpp edit_nownextplugin.h\
                        edit_panelchannels.cpp edit_panelchannels.h\
                        edit_rdairplay.cpp edit_rdairplay.h\
@@ -114,6 +113,7 @@ dist_rdadmin_SOURCES = add_aux_field.cpp add_aux_field.h\
                        list_livewiregpios.cpp list_livewiregpios.h\
                        list_matrices.cpp list_matrices.h\
                        list_nodes.cpp list_nodes.h\
+                       list_nownextplugins.cpp list_nownextplugins.h\
                        list_replicator_carts.cpp list_replicator_carts.h\
                        list_replicators.cpp list_replicators.h\
                        list_reports.cpp list_reports.h\
@@ -166,7 +166,7 @@ nodist_rdadmin_SOURCES = moc_add_aux_field.cpp\
                          moc_edit_logchannels.cpp\
                          moc_edit_matrix.cpp\
                          moc_edit_node.cpp\
-                         moc_edit_now_next.cpp\
+                         moc_list_nownextplugins.cpp\
                          moc_edit_nownextplugin.cpp\
                          moc_edit_panelchannels.cpp\
                          moc_edit_rdairplay.cpp\
