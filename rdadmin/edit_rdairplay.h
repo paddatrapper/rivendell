@@ -44,6 +44,7 @@
 #include "edit_logchannels.h"
 #include "edit_modecontrol.h"
 #include "edit_panelchannels.h"
+#include "edit_startstop.h"
 #include "list_nownextplugins.h"
 
 /*
@@ -63,20 +64,11 @@ class EditRDAirPlay : public QDialog
   QSizePolicy sizePolicy() const;
   
  private slots:
-  void exitPasswordChangedData(const QString &str);
-  void logActivatedData(int lognum);
-  void startModeChangedData(int mode);
-  void selectData();
   void editHotKeys();
   void selectSkinData();
-  //  void modeControlActivatedData(int n);
-  //  void logStartupModeActivatedData(int n);
   void okData();
   void cancelData();
 
- protected:
-  void paintEvent(QPaintEvent *e);
-  
  private:
   RDStation *air_station;
   RDAirPlayConf *air_conf;
@@ -86,6 +78,7 @@ class EditRDAirPlay : public QDialog
   EditPanelChannels *air_edit_panelchannels;
   ListNowNextPlugins *air_list_plugins;
   EditModeControl *air_mode_control;
+  EditStartStop *air_start_stop;
   QLabel *air_segue_label;
   QLineEdit *air_segue_edit;
   QLabel *air_trans_label;
@@ -121,27 +114,11 @@ class EditRDAirPlay : public QDialog
   QCheckBox *air_hour_selector_box;
   QComboBox *air_default_transtype_box;
   QComboBox *air_defaultsvc_box;
-  QLineEdit *air_exitpasswd_edit;
-  bool air_exitpasswd_changed;
-  int air_logmachine;
-  QComboBox *air_logmachine_box;
-  QComboBox *air_startmode_box;
-  RDLogModes::StartMode air_startmode[RDAIRPLAY_LOG_QUANTITY];
-  QLineEdit *air_startlog_edit;
-  QLabel *air_startlog_label;
-  QPushButton *air_startlog_button;
-  QString air_startlog[RDAIRPLAY_LOG_QUANTITY];
-  QCheckBox *air_autorestart_box;
-  bool air_autorestart[RDAIRPLAY_LOG_QUANTITY];
-  QLabel *air_autorestart_label;
   QLineEdit *air_skin_edit;
   QLineEdit *air_title_template_edit;
   QLineEdit *air_artist_template_edit;
   QLineEdit *air_outcue_template_edit;
   QLineEdit *air_description_template_edit;
-  //QComboBox *air_modecontrol_box;
-  //  QLabel *air_logstartmode_label[RDAIRPLAY_LOG_QUANTITY];
-  //  QComboBox *air_logstartmode_box[RDAIRPLAY_LOG_QUANTITY];
 };
 
 

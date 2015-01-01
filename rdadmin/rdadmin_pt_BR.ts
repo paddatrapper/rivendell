@@ -2434,39 +2434,39 @@ Agora &amp;&amp; Próximo
     </message>
     <message>
         <source>Exit Password:</source>
-        <translation>Senha para Sair:</translation>
+        <translation type="obsolete">Senha para Sair:</translation>
     </message>
     <message>
         <source>Main Log</source>
-        <translation>Lista Principal </translation>
+        <translation type="obsolete">Lista Principal </translation>
     </message>
     <message>
         <source>start with empty log</source>
-        <translation type="unfinished">Começar com Lista vazia</translation>
+        <translation type="obsolete">Começar com Lista vazia</translation>
     </message>
     <message>
         <source>load previous log</source>
-        <translation type="unfinished">Carregar Lista anterior</translation>
+        <translation type="obsolete">Carregar Lista anterior</translation>
     </message>
     <message>
         <source>load specified log</source>
-        <translation type="unfinished">Carregar Lista específica</translation>
+        <translation type="obsolete">Carregar Lista específica</translation>
     </message>
     <message>
         <source>At Startup:</source>
-        <translation type="unfinished">Ao Iniciar:</translation>
+        <translation type="obsolete">Ao Iniciar:</translation>
     </message>
     <message>
         <source>Restart Log After Unclean Shutdown</source>
-        <translation>Recomeçar Lista após Queda</translation>
+        <translation type="obsolete">Recomeçar Lista após Queda</translation>
     </message>
     <message>
         <source>Log:</source>
-        <translation>Lista:</translation>
+        <translation type="obsolete">Lista:</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Sel</translation>
+        <translation type="obsolete">&amp;Sel</translation>
     </message>
     <message>
         <source>Display Settings</source>
@@ -3396,6 +3396,45 @@ Overwrite?</source>
     <message>
         <source>Temporary Cart Group:</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EditStartStop</name>
+    <message>
+        <source>Exit Password:</source>
+        <translation type="unfinished">Senha para Sair:</translation>
+    </message>
+    <message>
+        <source>Main Log</source>
+        <translation type="unfinished">Lista Principal </translation>
+    </message>
+    <message>
+        <source>start with empty log</source>
+        <translation type="unfinished">Começar com Lista vazia</translation>
+    </message>
+    <message>
+        <source>load previous log</source>
+        <translation type="unfinished">Carregar Lista anterior</translation>
+    </message>
+    <message>
+        <source>load specified log</source>
+        <translation type="unfinished">Carregar Lista específica</translation>
+    </message>
+    <message>
+        <source>At Startup:</source>
+        <translation type="unfinished">Ao Iniciar:</translation>
+    </message>
+    <message>
+        <source>Restart Log After Unclean Shutdown</source>
+        <translation type="unfinished">Recomeçar Lista após Queda</translation>
+    </message>
+    <message>
+        <source>Log:</source>
+        <translation type="unfinished">Lista:</translation>
+    </message>
+    <message>
+        <source>&amp;Select</source>
+        <translation type="unfinished">&amp;Sel</translation>
     </message>
 </context>
 <context>

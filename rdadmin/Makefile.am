@@ -92,6 +92,7 @@ dist_rdadmin_SOURCES = add_aux_field.cpp add_aux_field.h\
                        edit_sas_resource.cpp edit_sas_resource.h\
                        edit_schedcodes.cpp edit_schedcodes.h\
                        edit_settings.cpp edit_settings.h\
+                       edit_startstop.cpp edit_startstop.h\
                        edit_station.cpp edit_station.h\
                        edit_svc.cpp edit_svc.h\
                        edit_svc_perms.cpp edit_svc_perms.h\
@@ -180,6 +181,7 @@ nodist_rdadmin_SOURCES = moc_add_aux_field.cpp\
                          moc_edit_sas_resource.cpp\
                          moc_edit_schedcodes.cpp\
                          moc_edit_settings.cpp\
+                         moc_edit_startstop.cpp\
                          moc_edit_station.cpp\
                          moc_edit_svc.cpp\
                          moc_edit_svc_perms.cpp\

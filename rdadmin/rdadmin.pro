@@ -62,6 +62,7 @@ x11 {
   SOURCES += edit_replicator.cpp
   SOURCES += edit_report.cpp
   SOURCES += edit_settings.cpp
+  SOURCES += edit_startstop.cpp
   SOURCES += edit_station.cpp
   SOURCES += edit_svc.cpp
   SOURCES += edit_svc_perms.cpp
@@ -139,6 +140,7 @@ x11 {
   HEADERS += edit_replicator.h
   HEADERS += edit_report.h
   HEADERS += edit_settings.h
+  HEADERS += edit_startstop.h
   HEADERS += edit_station.h
   HEADERS += edit_svc.h
   HEADERS += edit_svc_perms.h

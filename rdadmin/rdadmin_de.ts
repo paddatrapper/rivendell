@@ -2446,39 +2446,39 @@ konfigurieren</translation>
     </message>
     <message>
         <source>Exit Password:</source>
-        <translation>Passwort zum beenden:</translation>
+        <translation type="obsolete">Passwort zum beenden:</translation>
     </message>
     <message>
         <source>Main Log</source>
-        <translation>Haupt-Log</translation>
+        <translation type="obsolete">Haupt-Log</translation>
     </message>
     <message>
         <source>start with empty log</source>
-        <translation type="unfinished">mit leerem Log starten</translation>
+        <translation type="obsolete">mit leerem Log starten</translation>
     </message>
     <message>
         <source>load previous log</source>
-        <translation type="unfinished">vorheriges Log laden</translation>
+        <translation type="obsolete">vorheriges Log laden</translation>
     </message>
     <message>
         <source>load specified log</source>
-        <translation type="unfinished">Bestimmtes Log laden</translation>
+        <translation type="obsolete">Bestimmtes Log laden</translation>
     </message>
     <message>
         <source>At Startup:</source>
-        <translation type="unfinished">Beim Start:</translation>
+        <translation type="obsolete">Beim Start:</translation>
     </message>
     <message>
         <source>Restart Log After Unclean Shutdown</source>
-        <translation>Log nach unsauberem beenden neustarten</translation>
+        <translation type="obsolete">Log nach unsauberem beenden neustarten</translation>
     </message>
     <message>
         <source>Log:</source>
-        <translation>Log:</translation>
+        <translation type="obsolete">Log:</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>Au&amp;swählen</translation>
+        <translation type="obsolete">Au&amp;swählen</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -3404,6 +3404,45 @@ Overwrite?</source>
     <message>
         <source>Temporary Cart Group:</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EditStartStop</name>
+    <message>
+        <source>Exit Password:</source>
+        <translation type="unfinished">Passwort zum beenden:</translation>
+    </message>
+    <message>
+        <source>Main Log</source>
+        <translation type="unfinished">Haupt-Log</translation>
+    </message>
+    <message>
+        <source>start with empty log</source>
+        <translation type="unfinished">mit leerem Log starten</translation>
+    </message>
+    <message>
+        <source>load previous log</source>
+        <translation type="unfinished">vorheriges Log laden</translation>
+    </message>
+    <message>
+        <source>load specified log</source>
+        <translation type="unfinished">Bestimmtes Log laden</translation>
+    </message>
+    <message>
+        <source>At Startup:</source>
+        <translation type="unfinished">Beim Start:</translation>
+    </message>
+    <message>
+        <source>Restart Log After Unclean Shutdown</source>
+        <translation type="unfinished">Log nach unsauberem beenden neustarten</translation>
+    </message>
+    <message>
+        <source>Log:</source>
+        <translation type="unfinished">Log:</translation>
+    </message>
+    <message>
+        <source>&amp;Select</source>
+        <translation type="unfinished">Au&amp;swählen</translation>
     </message>
 </context>
 <context>

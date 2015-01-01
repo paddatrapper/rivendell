@@ -31,7 +31,6 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 #include <qbuttongroup.h>
-#include <qpainter.h>
 #include <qfiledialog.h>
 
 #include <rd.h>
@@ -52,8 +51,6 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   RDSqlQuery *q;
 
   air_station=station;
-  air_exitpasswd_changed=false;
-  air_logmachine=0;
 
   //
   // Fix the Window Size
@@ -115,73 +112,9 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   label->setFont(big_font);
   label->setGeometry(10,401,200,16);
 
-  //
-  // Exit Password
-  //
-  air_exitpasswd_edit=new QLineEdit(this);
-  air_exitpasswd_edit->setGeometry(100,424,sizeHint().width()-905,20);
-  air_exitpasswd_edit->setEchoMode(QLineEdit::Password);
-  air_exitpasswd_edit->setText("******");
-  label=new QLabel(air_exitpasswd_edit,tr("Exit Password:"),this);
-  label->setGeometry(0,424,95,20);
-  label->setAlignment(AlignRight|AlignVCenter);
-  connect(air_exitpasswd_edit,SIGNAL(textChanged(const QString &)),
-	  this,SLOT(exitPasswordChangedData(const QString &)));
-
-  //
-  // Log Machine Selector
-  //
-  air_logmachine_box=new QComboBox(this);
-  air_logmachine_box->setGeometry(45,449,100,20);
-  air_logmachine_box->insertItem(tr("Main Log"));
-  for(unsigned i=1;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_logmachine_box->insertItem(QString().sprintf("Aux %d Log",i));
-  }
-  connect(air_logmachine_box,SIGNAL(activated(int)),
-	  this,SLOT(logActivatedData(int)));
-
-  //
-  // Startup Mode
-  //
-  air_startmode_box=new QComboBox(this);
-  air_startmode_box->setGeometry(100,474,240,20);
-  air_startmode_box->insertItem(tr("start with empty log"));
-  air_startmode_box->insertItem(tr("load previous log"));
-  air_startmode_box->insertItem(tr("load specified log"));
-  label=new QLabel(air_exitpasswd_edit,tr("At Startup:"),this);
-  label->setGeometry(30,474,65,20);
-  label->setAlignment(AlignRight|AlignVCenter);
-  connect(air_startmode_box,SIGNAL(activated(int)),
-	  this,SLOT(startModeChangedData(int)));
-
-  //
-  // Auto Restart Checkbox
-  //
-  air_autorestart_box=new QCheckBox(this);
-  air_autorestart_box->setGeometry(105,499,15,15);
-  air_autorestart_label=
-    new QLabel(air_autorestart_box,
-	       tr("Restart Log After Unclean Shutdown"),this);
-  air_autorestart_label->setGeometry(125,499,250,15);
-  air_autorestart_label->setAlignment(AlignLeft|AlignVCenter);
-
-  //
-  // Startup Log
-  //
-  air_startlog_edit=new QLineEdit(this);
-  air_startlog_edit->setGeometry(100,519,240,20);
-  air_startlog_label=new QLabel(air_startlog_edit,tr("Log:"),this);
-  air_startlog_label->setGeometry(30,519,65,20);
-  air_startlog_label->setAlignment(AlignRight|AlignVCenter);
-
-  //
-  //  Log Select Button
-  //
-  air_startlog_button=new QPushButton(this);
-  air_startlog_button->setGeometry(350,517,50,24);
-  air_startlog_button->setFont(small_font);
-  air_startlog_button->setText(tr("&Select"));
-  connect(air_startlog_button,SIGNAL(clicked()),this,SLOT(selectData()));
+  air_start_stop=new EditStartStop(admin_station,admin_user,this);
+  air_start_stop->setGeometry(10,424,air_start_stop->sizeHint().width(),
+			      air_start_stop->sizeHint().height());
 
   //
   // HotKeys Configuration Button
@@ -556,14 +489,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_outcue_template_edit->setText(air_conf->outcueTemplate());
   air_description_template_edit->setText(air_conf->descriptionTemplate());
   air_mode_control->load(air_conf,air_modes);
-  for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_startmode[i]=air_modes->startMode(i);
-  }
-  air_startmode_box->setCurrentItem((int)air_startmode[air_logmachine]);
-  air_startlog_edit->setText(air_startlog[air_logmachine]);
-  air_autorestart_box->setChecked(air_autorestart[air_logmachine]);
+  air_start_stop->load(air_conf,air_modes);
   air_skin_edit->setText(air_conf->skinPath());
-  startModeChangedData(air_startmode[air_logmachine]);
 }
 
 
@@ -581,55 +508,6 @@ QSize EditRDAirPlay::sizeHint() const
 QSizePolicy EditRDAirPlay::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
-}
-
-
-void EditRDAirPlay::exitPasswordChangedData(const QString &str)
-{
-  air_exitpasswd_changed=true;
-}
-
-
-void EditRDAirPlay::logActivatedData(int lognum)
-{
-  air_startmode[air_logmachine]=
-    (RDLogModes::StartMode)air_startmode_box->currentItem();
-  air_startlog[air_logmachine]=air_startlog_edit->text();
-  air_autorestart[air_logmachine]=air_autorestart_box->isChecked();
-
-  air_logmachine=lognum;
-  air_startmode_box->setCurrentItem((int)air_startmode[lognum]);
-  air_startlog_edit->setText(air_startlog[lognum]);
-  air_autorestart_box->setChecked(air_autorestart[lognum]);
-  startModeChangedData((int)air_startmode[lognum]);
-}
-
-
-void EditRDAirPlay::startModeChangedData(int mode)
-{
-  air_startlog_edit->setEnabled((RDLogModes::StartMode)mode==
-				RDLogModes::StartSpecified);
-  air_startlog_label->setEnabled((RDLogModes::StartMode)mode==
-				 RDLogModes::StartSpecified);
-  air_startlog_button->setEnabled((RDLogModes::StartMode)mode==
-				 RDLogModes::StartSpecified);
-  air_autorestart_box->setDisabled((RDLogModes::StartMode)mode==
-				   RDLogModes::StartEmpty);
-  air_autorestart_label->setDisabled((RDLogModes::StartMode)mode==
-				     RDLogModes::StartEmpty);
-}
-
-
-void EditRDAirPlay::selectData()
-{
-  QString logname=air_startlog_edit->text();
-
-  RDListLogs *ll=new RDListLogs(&logname,air_conf->station(),this,
-                                "log",admin_user);
-  if(ll->exec()==0) {
-    air_startlog_edit->setText(logname);
-  }
-  delete ll;
 }
 
 
@@ -702,19 +580,8 @@ void EditRDAirPlay::okData()
   air_conf->setArtistTemplate(air_artist_template_edit->text());
   air_conf->setOutcueTemplate(air_outcue_template_edit->text());
   air_conf->setDescriptionTemplate(air_description_template_edit->text());
-  if(air_exitpasswd_changed) {
-    air_conf->setExitPassword(air_exitpasswd_edit->text());
-  }
-  air_startmode[air_logmachine]=
-    (RDLogModes::StartMode)air_startmode_box->currentItem();
-  air_startlog[air_logmachine]=air_startlog_edit->text();
-  air_autorestart[air_logmachine]=air_autorestart_box->isChecked();
   air_mode_control->save(air_conf,air_modes);
-  for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_modes->setStartMode(i,air_startmode[i]);
-    air_modes->setLogName(i,air_startlog[i]);
-    air_modes->setAutoRestart(i,air_autorestart[i]);
-  }
+  air_start_stop->save(air_conf,air_modes);
   air_conf->setSkinPath(air_skin_edit->text());
   done(0);
 }
@@ -723,14 +590,4 @@ void EditRDAirPlay::okData()
 void EditRDAirPlay::cancelData()
 {
   done(1);
-}
-
-
-void EditRDAirPlay::paintEvent(QPaintEvent *e)
-{
-  QPainter *p=new QPainter(this);
-  p->setPen(black);
-  p->drawRect(25,435,395,95);
-  p->end();
-  delete p;
 }

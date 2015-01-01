@@ -2037,26 +2037,6 @@ GPIOs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Exit Password:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Main Log</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Restart Log After Unclean Shutdown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Log:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Select</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2140,22 +2120,6 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Log Mode Control</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>start with empty log</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>load previous log</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>load specified log</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>At Startup:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2971,6 +2935,45 @@ Overwrite?</source>
     </message>
     <message>
         <source>Temporary Cart Group:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EditStartStop</name>
+    <message>
+        <source>Exit Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Main Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>start with empty log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>load previous log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>load specified log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At Startup:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restart Log After Unclean Shutdown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Select</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

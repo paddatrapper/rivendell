@@ -2410,39 +2410,39 @@ parametrar</translation>
     </message>
     <message>
         <source>Exit Password:</source>
-        <translation>Passord for å lukka:</translation>
+        <translation type="obsolete">Passord for å lukka:</translation>
     </message>
     <message>
         <source>Main Log</source>
-        <translation>Hovudlogg</translation>
+        <translation type="obsolete">Hovudlogg</translation>
     </message>
     <message>
         <source>start with empty log</source>
-        <translation type="unfinished">start med tom logg</translation>
+        <translation type="obsolete">start med tom logg</translation>
     </message>
     <message>
         <source>load previous log</source>
-        <translation type="unfinished">last førre loggen</translation>
+        <translation type="obsolete">last førre loggen</translation>
     </message>
     <message>
         <source>load specified log</source>
-        <translation type="unfinished">last oppgjeven logg</translation>
+        <translation type="obsolete">last oppgjeven logg</translation>
     </message>
     <message>
         <source>At Startup:</source>
-        <translation type="unfinished">Ved oppstart:</translation>
+        <translation type="obsolete">Ved oppstart:</translation>
     </message>
     <message>
         <source>Restart Log After Unclean Shutdown</source>
-        <translation>Start omatt loggen etter feil avslutting</translation>
+        <translation type="obsolete">Start omatt loggen etter feil avslutting</translation>
     </message>
     <message>
         <source>Log:</source>
-        <translation>Logg:</translation>
+        <translation type="obsolete">Logg:</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Vel</translation>
+        <translation type="obsolete">&amp;Vel</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -3371,6 +3371,45 @@ Overwrite?</source>
     <message>
         <source>Temporary Cart Group:</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EditStartStop</name>
+    <message>
+        <source>Exit Password:</source>
+        <translation type="unfinished">Passord for å lukka:</translation>
+    </message>
+    <message>
+        <source>Main Log</source>
+        <translation type="unfinished">Hovudlogg</translation>
+    </message>
+    <message>
+        <source>start with empty log</source>
+        <translation type="unfinished">start med tom logg</translation>
+    </message>
+    <message>
+        <source>load previous log</source>
+        <translation type="unfinished">last førre loggen</translation>
+    </message>
+    <message>
+        <source>load specified log</source>
+        <translation type="unfinished">last oppgjeven logg</translation>
+    </message>
+    <message>
+        <source>At Startup:</source>
+        <translation type="unfinished">Ved oppstart:</translation>
+    </message>
+    <message>
+        <source>Restart Log After Unclean Shutdown</source>
+        <translation type="unfinished">Start omatt loggen etter feil avslutting</translation>
+    </message>
+    <message>
+        <source>Log:</source>
+        <translation type="unfinished">Logg:</translation>
+    </message>
+    <message>
+        <source>&amp;Select</source>
+        <translation type="unfinished">&amp;Vel</translation>
     </message>
 </context>
 <context>

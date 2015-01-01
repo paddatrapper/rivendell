@@ -2471,39 +2471,39 @@ Parameters</source>
     </message>
     <message>
         <source>Exit Password:</source>
-        <translation>Clave para salir:</translation>
+        <translation type="obsolete">Clave para salir:</translation>
     </message>
     <message>
         <source>Main Log</source>
-        <translation>PlayList Ppal</translation>
+        <translation type="obsolete">PlayList Ppal</translation>
     </message>
     <message>
         <source>start with empty log</source>
-        <translation type="unfinished">comenzar con PlayList vacío</translation>
+        <translation type="obsolete">comenzar con PlayList vacío</translation>
     </message>
     <message>
         <source>load previous log</source>
-        <translation type="unfinished">cargar PlayList anterior</translation>
+        <translation type="obsolete">cargar PlayList anterior</translation>
     </message>
     <message>
         <source>load specified log</source>
-        <translation type="unfinished">cargar PlayList específico</translation>
+        <translation type="obsolete">cargar PlayList específico</translation>
     </message>
     <message>
         <source>At Startup:</source>
-        <translation type="unfinished">Al inicio:</translation>
+        <translation type="obsolete">Al inicio:</translation>
     </message>
     <message>
         <source>Restart Log After Unclean Shutdown</source>
-        <translation>Reiniciar PlayList si apagan el equipo</translation>
+        <translation type="obsolete">Reiniciar PlayList si apagan el equipo</translation>
     </message>
     <message>
         <source>Log:</source>
-        <translation>PlayList:</translation>
+        <translation type="obsolete">PlayList:</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Elegir</translation>
+        <translation type="obsolete">&amp;Elegir</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -3447,6 +3447,45 @@ Overwrite?</source>
     <message>
         <source>Temporary Cart Group:</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EditStartStop</name>
+    <message>
+        <source>Exit Password:</source>
+        <translation type="unfinished">Clave para salir:</translation>
+    </message>
+    <message>
+        <source>Main Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>start with empty log</source>
+        <translation type="unfinished">comenzar con PlayList vacío</translation>
+    </message>
+    <message>
+        <source>load previous log</source>
+        <translation type="unfinished">cargar PlayList anterior</translation>
+    </message>
+    <message>
+        <source>load specified log</source>
+        <translation type="unfinished">cargar PlayList específico</translation>
+    </message>
+    <message>
+        <source>At Startup:</source>
+        <translation type="unfinished">Al inicio:</translation>
+    </message>
+    <message>
+        <source>Restart Log After Unclean Shutdown</source>
+        <translation type="unfinished">Reiniciar PlayList si apagan el equipo</translation>
+    </message>
+    <message>
+        <source>Log:</source>
+        <translation type="unfinished">PlayList:</translation>
+    </message>
+    <message>
+        <source>&amp;Select</source>
+        <translation type="unfinished">&amp;Elegir</translation>
     </message>
 </context>
 <context>

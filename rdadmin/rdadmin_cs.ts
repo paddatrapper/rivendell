@@ -2471,39 +2471,39 @@ Nyní &amp;&amp; Další</translation>
     </message>
     <message>
         <source>Exit Password:</source>
-        <translation>Heslo pro ukončení:</translation>
+        <translation type="obsolete">Heslo pro ukončení:</translation>
     </message>
     <message>
         <source>Main Log</source>
-        <translation>Hlavní zápis</translation>
+        <translation type="obsolete">Hlavní zápis</translation>
     </message>
     <message>
         <source>start with empty log</source>
-        <translation type="unfinished">Začít s prázdným zápisem</translation>
+        <translation type="obsolete">Začít s prázdným zápisem</translation>
     </message>
     <message>
         <source>load previous log</source>
-        <translation type="unfinished">Nahrát předchozí zápis</translation>
+        <translation type="obsolete">Nahrát předchozí zápis</translation>
     </message>
     <message>
         <source>load specified log</source>
-        <translation type="unfinished">Nahrát určitý zápis</translation>
+        <translation type="obsolete">Nahrát určitý zápis</translation>
     </message>
     <message>
         <source>At Startup:</source>
-        <translation type="unfinished">Při spuštění:</translation>
+        <translation type="obsolete">Při spuštění:</translation>
     </message>
     <message>
         <source>Restart Log After Unclean Shutdown</source>
-        <translation>Po nečistém ukončení spustit zápis znovu</translation>
+        <translation type="obsolete">Po nečistém ukončení spustit zápis znovu</translation>
     </message>
     <message>
         <source>Log:</source>
-        <translation>Zápis:</translation>
+        <translation type="obsolete">Zápis:</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Vybrat</translation>
+        <translation type="obsolete">&amp;Vybrat</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -3448,6 +3448,45 @@ Přepsat?</translation>
     <message>
         <source>Temporary Cart Group:</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EditStartStop</name>
+    <message>
+        <source>Exit Password:</source>
+        <translation type="unfinished">Heslo pro ukončení:</translation>
+    </message>
+    <message>
+        <source>Main Log</source>
+        <translation type="unfinished">Hlavní zápis</translation>
+    </message>
+    <message>
+        <source>start with empty log</source>
+        <translation type="unfinished">Začít s prázdným zápisem</translation>
+    </message>
+    <message>
+        <source>load previous log</source>
+        <translation type="unfinished">Nahrát předchozí zápis</translation>
+    </message>
+    <message>
+        <source>load specified log</source>
+        <translation type="unfinished">Nahrát určitý zápis</translation>
+    </message>
+    <message>
+        <source>At Startup:</source>
+        <translation type="unfinished">Při spuštění:</translation>
+    </message>
+    <message>
+        <source>Restart Log After Unclean Shutdown</source>
+        <translation type="unfinished">Po nečistém ukončení spustit zápis znovu</translation>
+    </message>
+    <message>
+        <source>Log:</source>
+        <translation type="unfinished">Zápis:</translation>
+    </message>
+    <message>
+        <source>&amp;Select</source>
+        <translation type="unfinished">&amp;Vybrat</translation>
     </message>
 </context>
 <context>

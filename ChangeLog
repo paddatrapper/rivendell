@@ -14781,3 +14781,7 @@
 	* Added a log selector dropdown to handle cases where more than
 	three log machines are enabled in 'rdairplay/rdairplay.cpp' and
 	'rdairplay/rdairplay.h'.
+2015-01-01 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored Start/Stop controls in 'rdadmin/edit_rdairplay.cpp'
+	and 'rdadmin/edit_rdairplay.h' to use a separate widget in
+	'rdadmin/edit_startstop.cpp' and 'rdadmin/edit_startstop.h'.
