@@ -79,6 +79,7 @@ dist_rdadmin_SOURCES = add_aux_field.cpp add_aux_field.h\
                        edit_livewiregpio.cpp edit_livewiregpio.h\
                        edit_logchannels.cpp edit_logchannels.h\
                        edit_matrix.cpp edit_matrix.h\
+                       edit_modecontrol.cpp edit_modecontrol.h\
                        edit_node.cpp edit_node.h\
                        edit_nownextplugin.cpp edit_nownextplugin.h\
                        edit_panelchannels.cpp edit_panelchannels.h\
@@ -165,6 +166,7 @@ nodist_rdadmin_SOURCES = moc_add_aux_field.cpp\
                          moc_edit_livewiregpio.cpp\
                          moc_edit_logchannels.cpp\
                          moc_edit_matrix.cpp\
+                         moc_edit_modecontrol.cpp\
                          moc_edit_node.cpp\
                          moc_list_nownextplugins.cpp\
                          moc_edit_nownextplugin.cpp\

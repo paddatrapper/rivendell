@@ -549,13 +549,13 @@ Tail</source>
     <message>
         <source>Aux 1 Log
 [--]</source>
-        <translation>Hjelpelogg 1
+        <translation type="obsolete">Hjelpelogg 1
 [---]</translation>
     </message>
     <message>
         <source>Aux 2 Log
 [--]</source>
-        <translation>Hjelpelogg 2
+        <translation type="obsolete">Hjelpelogg 2
 [---]</translation>
     </message>
     <message>
@@ -604,6 +604,22 @@ LASTAR PÅ NYTT</translation>
     </message>
     <message>
         <source>Host:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aux</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aux Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SoundPanel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

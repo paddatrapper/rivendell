@@ -539,13 +539,13 @@ poslechu</translation>
     <message>
         <source>Aux 1 Log
 [--]</source>
-        <translation>Pomocný zápis 1
+        <translation type="obsolete">Pomocný zápis 1
 [--]</translation>
     </message>
     <message>
         <source>Aux 2 Log
 [--]</source>
-        <translation>Pomocný zápis 2
+        <translation type="obsolete">Pomocný zápis 2
 [--]</translation>
     </message>
     <message>
@@ -594,6 +594,22 @@ OBNOVEN</translation>
     </message>
     <message>
         <source>Service:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aux</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aux Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SoundPanel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -419,7 +419,7 @@
 /*
  * RDAirPlay Log Machines
  */
-#define RDAIRPLAY_LOG_QUANTITY 3
+#define RDAIRPLAY_LOG_QUANTITY 16
 
 /*
  * Cue Editor Colors

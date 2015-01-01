@@ -32,7 +32,7 @@ class RDLogModes
   QString station() const;
   RDLogModes::OpMode opMode(int lognum) const;
   void setOpMode(int lognum,RDLogModes::OpMode mode) const;
-  RDLogModes::StartMode logStartMode(int lognum) const;
+  RDLogModes::OpMode logStartMode(int lognum) const;
   void setLogStartMode(int lognum,RDLogModes::OpMode mode) const;
   RDLogModes::StartMode startMode(int lognum) const;
   void setStartMode(int lognum,RDLogModes::StartMode mode) const;

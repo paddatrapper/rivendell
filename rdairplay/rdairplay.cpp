@@ -200,6 +200,8 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   qApp->setFont(default_font);
   QFont button_font=QFont("Helvetica",16,QFont::Bold);
   button_font.setPixelSize(16);
+  QFont selector_font=QFont("Helvetica",20,QFont::Bold);
+  selector_font.setPixelSize(20);
   for(unsigned i=0;i<AIR_MESSAGE_FONT_QUANTITY;i++) {
     air_message_fonts[i]=QFont("helvetica",12+2*i,QFont::Normal);
     air_message_fonts[i].setPixelSize(12+2*i);
@@ -490,7 +492,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
       ports[j]=air_channels->port(RDChannels::AirplayLogOutput,i,j);
       start_rmls[j]=
 	air_channels->rml(RDChannels::AirplayLogOutput,RDChannels::Start,i,j);
-      stop_rmls[i]=
+      stop_rmls[j]=
 	air_channels->rml(RDChannels::AirplayLogOutput,RDChannels::Stop,i,j);
     }
     if((cards[1]<0)||(ports[1]<0)) {
@@ -849,13 +851,29 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
     connect(air_log_button[i],SIGNAL(clicked()),mapper,SLOT(map()));
   }
   air_log_button[0]->setText(tr("Main Log\n[--]"));
-    air_log_button[1]->setText(tr("Aux 1 Log\n[--]"));
-  if(!rdairplay_conf->showAuxButton(0)) {
-    air_log_button[1]->hide();
+  for(unsigned i=1;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+    air_log_button[i]->setText(tr("Aux")+QString().sprintf(" %d ",i)+
+				tr("Log")+"\n[--]");
+    if((rdairplay_conf->logQuantity()>3)||
+       (i>=rdairplay_conf->logQuantity())||
+       (i>2)) {
+      air_log_button[i]->hide();
+    }
   }
-    air_log_button[2]->setText(tr("Aux 2 Log\n[--]"));
-  if(!rdairplay_conf->showAuxButton(1)) {
-    air_log_button[2]->hide();
+
+  air_right_selector_box=new QComboBox(this);
+  air_right_selector_box->setGeometry(562,sizeHint().height()-65,454,60);
+  air_right_selector_box->setFont(selector_font);
+  air_right_selector_box->insertItem(tr("SoundPanel"));
+  air_right_selector_box->insertItem(tr("Main Log")+" [--]");
+  for(unsigned i=1;i<rdairplay_conf->logQuantity();i++) {
+    air_right_selector_box->
+      insertItem(tr("Aux Log")+QString().sprintf(" %d [--]",i));
+  }
+  connect(air_right_selector_box,SIGNAL(activated(int)),
+	  this,SLOT(selectorActivatedData(int)));
+  if(rdairplay_conf->logQuantity()<=3) {
+    air_right_selector_box->hide();
   }
 
   //
@@ -877,13 +895,12 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   air_panel_button->setPalette(active_color);
   air_panel_button->setFocusPolicy(QWidget::NoFocus);
   connect(air_panel_button,SIGNAL(clicked()),this,SLOT(panelButtonData()));
-  if (rdairplay_conf->panels(RDAirPlayConf::StationPanel) || 
-      rdairplay_conf->panels(RDAirPlayConf::UserPanel)){
-  } 
-  else {
+  if(((!rdairplay_conf->panels(RDAirPlayConf::StationPanel))&& 
+      (!rdairplay_conf->panels(RDAirPlayConf::UserPanel)))||
+     (rdairplay_conf->logQuantity()>3)) {
     air_panel_button->hide();
-    air_log_button[0]->setPalette (active_color);
-    air_log_list[0]->show();
+    //    air_log_button[0]->setPalette(active_color);
+    //    air_log_list[0]->show();
   }	  
 
   //
@@ -932,6 +949,9 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
 	  SetMode(i,rdlogmodes->opMode(i));
 	}
 	break;
+    default:
+      fprintf(stderr,"unhandled log mode [%d]: %d\n",i,
+	      rdlogmodes->logStartMode(i));
     }
   }
 
@@ -1233,31 +1253,16 @@ void MainWidget::logRenamedData(int log)
   if(logname.isEmpty()) {
     labelname="--";
   }
-  switch(log) {
-      case 0:
-	str=QString(tr("Main Log"));
-	air_log_button[0]->
-	  setText(QString().sprintf("%s\n[%s]",(const char *)str,
-				    (const char *)labelname));
-	SetCaption();
-	if(air_panel) {
-	  air_panel->setLogName(logname);
-	}
-	break;
-
-      case 1:
-	str=QString(tr("Aux 1 Log"));
-	air_log_button[1]->
-	  setText(QString().sprintf("%s\n[%s]",(const char *)str,
-				    (const char *)labelname));
-	break;
-	
-      case 2:
-	str=QString(tr("Aux 2 Log"));
-	air_log_button[2]->
-	  setText(QString().sprintf("%s\n[%s]",(const char *)str,
-				    (const char *)labelname));
-	break;
+  if(log==0) {
+    str=tr("Main Log");
+  }
+  else {
+    str=tr("Aux Log")+QString().sprintf(" %d",log);
+  }
+  air_log_button[log]->setText(str+"\n["+labelname+"]");
+  air_right_selector_box->changeItem(str+"\n["+labelname+"]",log+1);
+  if(log==0) {
+    SetCaption();
   }
 }
 
@@ -1478,6 +1483,17 @@ void MainWidget::panelButtonData()
     }
   }
   air_panel_button->setPalette(active_color);
+}
+
+
+void MainWidget::selectorActivatedData(int n)
+{
+  if(n==0) {
+    panelButtonData();
+  }
+  else {
+    fullLogButtonData(n-1);
+  }
 }
 
 
@@ -2036,21 +2052,15 @@ void MainWidget::keyReleaseEvent(QKeyEvent *e)
             fullLogButtonData(0);
             return;
         }
-    
-        if ((strcmp(hot_label,"Aux Log 1") == 0) &&
-             (rdairplay_conf->showAuxButton(0) ) )
-        {
-            fullLogButtonData(1);
-            return;
-        }
-    
-        if ( (strcmp(hot_label,"Aux Log 2") == 0) &&
-             (rdairplay_conf->showAuxButton(1) ) )
-        {
-            fullLogButtonData(2);
-            return;
-        }
-    
+
+	//
+	// FIXME: This needs a proper public method!
+	//
+	for(unsigned i=1;i<rdairplay_conf->logQuantity();i++) {
+	  if(hot_label==tr("Aux Log")+QString().sprintf("%u",i)) {
+            fullLogButtonData(i);
+	  }
+	}
         for (int i = 1; i < 8 ; i++)
         {
             temp_string = QString().sprintf("Start Line %d",i);

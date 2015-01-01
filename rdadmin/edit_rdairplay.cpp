@@ -487,37 +487,11 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   label->setGeometry(435,530,200,16);
 
   //
-  // Mode Control Style
+  // Mode Control
   //
-  air_modecontrol_box=new QComboBox(this);
-  air_modecontrol_box->setGeometry(560,550,110,20);
-  connect(air_modecontrol_box,SIGNAL(activated(int)),
-	  this,SLOT(modeControlActivatedData(int)));
-  label=new QLabel(air_modecontrol_box,tr("Mode Control Style:"),this);
-  label->setGeometry(435,550,120,20);
-  label->setAlignment(AlignRight|AlignVCenter);
-  air_modecontrol_box->insertItem(tr("Unified"));
-  air_modecontrol_box->insertItem(tr("Independent"));
-
-  //
-  // Startup Mode
-  //
-  for(int i=0;i<3;i++) {
-    air_logstartmode_box[i]=new QComboBox(this);
-    air_logstartmode_box[i]->setGeometry(615,572+i*22,110,20);
-    connect(air_logstartmode_box[i],SIGNAL(activated(int)),
-	    this,SLOT(logStartupModeActivatedData(int)));
-    air_logstartmode_label[i]=new QLabel(air_logstartmode_box[i],"",this);
-    air_logstartmode_label[i]->setGeometry(470,572+i*22,140,20);
-    air_logstartmode_label[i]->setAlignment(AlignRight|AlignVCenter);
-    air_logstartmode_box[i]->insertItem(tr("Previous"));
-    air_logstartmode_box[i]->insertItem(tr("LiveAssist"));
-    air_logstartmode_box[i]->insertItem(tr("Automatic"));
-    air_logstartmode_box[i]->insertItem(tr("Manual"));
-  }
-  air_logstartmode_label[0]->setText(tr("Main Log Startup Mode:"));
-  air_logstartmode_label[1]->setText(tr("Aux 1 Log Startup Mode:"));
-  air_logstartmode_label[2]->setText(tr("Aux 2 Log Startup Mode:"));
+  air_mode_control=new EditModeControl(this);
+  air_mode_control->setGeometry(435,550,air_mode_control->sizeHint().width(),
+				air_mode_control->sizeHint().height());
 
   //
   //  Ok Button
@@ -568,9 +542,6 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_station_box->setValue(air_conf->panels(RDAirPlayConf::StationPanel));
   air_user_box->setValue(air_conf->panels(RDAirPlayConf::UserPanel));
   air_timesync_box->setChecked(air_conf->checkTimesync());
-  for(int i=0;i<2;i++) {
-    air_auxlog_box[i]->setChecked(air_conf->showAuxButton(i));
-  }
   air_clearfilter_box->setChecked(air_conf->clearFilter());
   air_bar_group->setButton((int)air_conf->barAction());
   air_flash_box->setChecked(air_conf->flashPanel());
@@ -584,12 +555,9 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_artist_template_edit->setText(air_conf->artistTemplate());
   air_outcue_template_edit->setText(air_conf->outcueTemplate());
   air_description_template_edit->setText(air_conf->descriptionTemplate());
-  air_modecontrol_box->setCurrentItem((int)air_conf->opModeStyle());
+  air_mode_control->load(air_conf,air_modes);
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_startmode[i]=air_modes->startMode(i);
-    air_startlog[i]=air_modes->logName(i);
-    air_autorestart[i]=air_modes->autoRestart(i);
-    air_logstartmode_box[i]->setCurrentItem(air_modes->logStartMode(i));
   }
   air_startmode_box->setCurrentItem((int)air_startmode[air_logmachine]);
   air_startlog_edit->setText(air_startlog[air_logmachine]);
@@ -687,27 +655,6 @@ void EditRDAirPlay::selectSkinData()
 }
 
 
-void EditRDAirPlay::modeControlActivatedData(int n)
-{
-  if(n==0) {
-    for(int i=1;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-      air_logstartmode_box[i]->
-	setCurrentItem(air_logstartmode_box[0]->currentItem());
-    }
-  }
-}
-
-
-void EditRDAirPlay::logStartupModeActivatedData(int n)
-{
-  if(air_modecontrol_box->currentItem()==0) {
-    for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-      air_logstartmode_box[i]->setCurrentItem(n);
-    }
-  }
-}
-
-
 void EditRDAirPlay::okData()
 {
   bool ok=false;
@@ -741,9 +688,6 @@ void EditRDAirPlay::okData()
   air_conf->setPanels(RDAirPlayConf::StationPanel,air_station_box->value());
   air_conf->setPanels(RDAirPlayConf::UserPanel,air_user_box->value());
   air_conf->setCheckTimesync(air_timesync_box->isChecked());
-  for(int i=0;i<2;i++) {
-    air_conf->setShowAuxButton(i,air_auxlog_box[i]->isChecked());
-  }
   air_conf->setClearFilter(air_clearfilter_box->isChecked());
   air_conf->
     setBarAction((RDAirPlayConf::BarAction)air_bar_group->selectedId());
@@ -765,15 +709,11 @@ void EditRDAirPlay::okData()
     (RDLogModes::StartMode)air_startmode_box->currentItem();
   air_startlog[air_logmachine]=air_startlog_edit->text();
   air_autorestart[air_logmachine]=air_autorestart_box->isChecked();
-  air_conf->setOpModeStyle((RDAirPlayConf::OpModeStyle)
-			   air_modecontrol_box->currentItem());
+  air_mode_control->save(air_conf,air_modes);
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_modes->setStartMode(i,air_startmode[i]);
     air_modes->setLogName(i,air_startlog[i]);
     air_modes->setAutoRestart(i,air_autorestart[i]);
-    air_modes->
-      setLogStartMode(i,(RDLogModes::OpMode)air_logstartmode_box[i]->
-		      currentItem());
   }
   air_conf->setSkinPath(air_skin_edit->text());
   done(0);

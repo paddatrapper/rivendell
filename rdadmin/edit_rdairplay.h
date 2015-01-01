@@ -42,6 +42,7 @@
 #include <rdsound_panel.h>
 
 #include "edit_logchannels.h"
+#include "edit_modecontrol.h"
 #include "edit_panelchannels.h"
 #include "list_nownextplugins.h"
 
@@ -68,8 +69,8 @@ class EditRDAirPlay : public QDialog
   void selectData();
   void editHotKeys();
   void selectSkinData();
-  void modeControlActivatedData(int n);
-  void logStartupModeActivatedData(int n);
+  //  void modeControlActivatedData(int n);
+  //  void logStartupModeActivatedData(int n);
   void okData();
   void cancelData();
 
@@ -84,6 +85,7 @@ class EditRDAirPlay : public QDialog
   EditLogChannels *air_edit_logchannels;
   EditPanelChannels *air_edit_panelchannels;
   ListNowNextPlugins *air_list_plugins;
+  EditModeControl *air_mode_control;
   QLabel *air_segue_label;
   QLineEdit *air_segue_edit;
   QLabel *air_trans_label;
@@ -137,9 +139,9 @@ class EditRDAirPlay : public QDialog
   QLineEdit *air_artist_template_edit;
   QLineEdit *air_outcue_template_edit;
   QLineEdit *air_description_template_edit;
-  QComboBox *air_modecontrol_box;
-  QLabel *air_logstartmode_label[RDAIRPLAY_LOG_QUANTITY];
-  QComboBox *air_logstartmode_box[RDAIRPLAY_LOG_QUANTITY];
+  //QComboBox *air_modecontrol_box;
+  //  QLabel *air_logstartmode_label[RDAIRPLAY_LOG_QUANTITY];
+  //  QComboBox *air_logstartmode_box[RDAIRPLAY_LOG_QUANTITY];
 };
 
 

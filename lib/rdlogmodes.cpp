@@ -51,9 +51,9 @@ void RDLogModes::setOpMode(int lognum,RDLogModes::OpMode mode) const
 }
 
 
-RDLogModes::StartMode RDLogModes::logStartMode(int lognum) const
+RDLogModes::OpMode RDLogModes::logStartMode(int lognum) const
 {
-  return (RDLogModes::StartMode)GetRow("START_MODE",lognum).toInt();
+  return (RDLogModes::OpMode)GetRow("START_MODE",lognum).toInt();
 }
 
 

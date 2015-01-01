@@ -547,13 +547,13 @@ Final</translation>
     <message>
         <source>Aux 1 Log
 [--]</source>
-        <translation>Lista aux. 1
+        <translation type="obsolete">Lista aux. 1
 [--]</translation>
     </message>
     <message>
         <source>Aux 2 Log
 [--]</source>
-        <translation>Lista aux. 2
+        <translation type="obsolete">Lista aux. 2
 [--]</translation>
     </message>
     <message>
@@ -595,6 +595,22 @@ LISTA</translation>
     <message>
         <source>Host:</source>
         <translation>Equipo:</translation>
+    </message>
+    <message>
+        <source>Aux</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aux Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SoundPanel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

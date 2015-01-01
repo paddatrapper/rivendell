@@ -539,13 +539,13 @@ vorhören</translation>
     <message>
         <source>Aux 1 Log
 [--]</source>
-        <translation>Aux 1 Log
+        <translation type="obsolete">Aux 1 Log
 [--]</translation>
     </message>
     <message>
         <source>Aux 2 Log
 [--]</source>
-        <translation>Aux 2 Log
+        <translation type="obsolete">Aux 2 Log
 [--]</translation>
     </message>
     <message>
@@ -594,6 +594,22 @@ AKTUALISIERT</translation>
     </message>
     <message>
         <source>Host:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aux</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aux Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SoundPanel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

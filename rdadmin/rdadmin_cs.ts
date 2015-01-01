@@ -2105,6 +2105,49 @@ GPIOs</source>
     </message>
 </context>
 <context>
+    <name>EditModeControl</name>
+    <message>
+        <source>Mode Control Style:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Independent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Startup Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Previous</source>
+        <translation type="unfinished">Předchozí</translation>
+    </message>
+    <message>
+        <source>LiveAssist</source>
+        <translation type="unfinished">Živá pomoc</translation>
+    </message>
+    <message>
+        <source>Automatic</source>
+        <translation type="unfinished">Automatický</translation>
+    </message>
+    <message>
+        <source>Manual</source>
+        <translation type="unfinished">Ruční</translation>
+    </message>
+    <message>
+        <source>Main Log</source>
+        <translation type="unfinished">Hlavní zápis</translation>
+    </message>
+    <message>
+        <source>Aux Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EditNowNext</name>
     <message>
         <source>Edit Now &amp; Next Data</source>
@@ -2374,19 +2417,19 @@ GPIOs</source>
     </message>
     <message>
         <source>Previous</source>
-        <translation>Předchozí</translation>
+        <translation type="obsolete">Předchozí</translation>
     </message>
     <message>
         <source>LiveAssist</source>
-        <translation>Živá pomoc</translation>
+        <translation type="obsolete">Živá pomoc</translation>
     </message>
     <message>
         <source>Automatic</source>
-        <translation>Automatický</translation>
+        <translation type="obsolete">Automatický</translation>
     </message>
     <message>
         <source>Manual</source>
-        <translation>Ruční</translation>
+        <translation type="obsolete">Ruční</translation>
     </message>
     <message>
         <source>Check TimeSync</source>
@@ -2558,30 +2601,6 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>Log Mode Control</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mode Control Style:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unified</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Independent</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Main Log Startup Mode:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Aux 1 Log Startup Mode:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Aux 2 Log Startup Mode:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4927,6 +4946,29 @@ Stále ještě jej chcete smazat?</translation>
     <message>
         <source>BroadcastTools SRC-16</source>
         <translation type="obsolete">BroadcastTools SRC-16</translation>
+    </message>
+</context>
+<context>
+    <name>ListNowNextPlugins</name>
+    <message>
+        <source>Path</source>
+        <translation type="unfinished">Cesta</translation>
+    </message>
+    <message>
+        <source>Argument</source>
+        <translation type="unfinished">Argument</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Přidat</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
     </message>
 </context>
 <context>

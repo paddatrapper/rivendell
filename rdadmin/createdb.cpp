@@ -1236,8 +1236,6 @@ bool CreateDb(QString name,QString pwd)
       CHECK_TIMESYNC enum('N','Y') default 'N',\
       STATION_PANELS int default 3,\
       USER_PANELS int default 3,\
-      SHOW_AUX_1 enum('N','Y') default 'Y',\
-      SHOW_AUX_2 enum('N','Y') default 'Y',\
       CLEAR_FILTER enum('N','Y') default 'N',\
       DEFAULT_TRANS_TYPE int default 0,\
       BAR_ACTION int unsigned default 0,\
@@ -1251,18 +1249,6 @@ bool CreateDb(QString name,QString pwd)
       ARTIST_TEMPLATE char(64) default '%a',\
       OUTCUE_TEMPLATE char(64) default '%o',\
       DESCRIPTION_TEMPLATE char(64) default '%i',\
-      UDP_ADDR0 char(255),\
-      UDP_PORT0 int unsigned,\
-      UDP_STRING0 char(255),\
-      LOG_RML0 char(255),\
-      UDP_ADDR1 char(255),\
-      UDP_PORT1 int unsigned,\
-      UDP_STRING1 char(255),\
-      LOG_RML1 char(255),\
-      UDP_ADDR2 char(255),\
-      UDP_PORT2 int unsigned,\
-      UDP_STRING2 char(255),\
-      LOG_RML2 char(255),\
       EXIT_CODE int default 0,\
       EXIT_PASSWORD char(41) default \"\",\
       SKIN_PATH char(255) default \"";
@@ -1270,33 +1256,6 @@ bool CreateDb(QString name,QString pwd)
   sql+="\",\
       SHOW_COUNTERS enum('N','Y') default 'N',\
       AUDITION_PREROLL int default 10000,\
-      LOG0_START_MODE int default 0,\
-      LOG0_AUTO_RESTART enum('N','Y') default 'N',\
-      LOG0_LOG_NAME char(64),\
-      LOG0_CURRENT_LOG char(64),\
-      LOG0_RUNNING enum('N','Y') default 'N',\
-      LOG0_LOG_ID int default -1,\
-      LOG0_LOG_LINE int default -1,\
-      LOG0_NOW_CART int unsigned default 0,\
-      LOG0_NEXT_CART int unsigned default 0,\
-      LOG1_START_MODE int default 0,\
-      LOG1_AUTO_RESTART enum('N','Y') default 'N',\
-      LOG1_LOG_NAME char(64),\
-      LOG1_CURRENT_LOG char(64),\
-      LOG1_RUNNING enum('N','Y') default 'N',\
-      LOG1_LOG_ID int default -1,\
-      LOG1_LOG_LINE int default -1,\
-      LOG1_NOW_CART int unsigned default 0,\
-      LOG1_NEXT_CART int unsigned default 0,\
-      LOG2_START_MODE int default 0,\
-      LOG2_AUTO_RESTART enum('N','Y') default 'N',\
-      LOG2_LOG_NAME char(64),\
-      LOG2_CURRENT_LOG char(64),\
-      LOG2_RUNNING enum('N','Y') default 'N',\
-      LOG2_LOG_ID int default -1,\
-      LOG2_LOG_LINE int default -1,\
-      LOG2_NOW_CART int unsigned default 0,\
-      LOG2_NEXT_CART int unsigned default 0,\
       index STATION_IDX (STATION,INSTANCE))"; 
   if(!RunQuery(sql)) {
     return false;
@@ -8627,6 +8586,16 @@ int UpdateDb(int ver)
       q=new QSqlQuery(sql);
       delete q;
     }
+  }
+
+  if(ver<247) {
+    sql=QString("alter table RDAIRPLAY drop column SHOW_AUX_1");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table RDAIRPLAY drop column SHOW_AUX_2");
+    q=new QSqlQuery(sql);
+    delete q;
   }
 
 

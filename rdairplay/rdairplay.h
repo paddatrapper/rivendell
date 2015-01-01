@@ -68,7 +68,7 @@
 //
 // Debug Settings
 //
-//#define RESIZABLE
+#define RESIZABLE
 
 //
 // Widget Settings
@@ -116,6 +116,7 @@ class MainWidget : public QWidget
   void copyButtonData();
   void fullLogButtonData(int);
   void panelButtonData();
+  void selectorActivatedData(int);
   void modeButtonData();
   void selectClickedData(int id,int line,RDLogLine::Status status);
   void selectClickedData(unsigned cartnum,int row,int col);
@@ -159,6 +160,7 @@ class MainWidget : public QWidget
   RDPushButton *air_copy_button;
   QPushButton *air_log_button[RDAIRPLAY_LOG_QUANTITY];
   QPushButton *air_panel_button;
+  QComboBox *air_right_selector_box;
   ListLog *air_log_list[RDAIRPLAY_LOG_QUANTITY];
   ButtonLog *air_button_list;
   StartButton::Mode air_action_mode;
@@ -232,4 +234,4 @@ class MainWidget : public QWidget
 };
 
 
-#endif 
+#endif  // RDAIRPLAY_H

@@ -1837,6 +1837,49 @@ GPIOs</source>
     </message>
 </context>
 <context>
+    <name>EditModeControl</name>
+    <message>
+        <source>Mode Control Style:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Independent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Startup Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Previous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LiveAssist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Automatic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Main Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aux Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EditNowNextPlugin</name>
     <message>
         <source>Edit Plugin</source>
@@ -1959,22 +2002,6 @@ GPIOs</source>
     </message>
     <message>
         <source>Miscellaneous Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Previous</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>LiveAssist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Automatic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Manual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2129,30 +2156,6 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>At Startup:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mode Control Style:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unified</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Independent</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Main Log Startup Mode:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Aux 1 Log Startup Mode:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Aux 2 Log Startup Mode:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4315,6 +4318,29 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Deleting Switcher</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ListNowNextPlugins</name>
+    <message>
+        <source>Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Argument</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

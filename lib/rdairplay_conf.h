@@ -58,8 +58,6 @@ class RDAirPlayConf
   void setCheckTimesync(bool state) const;
   int panels(RDAirPlayConf::PanelType type) const;
   void setPanels(RDAirPlayConf::PanelType type,int quan) const;
-  bool showAuxButton(int auxbutton) const;
-  void setShowAuxButton(int auxbutton,bool state) const;
   bool clearFilter() const;
   void setClearFilter(bool state) const;
   RDLogLine::TransType defaultTransType() const;

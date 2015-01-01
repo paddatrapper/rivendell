@@ -14769,3 +14769,15 @@
 	* Incremented the database version to 256.
 	* Added a 'ListNowNextPlugins' widget in
 	'rdadmin/list_nownextplugins.cpp' and 'rdadmin/list_nownextplugins.h'.
+2015-01-01 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the value of 'RDAIRPLAY_LOG_QUANTITY' from '3' to '16'
+	'lib/rd.h'.
+	* Removed 'RDAIRPLAY.SHOW_AUX_1' and 'RDAIRPLAY.SHOW_AUX_2'
+	fields from the database.
+	* Incremented the database version to 247.
+	* Removed 'RDAirPlayConf::showAuxButton()' and
+	'RDAirPlayConf::setShowAuxButton()' methods from
+	'lib/rdairplay_conf.cpp' and 'lib/rdairplay_conf.h'.
+	* Added a log selector dropdown to handle cases where more than
+	three log machines are enabled in 'rdairplay/rdairplay.cpp' and
+	'rdairplay/rdairplay.h'.

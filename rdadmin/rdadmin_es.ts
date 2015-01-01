@@ -2110,6 +2110,49 @@ GPIOs</source>
     </message>
 </context>
 <context>
+    <name>EditModeControl</name>
+    <message>
+        <source>Mode Control Style:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Independent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Startup Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Previous</source>
+        <translation type="unfinished">Previo</translation>
+    </message>
+    <message>
+        <source>LiveAssist</source>
+        <translation type="unfinished">AsistEnVivo</translation>
+    </message>
+    <message>
+        <source>Automatic</source>
+        <translation type="unfinished">Automático</translation>
+    </message>
+    <message>
+        <source>Manual</source>
+        <translation type="unfinished">Manual</translation>
+    </message>
+    <message>
+        <source>Main Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aux Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EditNowNext</name>
     <message>
         <source>Edit Now &amp; Next Data</source>
@@ -2380,19 +2423,19 @@ Parameters</source>
     </message>
     <message>
         <source>Previous</source>
-        <translation>Previo</translation>
+        <translation type="obsolete">Previo</translation>
     </message>
     <message>
         <source>LiveAssist</source>
-        <translation>AsistEnVivo</translation>
+        <translation type="obsolete">AsistEnVivo</translation>
     </message>
     <message>
         <source>Automatic</source>
-        <translation>Automático</translation>
+        <translation type="obsolete">Automático</translation>
     </message>
     <message>
         <source>Manual</source>
-        <translation>Manual</translation>
+        <translation type="obsolete">Manual</translation>
     </message>
     <message>
         <source>Check TimeSync</source>
@@ -2552,30 +2595,6 @@ servicios de Rivendell en el equipo configurado para ejecutar el servicio CAE. <
     </message>
     <message>
         <source>Log Mode Control</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mode Control Style:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unified</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Independent</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Main Log Startup Mode:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Aux 1 Log Startup Mode:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Aux 2 Log Startup Mode:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4842,6 +4861,29 @@ Do you still want to delete it?</source>
     <message>
         <source>Local Audio Adapter</source>
         <translation type="obsolete">Adaptador de Audio Local</translation>
+    </message>
+</context>
+<context>
+    <name>ListNowNextPlugins</name>
+    <message>
+        <source>Path</source>
+        <translation type="unfinished">Carpeta</translation>
+    </message>
+    <message>
+        <source>Argument</source>
+        <translation type="unfinished">Argumento</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Añadir</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Editar</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Borrar</translation>
     </message>
 </context>
 <context>

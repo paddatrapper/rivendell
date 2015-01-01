@@ -2080,6 +2080,49 @@ GPIOs</source>
     </message>
 </context>
 <context>
+    <name>EditModeControl</name>
+    <message>
+        <source>Mode Control Style:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Independent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Startup Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Previous</source>
+        <translation type="unfinished">Vorherige</translation>
+    </message>
+    <message>
+        <source>LiveAssist</source>
+        <translation type="unfinished">LiveAssist</translation>
+    </message>
+    <message>
+        <source>Automatic</source>
+        <translation type="unfinished">Automatik</translation>
+    </message>
+    <message>
+        <source>Manual</source>
+        <translation type="unfinished">Manuell</translation>
+    </message>
+    <message>
+        <source>Main Log</source>
+        <translation type="unfinished">Haupt-Log</translation>
+    </message>
+    <message>
+        <source>Aux Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EditNowNext</name>
     <message>
         <source>Edit Now &amp; Next Data</source>
@@ -2349,19 +2392,19 @@ GPIOs</source>
     </message>
     <message>
         <source>Previous</source>
-        <translation>Vorherige</translation>
+        <translation type="obsolete">Vorherige</translation>
     </message>
     <message>
         <source>LiveAssist</source>
-        <translation>LiveAssist</translation>
+        <translation type="obsolete">LiveAssist</translation>
     </message>
     <message>
         <source>Automatic</source>
-        <translation>Automatik</translation>
+        <translation type="obsolete">Automatik</translation>
     </message>
     <message>
         <source>Manual</source>
-        <translation>Manuell</translation>
+        <translation type="obsolete">Manuell</translation>
     </message>
     <message>
         <source>Check TimeSync</source>
@@ -2531,30 +2574,6 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Log Mode Control</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mode Control Style:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unified</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Independent</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Main Log Startup Mode:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Aux 1 Log Startup Mode:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Aux 2 Log Startup Mode:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4878,6 +4897,29 @@ Generieren</translation>
     <message>
         <source>BroadcastTools SRC-16</source>
         <translation type="obsolete">BroadcastTools SRC-16</translation>
+    </message>
+</context>
+<context>
+    <name>ListNowNextPlugins</name>
+    <message>
+        <source>Path</source>
+        <translation type="unfinished">Pfad</translation>
+    </message>
+    <message>
+        <source>Argument</source>
+        <translation type="unfinished">Argument</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Hinzufügen</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Editieren</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Löschen</translation>
     </message>
 </context>
 <context>

@@ -53,6 +53,7 @@ x11 {
   SOURCES += edit_jack_client.cpp
   SOURCES += edit_livewiregpio.cpp
   SOURCES += edit_matrix.cpp
+  SOURCES += edit_modecontrol.cpp
   SOURCES += edit_nownextplugin.cpp
   SOURCES += edit_rdairplay.cpp
   SOURCES += edit_rdlibrary.cpp
@@ -79,7 +80,7 @@ x11 {
   SOURCES += list_hostvars.cpp
   SOURCES += list_livewiregpios.cpp
   SOURCES += list_matrices.cpp
-  SOURCES += list_nownextplugs.cpp
+  SOURCES += list_nownextplugins.cpp
   SOURCES += list_reports.cpp
   SOURCES += list_replicator_carts.cpp
   SOURCES += list_replicators.cpp
@@ -129,6 +130,7 @@ x11 {
   HEADERS += edit_jack_client.h
   HEADERS += edit_livewiregpio.h
   HEADERS += edit_matrix.h
+  HEADERS += edit_modecontrol.h
   HEADERS += edit_nownextplugin.h
   HEADERS += edit_rdairplay.h
   HEADERS += edit_rdlibrary.h

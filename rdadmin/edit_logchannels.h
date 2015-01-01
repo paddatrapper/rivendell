@@ -49,7 +49,6 @@ class EditLogChannels : public QWidget
   void save();
 
  private slots:
-  void logQuantityChangedData(int value);
   void logChangedData(int value);
   void audioSettingsChangedData(int id,int card,int port);
   void editGpiosData(int sub_num);

@@ -178,19 +178,6 @@ void RDAirPlayConf::setPanels(RDAirPlayConf::PanelType type,int quan) const
 }
 
 
-bool RDAirPlayConf::showAuxButton(int auxbutton) const
-{
-  return RDBool(RDGetSqlValue(air_tablename,"ID",
-	    air_id,QString().sprintf("SHOW_AUX_%d",auxbutton+1)).toString());
-}
-
-
-void RDAirPlayConf::setShowAuxButton(int auxbutton,bool state) const
-{
-  SetRow(QString().sprintf("SHOW_AUX_%d",auxbutton+1),RDYesNo(state));
-}
-
-
 bool RDAirPlayConf::clearFilter() const
 {
   return 

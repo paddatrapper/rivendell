@@ -42,18 +42,20 @@ EditLogChannels::EditLogChannels(RDAirPlayConf *conf,RDStation *cae_station,
   //
   // Log Quantity
   //
-  air_log_quan_label=new QLabel(tr("Active Log Machines")+":",this);
+  air_log_quan_label=new QLabel(tr("Visible Log Machines")+":",this);
   air_log_quan_label->setFont(label_font);
   air_log_quan_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   air_log_quan_spin=new QSpinBox(this);
   air_log_quan_spin->setRange(1,RDAIRPLAY_LOG_QUANTITY);
-  connect(air_log_quan_spin,SIGNAL(valueChanged(int)),
-	  this,SLOT(logQuantityChangedData(int)));
 
   //
   // Log Selector
   //
   air_log_box=new QComboBox(this);
+  air_log_box->insertItem(tr("Main Log"));
+  for(int i=1;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+    air_log_box->insertItem(tr("Aux Log")+QString().sprintf(" %u",i));
+  }
   connect(air_log_box,SIGNAL(activated(int)),this,SLOT(logChangedData(int)));
 
   //
@@ -104,7 +106,6 @@ EditLogChannels::EditLogChannels(RDAirPlayConf *conf,RDStation *cae_station,
   }
 
   air_log_quan_spin->setValue(conf->logQuantity());
-  logQuantityChangedData(conf->logQuantity());
 
   LoadMachine(0);
 }
@@ -140,22 +141,8 @@ QSizePolicy EditLogChannels::sizePolicy() const
 
 void EditLogChannels::save()
 {
+  air_rdairplay_conf->setLogQuantity(air_log_quan_spin->value());
   SaveMachine(air_log_box->currentItem());
-}
-
-
-void EditLogChannels::logQuantityChangedData(int value)
-{
-  int n=air_log_box->currentItem();
-  air_log_box->clear();
-  air_log_box->insertItem(tr("Main Log"));
-  for(int i=1;i<value;i++) {
-    air_log_box->insertItem(tr("Aux Log")+QString().sprintf(" %u",i));
-    if(i==n) {
-      air_log_box->setCurrentItem(i);
-    }
-  }
-  logChangedData(air_log_box->currentItem());
 }
 
 
