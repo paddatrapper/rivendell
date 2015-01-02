@@ -777,7 +777,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    if((rml->arg(0).toInt()<1)||(rml->arg(0).toInt()>3)||
+    if((rml->arg(0).toInt()<1)||(rml->arg(0).toInt()>RDAIRPLAY_LOG_QUANTITY)||
        (rml->arg(1).toUInt()>999999)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
@@ -811,7 +811,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    if((rml->arg(0).toInt()<1)||(rml->arg(0).toInt()>3)) {
+    if((rml->arg(0).toInt()<1)||(rml->arg(0).toInt()>RDAIRPLAY_LOG_QUANTITY)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rdripc->sendRml(rml);

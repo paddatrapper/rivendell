@@ -14804,3 +14804,10 @@
 2015-01-01 Fred Gleason <fredg@paravelsystems.com
 	* Fixed a bug in 'rdairplay/local_macros.cpp' that broke the
 	'Select Widget' ['PW'] RML for Aux Logs 3-16.
+2015-01-01 Fred Gleason <fredg@paravelsystems.com
+	* Fixed a bug in 'rdairplay/local_macros.cpp' that broke the
+	'Add Next' ['PX'] RML for Aux Logs 3-16.
+	* Fixed a bug in 'rdairplay/local_macros.cpp' that broke the
+	'Refresh Log' ['RL'] RML for Aux Logs 3-16.
+	* Fixed a bug in 'rdairplay/log_play.cpp' that threw a segfault
+	when refreshing logs.

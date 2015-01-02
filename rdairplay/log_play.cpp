@@ -659,11 +659,14 @@ bool LogPlay::refresh()
 
   // Find first non-holdover event, where start-of-log
   // new events should be added:
-  for(int i=0;i<e->size();i++) {
-    if(logLine(i)->isHoldover())
+  //  for(int i=0;i<e->size();i++) {
+  for(int i=0;i<size();i++) {
+    if(logLine(i)->isHoldover()) {
       ++first_non_holdover;
-    else
+    }
+    else {
       break;
+    }
   }
 
   //
