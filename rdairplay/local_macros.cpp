@@ -2,9 +2,7 @@
 //
 // Local RML Macros for the Rivendell's RDAirPlay
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: local_macros.cpp,v 1.31.6.3.2.2 2014/05/22 19:37:45 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -751,14 +749,15 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    if((rml->arg(0).toInt()<0)||(rml->arg(0).toInt()>RDAIRPLAY_LOG_QUANTITY)) {
+    if((rml->arg(0).toInt()<0)||
+       (rml->arg(0).toInt()>(int)rdairplay_conf->logQuantity())) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rdripc->sendRml(rml);
       }
       return;
     }
-    if(rml->arg(0).toInt()) {  // Sound Panel
+    if(rml->arg(0).toInt()==0) {  // Sound Panel
       panelButtonData();
     }
     else {

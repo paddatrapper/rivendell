@@ -68,7 +68,7 @@
 //
 // Debug Settings
 //
-#define RESIZABLE
+// #define RESIZABLE
 
 //
 // Widget Settings
@@ -161,6 +161,7 @@ class MainWidget : public QWidget
   QPushButton *air_log_button[RDAIRPLAY_LOG_QUANTITY];
   QPushButton *air_panel_button;
   QComboBox *air_right_selector_box;
+  int air_right_selector_offset;
   ListLog *air_log_list[RDAIRPLAY_LOG_QUANTITY];
   ButtonLog *air_button_list;
   StartButton::Mode air_action_mode;

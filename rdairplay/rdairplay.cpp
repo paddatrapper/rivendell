@@ -2,9 +2,7 @@
 //
 // The On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdairplay.cpp,v 1.189.2.24 2014/03/02 03:21:52 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -115,6 +113,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   QPainter *pd=NULL;
   air_refresh_pixmap=NULL;
   air_panel=NULL;
+  air_right_selector_offset=0;
   bool skip_db_check=false;
   unsigned schema=0;
 
@@ -234,6 +233,14 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   str=QString("RDAirPlay")+" v"+VERSION+" - "+tr("Host:");
   setCaption(QString().sprintf("%s %s",(const char *)str,
 			       (const char *)air_config->stationName()));
+
+  //
+  // Initialize Meter Channels
+  //
+  for(int i=0;i<(AIR_LOG_PORTS+PANEL_MAX_OUTPUTS);i++) {
+    air_meter_card[i]=-1;
+    air_meter_port[i]=-1;
+  }
 
   //
   // Open Database
@@ -703,8 +710,8 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Sound Panel Array
   //
-  if (rdairplay_conf->panels(RDAirPlayConf::StationPanel) || 
-      rdairplay_conf->panels(RDAirPlayConf::UserPanel)){
+  if((rdairplay_conf->panels(RDAirPlayConf::StationPanel)>0)|| 
+     (rdairplay_conf->panels(RDAirPlayConf::UserPanel)>0)) {
     air_panel=
       new RDSoundPanel(AIR_PANEL_BUTTON_COLUMNS,AIR_PANEL_BUTTON_ROWS,
 		       rdairplay_conf->panels(RDAirPlayConf::StationPanel),
@@ -715,7 +722,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
 		       rdcart_dialog,this,"air_panel");
     air_panel->setLogfile(air_config->airplayLogname());
     air_panel->setGeometry(510,140,air_panel->sizeHint().width(),
-			 air_panel->sizeHint().height());
+			   air_panel->sizeHint().height());
     if(mainmap!=NULL) {
       pm=new QPixmap(1024,738);
       pd=new QPainter(pm);
@@ -864,7 +871,11 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   air_right_selector_box=new QComboBox(this);
   air_right_selector_box->setGeometry(562,sizeHint().height()-65,454,60);
   air_right_selector_box->setFont(selector_font);
-  air_right_selector_box->insertItem(tr("SoundPanel"));
+  if(((rdairplay_conf->panels(RDAirPlayConf::StationPanel)>0)|| 
+      (rdairplay_conf->panels(RDAirPlayConf::UserPanel)>0))) {
+    air_right_selector_box->insertItem(tr("SoundPanel"));
+    air_right_selector_offset=1;
+  }
   air_right_selector_box->insertItem(tr("Main Log")+" [--]");
   for(unsigned i=1;i<rdairplay_conf->logQuantity();i++) {
     air_right_selector_box->
@@ -895,12 +906,14 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   air_panel_button->setPalette(active_color);
   air_panel_button->setFocusPolicy(QWidget::NoFocus);
   connect(air_panel_button,SIGNAL(clicked()),this,SLOT(panelButtonData()));
-  if(((!rdairplay_conf->panels(RDAirPlayConf::StationPanel))&& 
-      (!rdairplay_conf->panels(RDAirPlayConf::UserPanel)))||
-     (rdairplay_conf->logQuantity()>3)) {
+  if(((rdairplay_conf->panels(RDAirPlayConf::StationPanel)==0)&& 
+      (rdairplay_conf->panels(RDAirPlayConf::UserPanel)==0))) {
+    air_log_button[0]->setPalette(active_color);
+    air_log_list[0]->show();
     air_panel_button->hide();
-    //    air_log_button[0]->setPalette(active_color);
-    //    air_log_list[0]->show();
+  }
+  if(rdairplay_conf->logQuantity()>3) {
+    air_panel_button->hide();
   }	  
 
   //
@@ -1260,7 +1273,10 @@ void MainWidget::logRenamedData(int log)
     str=tr("Aux Log")+QString().sprintf(" %d",log);
   }
   air_log_button[log]->setText(str+"\n["+labelname+"]");
-  air_right_selector_box->changeItem(str+"\n["+labelname+"]",log+1);
+  if((log+air_right_selector_offset)<air_right_selector_box->count()) {
+    air_right_selector_box->
+      changeItem(str+"\n["+labelname+"]",log+air_right_selector_offset);
+  }
   if(log==0) {
     SetCaption();
   }
@@ -1469,13 +1485,23 @@ void MainWidget::fullLogButtonData(int id)
     }
     air_log_list[id]->show();
     air_log_button[id]->setPalette(active_color);
-    if (air_panel_button) air_panel_button->setPalette(palette());
+    if(air_panel_button) {
+      air_panel_button->setPalette(palette());
+    }
+    if(((id+air_right_selector_offset)<air_right_selector_box->count())&&
+       (air_right_selector_box->
+	currentItem()!=(id+air_right_selector_offset))) {
+      air_right_selector_box->setCurrentItem(id+air_right_selector_offset);
+    }
   }
 }
 
 
 void MainWidget::panelButtonData()
 {
+  if(air_right_selector_offset==0) {
+    return;
+  }
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     if(air_log_list[i]->isVisible()) {
       air_log_list[i]->hide();
@@ -1483,6 +1509,9 @@ void MainWidget::panelButtonData()
     }
   }
   air_panel_button->setPalette(active_color);
+  if(air_right_selector_box->currentItem()!=0) {
+    air_right_selector_box->setCurrentItem(0);
+  }
 }
 
 
