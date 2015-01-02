@@ -14811,3 +14811,6 @@
 	'Refresh Log' ['RL'] RML for Aux Logs 3-16.
 	* Fixed a bug in 'rdairplay/log_play.cpp' that threw a segfault
 	when refreshing logs.
+2015-01-01 Fred Gleason <fredg@paravelsystems.com
+	* Fixed a bug in 'rdairplay/local_macros.cpp' that broke the
+	'Set Default Now & Next Cart' ['SN'] RML for Aux Logs 3-16.

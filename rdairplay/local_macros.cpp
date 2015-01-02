@@ -847,7 +847,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    if((rml->arg(1).toInt()<1)||(rml->arg(1).toInt()>3)) {
+    if((rml->arg(1).toInt()<1)||(rml->arg(1).toInt()>RDAIRPLAY_LOG_QUANTITY)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rdripc->sendRml(rml);
