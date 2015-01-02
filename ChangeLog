@@ -14785,3 +14785,6 @@
 	* Refactored Start/Stop controls in 'rdadmin/edit_rdairplay.cpp'
 	and 'rdadmin/edit_rdairplay.h' to use a separate widget in
 	'rdadmin/edit_startstop.cpp' and 'rdadmin/edit_startstop.h'.
+2015-01-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdairplay/local_macros.cpp' that broke the
+	'Load Log' ['LL'] RML for Aux Logs 3-16.
