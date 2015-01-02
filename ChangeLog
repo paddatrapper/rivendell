@@ -14788,3 +14788,16 @@
 2015-01-01 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdairplay/local_macros.cpp' that broke the
 	'Load Log' ['LL'] RML for Aux Logs 3-16.
+2015-01-01 Fred Gleason <fredg@paravelsystems.com
+	* Fixed a bug in 'rdairplay/local_macros.cpp' that broke the
+	'Append Log' ['AL'] RML for Aux Logs 3-16.
+	* Fixed a bug in 'rdairplay/local_macros.cpp' that broke the
+	'Make Next' ['MN'] RML for Aux Logs 3-16.
+	* Fixed a bug in 'rdairplay/local_macros.cpp' that broke the
+	'Start' ['PL'] RML for Aux Logs 3-16.
+	* Fixed a bug in 'rdairplay/local_macros.cpp' that broke the
+	'Start Next' ['PN'] RML for Aux Logs 3-16.
+	* Fixed a bug in 'rdairplay/local_macros.cpp' that broke the
+	'Stop' ['PS'] RML for Aux Logs 3-16.
+	* Fixed a bug in 'rdairplay/local_macros.cpp' that broke the
+	'Set Duck Level' ['MD'] RML for Aux Logs 3-16.

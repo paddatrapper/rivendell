@@ -175,7 +175,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    if((rml->arg(0).toInt()<1)||(rml->arg(0).toInt()>3)) {
+    if((rml->arg(0).toInt()<1)||(rml->arg(0).toInt()>RDAIRPLAY_LOG_QUANTITY)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rdripc->sendRml(rml);
@@ -201,7 +201,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    if((rml->arg(0).toInt()<1)||(rml->arg(0).toInt()>3)) {
+    if((rml->arg(0).toInt()<1)||(rml->arg(0).toInt()>RDAIRPLAY_LOG_QUANTITY)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rdripc->sendRml(rml);
@@ -328,7 +328,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    if((rml->arg(0).toInt()<1)||(rml->arg(0).toInt()>3)) {
+    if((rml->arg(0).toInt()<1)||(rml->arg(0).toInt()>RDAIRPLAY_LOG_QUANTITY)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rdripc->sendRml(rml);
@@ -411,7 +411,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    if((rml->arg(0).toInt()<1)||(rml->arg(0).toInt()>3)) {
+    if((rml->arg(0).toInt()<1)||(rml->arg(0).toInt()>RDAIRPLAY_LOG_QUANTITY)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rdripc->sendRml(rml);
@@ -527,7 +527,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    if((rml->arg(0).toInt()<0)||(rml->arg(0).toInt()>3)) {
+    if((rml->arg(0).toInt()<0)||(rml->arg(0).toInt()>RDAIRPLAY_LOG_QUANTITY)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rdripc->sendRml(rml);
@@ -538,23 +538,18 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()>1) {
       fade=rml->arg(1).toInt();
     }
-    switch(rml->arg(0).toInt()) {
-    case 0:   // Stop All Logs
-      air_log[0]->stop(true,0,fade);
-      air_log[1]->stop(true,0,fade);
-      air_log[2]->stop(true,0,fade);
-      break;
-
-    case 1:
-    case 2:
-    case 3:
+    if(rml->arg(0).toInt()==0) {   // Stop All Logs
+      for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+	air_log[i]->stop(true,0,fade);
+      }
+    }
+    else {
       if(rml->argQuantity()==3) {
 	air_log[rml->arg(0).toInt()-1]->stop(false,rml->arg(2).toInt(),fade);
       }
       else {
 	air_log[rml->arg(0).toInt()-1]->stop(true,0,fade);
       }
-      break;
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
@@ -570,31 +565,28 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    if((rml->arg(0).toInt()<0)||(rml->arg(0).toInt()>3)) {
+    if((rml->arg(0).toInt()<0)||(rml->arg(0).toInt()>RDAIRPLAY_LOG_QUANTITY)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rdripc->sendRml(rml);
       }
       return;
     }
-    switch(rml->arg(0).toInt()) {
-    case 0:   // Duck All Logs
-      air_log[0]->duckVolume(rml->arg(1).toInt()*100,rml->arg(2).toInt());
-      air_log[1]->duckVolume(rml->arg(1).toInt()*100,rml->arg(2).toInt());
-      air_log[2]->duckVolume(rml->arg(1).toInt()*100,rml->arg(2).toInt());
-      break;
-
-    case 1:
-    case 2:
-    case 3:
+    if(rml->arg(0).toInt()==0) {   // Duck All Logs
+      for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+	air_log[i]->duckVolume(rml->arg(1).toInt()*100,rml->arg(2).toInt());
+      }
+    }
+    else {
       if(rml->argQuantity()==3) {
-	air_log[rml->arg(0).toInt()-1]->duckVolume(rml->arg(1).toInt()*100,rml->arg(2).toInt());
+	air_log[rml->arg(0).toInt()-1]->
+	  duckVolume(rml->arg(1).toInt()*100,rml->arg(2).toInt());
       }
       else {
-	air_log[rml->arg(0).toInt()-1]->duckVolume(rml->arg(1).toInt()*100,
-						   rml->arg(2).toInt(),rml->arg(3).toInt());
+	air_log[rml->arg(0).toInt()-1]->
+	  duckVolume(rml->arg(1).toInt()*100,
+		     rml->arg(2).toInt(),rml->arg(3).toInt());
       }
-      break;
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
@@ -759,23 +751,18 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    if((rml->arg(0).toInt()<0)||(rml->arg(0).toInt()>3)) {
+    if((rml->arg(0).toInt()<0)||(rml->arg(0).toInt()>RDAIRPLAY_LOG_QUANTITY)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rdripc->sendRml(rml);
       }
       return;
     }
-    switch(rml->arg(0).toInt()) {
-    case 0:  // Sound Panel
+    if(rml->arg(0).toInt()) {  // Sound Panel
       panelButtonData();
-      break;
-
-    case 1:
-    case 2:
-    case 3:
+    }
+    else {
       fullLogButtonData(rml->arg(0).toInt()-1);
-      break;
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
