@@ -14818,3 +14818,7 @@
 	* Fixed a bug in 'rdairplay/rdairplay.cpp' that caused the log
 	selector dropdown to display the incorrect log when SoundPanels
 	were disabled.
+2015-01-04 Fred Gleason <fredg@paravelsystems.com
+	* Fixed a bug in 'lib/rdcart_dialog.cpp' that caused the cue
+	transport controls to float in separate windows from the
+	dialog.

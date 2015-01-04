@@ -259,7 +259,8 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
       new RDSimplePlayer(cae,ripc,chans->card(RDChannels::CueOutput,0),
 			 chans->port(RDChannels::CueOutput,0),
 			 chans->cart(RDChannels::Start,RDChannels::CueOutput,0),
-			 chans->cart(RDChannels::Stop,RDChannels::CueOutput,0));
+			 chans->cart(RDChannels::Stop,RDChannels::CueOutput,0),
+			 this);
     cart_player->playButton()->setDisabled(true);
     cart_player->stopButton()->setDisabled(true);
     cart_player->stopButton()->setOnColor(red);
