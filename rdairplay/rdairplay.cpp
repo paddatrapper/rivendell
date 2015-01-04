@@ -1517,11 +1517,16 @@ void MainWidget::panelButtonData()
 
 void MainWidget::selectorActivatedData(int n)
 {
-  if(n==0) {
-    panelButtonData();
+  if(air_right_selector_offset==0) {
+    fullLogButtonData(n);
   }
   else {
-    fullLogButtonData(n-1);
+    if(n==0) {
+      panelButtonData();
+    }
+    else {
+      fullLogButtonData(n-1);
+    }
   }
 }
 

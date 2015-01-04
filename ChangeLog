@@ -14814,3 +14814,7 @@
 2015-01-01 Fred Gleason <fredg@paravelsystems.com
 	* Fixed a bug in 'rdairplay/local_macros.cpp' that broke the
 	'Set Default Now & Next Cart' ['SN'] RML for Aux Logs 3-16.
+2015-01-04 Fred Gleason <fredg@paravelsystems.com
+	* Fixed a bug in 'rdairplay/rdairplay.cpp' that caused the log
+	selector dropdown to display the incorrect log when SoundPanels
+	were disabled.
