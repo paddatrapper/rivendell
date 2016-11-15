@@ -128,7 +128,7 @@ void EditSvcPerms::okData()
       delete q;
       sql=QString("insert into SERVICE_PERMS set ")+
 	"SERVICE_NAME=\""+RDEscapeString(svc_svc->name())+"\","+
-	"STATION_NAME=\""+RDEscapeString(svc_host_sel->destText(i));
+	"STATION_NAME=\""+RDEscapeString(svc_host_sel->destText(i))+"\"";
       q=new RDSqlQuery(sql);
     }
     delete q;

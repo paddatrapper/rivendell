@@ -67,7 +67,7 @@ bool RDDbValid(RDConfig *config,int *schema)
 {
   QString sql;
   //  QSqlQuery *q;
-  bool ret=false;
+  bool ret=true;
 
   /*
   QSqlDatabase *db=QSqlDatabase::addDatabase(config->mysqlDriver());
